@@ -18,7 +18,7 @@ python -m http.server 5500 --bind 127.0.0.1 --directory web
 ```
 
 5. Apri [http://127.0.0.1:5500](http://127.0.0.1:5500). Il primo caricamento serve a memorizzare gli asset offline. L'uso non richiede Node.js o npm.
-6. Scegli Workout o Studio nello switch vicino al logo. Imposta Lavoro/Recupero in secondi oppure Concentrazione/Pausa in minuti, poi i giri/sessioni e premi Avvia. La demo di 12 secondi è in Altre opzioni. Cronologia e statistiche si trovano in Attività.
+6. Scegli Workout o Studio nello switch vicino al logo. Imposta Lavoro/Recupero in secondi oppure Concentrazione/Pausa in minuti, poi i giri/sessioni e premi Avvia. I pulsanti demo sono stati rimossi da entrambe le modalità. Cronologia e statistiche si trovano in Attività.
 7. Per conservare un timer premi **Salva allenamento** (Workout) o **Salva programma di studio** (Studio), scrivi il nome e conferma **Salva sul dispositivo**. Lo ritrovi in Allenamenti anche dopo la chiusura del browser. Questa conferma attiva anche il salvataggio delle attività. In alternativa, **Attiva il salvataggio** o **Impostazioni → Salva cronologia** conserva l’archivio corrente.
 8. La guida completa è in [guida-utente.md](guida-utente.md) e nel pulsante Guida dell’app. Per interrompere il server: Ctrl+C nella sua finestra PowerShell.
 
@@ -106,7 +106,7 @@ Il riferimento pubblico è stato acquisito in `tmp/audio-reference/`, convertito
 
 ## 6. Pubblicazione
 
-Non è stato configurato alcun deploy o workflow GitHub. Un'eventuale pubblicazione su Pages richiederà una richiesta esplicita; [la documentazione ufficiale](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages) descrive condizioni e limiti del servizio. Non sono stati creati repository remoti o account, né attivati servizi o abbonamenti.
+Il sito è stato pubblicato, dopo autorizzazione, su Cloudflare Pages tramite caricamento diretto dello ZIP: [procedura e stato](pubblicazione.md). I sorgenti sono sul repository pubblico [zRoby03/tabata-timer](https://github.com/zRoby03/tabata-timer). Non è configurato un workflow di deploy GitHub e un push non pubblica il sito. Nessun servizio a pagamento o distribuzione pubblica dell'APK è stato attivato. La cronologia delle sezioni successive conserva i passaggi delle revisioni precedenti.
 
 
 ## 7. Aggiornamento Android 1.6.0

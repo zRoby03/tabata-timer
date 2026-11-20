@@ -1,5 +1,7 @@
 # Tabata Timer
 
+**[Repository pubblico](https://github.com/zRoby03/tabata-timer)** · **[Branch documentazione: codice commentato e guide](https://github.com/zRoby03/tabata-timer/tree/documentazione/docs/documentazione)**. Il push GitHub non aggiorna automaticamente il sito.
+
 Timer per **allenamento e studio, su web e Android**, in italiano, inglese e spagnolo, con un’interfaccia semplice e moderna. Funziona in locale: nessun account, backend, pubblicità, chiave API o abbonamento.
 
 **Sito online: [Tabata Timer](https://tabata-timer-ek1.pages.dev)**, su Cloudflare Pages con sottodominio gratuito. APK conservato soltanto in locale. Per trasferire i salvataggi dal precedente indirizzo, esporta la copia JSON e importala sul nuovo sito. AdSense collegato e inviato a revisione; annunci ancora inattivi. [Pubblicazione e aggiornamenti](docs/pubblicazione.md) · [Cloudflare, AdSense e condivisione APK](docs/cloudflare-adsense-apk.md).
@@ -98,13 +100,13 @@ Android mantiene il timer in un servizio in primo piano anche in background e a 
 
 La pulizia del browser, la disinstallazione Android o la cancellazione dei dati possono eliminare l’archivio. Esporta periodicamente una copia JSON. I dati non passano automaticamente tra dispositivi. Le statistiche misurano tempo e continuità, senza valutare il miglioramento fisico.
 
-**Nessuna pubblicazione eseguita e nessun servizio a pagamento attivato.** Il server Python è statico e accessibile solo dal computer locale.
+**Il sito è pubblicato su Cloudflare Pages**, dopo l'autorizzazione dell'utente. Nessun servizio a pagamento attivato e nessun APK distribuito pubblicamente. Il server Python descritto sopra serve soltanto allo sviluppo locale.
 
 ## Consegna locale
 
-`output/Tabata-Timer-1.8.0-debug.apk` è l’APK installabile. `output/Tabata-Timer-1.8.0-sorgenti.zip` contiene web, Android, guide, fixture e script, senza cache, SDK o file temporanei. Per rigenerare lo ZIP: `python scripts/package-project.py`. I risultati riepilogativi sono in `output/verification-v1.8.0.json`; le impronte dei pacchetti sono in `output/SHA256SUMS.txt`.
+I file di consegna locali sono `output/Tabata Timer.apk`, `output/Tabata Timer.zip` (sito) e `output/sorgenti/Tabata Timer.zip` (sorgenti). La cartella output è esclusa da GitHub: contiene anche risultati di revisioni precedenti. L'ultima build Android consegnata è la revisione interna 1.8.1; le modifiche web della successiva pubblicazione non ne hanno cambiato l'APK. I report selezionati sono in [docs/verifiche](docs/verifiche).
 
-Il pacchetto `output/Tabata-Timer-1.8.0-solo-sito.zip` contiene soltanto i file statici pronti da caricare. **Pubblicazione ancora in attesa del comando “andiamo”**: nessun account, servizio a pagamento, deploy o distribuzione pubblica dell’APK è stato attivato.
+Per ricostruire lo ZIP Cloudflare: `python scripts/package-cloudflare.py`. Lo ZIP risultante è `output/cloudflare/Tabata Timer.zip`. Per ricompilare un APK di sviluppo usare Gradle come descritto sopra; non occorre scaricare un APK pubblico da questo repository. [Pubblicazione e stato AdSense](docs/pubblicazione.md).
 
 ## Nome, icona e fischio
 
@@ -112,4 +114,4 @@ Il nome mostrato nel browser, nelle schermate iniziali e all’installazione è 
 
 L’icona è la **t.**, comune a sito, Android, launcher e notifica; Android supporta maschere adattive e icone a tema. SVG, PNG web e vettori Android derivano dallo stesso tracciato locale (`assets/branding/t-dot-path.txt`). Il fischio di avvio è più basso e morbido, ispirato al fischietto da arbitro, sempre 500 ms; altri suoni e durate invariati.
 
-File per l’utente: `output/Tabata Timer.apk`, `output/Tabata Timer.zip` (sito) e `output/sorgenti/Tabata Timer.zip` (sorgenti). Le revisioni tecniche rimangono interne per aggiornamenti, cache e verifiche. Nessuna pubblicazione eseguita.
+Le revisioni tecniche rimangono interne per aggiornamenti, cache e verifiche. Il sito è pubblico; APK e chiavi di firma rimangono fuori da GitHub. Annunci AdSense ancora inattivi.
