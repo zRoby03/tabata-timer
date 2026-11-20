@@ -1,0 +1,24 @@
+import { readFileSync } from 'node:fs';
+import assert from 'node:assert/strict';
+import { parseBackup } from '../web/js/io.js';
+import { compileTimeline, plannedMs } from '../web/js/timeline.js';
+const web = parseBackup(readFileSync('fixtures/backup-web-v1.json', 'utf8'));
+const android = parseBackup(readFileSync('android/app/build/interop/android-export-v1.json', 'utf8'));
+assert.deepEqual(android.workouts, web.workouts);
+assert.deepEqual(android.sessions, web.sessions);
+assert.equal(plannedMs(compileTimeline(android.workouts[0])), 220000);
+console.log('Web → Kotlin → Web: workout, sessione e timeline 220 s identici.');
+const studioWeb = parseBackup(readFileSync('fixtures/backup-modes-v1.json', 'utf8'));
+const studioAndroid = parseBackup(readFileSync('android/app/build/interop/android-export-modes-v1.json', 'utf8'));
+assert.deepEqual(studioAndroid.workouts, studioWeb.workouts);
+assert.deepEqual(studioAndroid.sessions, studioWeb.sessions);
+assert.equal(plannedMs(compileTimeline(studioAndroid.workouts[0])), 14100000);
+console.log('Studio Web → Kotlin → Web: archivio precedente conservato; nuova esecuzione senza pausa lunga (235 minuti).');
+
+const simpleWeb = parseBackup(readFileSync('fixtures/backup-simple-v1.json', 'utf8'));
+const simpleAndroid = parseBackup(readFileSync('android/app/build/interop/android-export-simple-v1.json', 'utf8'));
+assert.deepEqual(simpleAndroid.workouts, simpleWeb.workouts);
+assert.deepEqual(simpleAndroid.sessions, simpleWeb.sessions);
+assert.equal(plannedMs(compileTimeline(simpleAndroid.workouts[0])), 83000);
+assert.equal(plannedMs(compileTimeline(simpleAndroid.workouts[1])), 660000);
+console.log('Nuovo Studio piatto e recupero comune Workout: JSON e durate identici Web → Kotlin → Web.');

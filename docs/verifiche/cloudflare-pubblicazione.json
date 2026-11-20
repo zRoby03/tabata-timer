@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-20",
+  "title": "Tabata Timer",
+  "provider": "Cloudflare Pages",
+  "project": "tabata-timer",
+  "url": "https://tabata-timer-ek1.pages.dev",
+  "status": "succeeded",
+  "access": "public",
+  "hostingPlan": "Free",
+  "archive": "output/cloudflare/Tabata Timer.zip",
+  "archiveSha256": "fe293715e146dc62fae4af070d6165c31994336d26579ab0d63d9d991a733203",
+  "files": 43,
+  "paidServicesActivated": false,
+  "publicApkDownload": false,
+  "androidApkChanged": false,
+  "checks": {
+    "javascript": {
+      "tests": 82,
+      "failures": 0
+    },
+    "zipIntegrity": true,
+    "allPackagedBytesMatchSource": true,
+    "browserModes": [
+      "WORKOUT",
+      "STUDIO"
+    ],
+    "browserLanguages": [
+      "it",
+      "en",
+      "es"
+    ],
+    "publicPages": [
+      "about",
+      "privacy"
+    ],
+    "googleAdsTxt": "authorized",
+    "cloudflareDeployment": "Success"
+  },
+  "verificationLimits": [
+    "Direct Python HTTP requests received Cloudflare 1010; remote byte comparison not completed.",
+    "No live advertising test: site in Google review and advertising script not installed.",
+    "No physical-phone test for this web-only update."
+  ],
+  "adsense": {
+    "publisher": "pub-9043574024513063",
+    "adClient": "ca-pub-9043574024513063",
+    "adSlot": "9553674851",
+    "unitName": "Tabata Timer",
+    "unitType": "display-responsive",
+    "site": "https://tabata-timer-ek1.pages.dev",
+    "privacyUrl": "https://tabata-timer-ek1.pages.dev/privacy",
+    "siteReviewRequested": true,
+    "publisherOnboardingComplete": true,
+    "lastObservedReviewStatus": "in_preparation",
+    "adsTxtAuthorized": true,
+    "consentMessage": {
+      "name": "Tabata Timer",
+      "status": "published",
+      "languages": [
+        "it",
+        "en",
+        "es"
+      ],
+      "defaultLanguage": "it",
+      "rejectInAllRegions": true,
+      "consentOptimization": false,
+      "legitimateInterestEnabledByDefault": false
+    },
+    "servingEnabled": false,
+    "plannedPlacement": "about.html only, below original content; no timer ads",
+    "autoAdsEnabled": false
+  },
+  "screenshots": [
+    "output/screenshots/cloudflare-tabata-timer.jpg",
+    "output/screenshots/adsense-review-requested.jpg",
+    "output/screenshots/adsense-consent-published.jpg",
+    "output/screenshots/adsense-onboarding-complete.jpg"
+  ],
+  "previousSite": "https://tabata-timer.paddedlotus8.chatgpt.site"
+}

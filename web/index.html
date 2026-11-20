@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#8950a9">
+  <meta name="description" data-i18n-content="Tabata Timer: Workout in secondi e Studio in minuti. Timer gratuito, senza account." content="Tabata Timer: Workout in secondi e Studio in minuti. Timer gratuito, senza account.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <title>Tabata Timer</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <script type="module" src="./js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="Vai al contenuto">Vai al contenuto</a>
+  <header class="site-header"><div class="brand-modes"><a class="brand" href="#home" aria-label="Tabata Timer, pagina iniziale" data-i18n-aria-label="Tabata Timer, pagina iniziale"><span class="brand-symbol" aria-hidden="true" data-i18n="t.">t.</span>Tabata <b>Timer</b></a><button id="mode-switch" class="mode-switch" role="switch" aria-checked="false" aria-label="Modalità Studio" data-i18n-aria-label="Modalità Studio" data-action="mode" title="Workout in secondi, Studio in minuti. Termina la sessione per cambiare modalità." data-i18n-title="Workout in secondi, Studio in minuti. Termina la sessione per cambiare modalità."><span data-i18n="Workout">Workout</span><span data-i18n="Studio">Studio</span></button></div><div class="header-actions"><button class="text-button" data-action="help" data-i18n="Guida">Guida</button><button class="settings-button" data-action="settings" aria-label="Impostazioni" data-i18n-aria-label="Impostazioni" title="Impostazioni" data-i18n-title="Impostazioni">⚙</button></div></header>
+  <nav aria-label="Navigazione principale" data-i18n-aria-label="Navigazione principale"><button data-route="home" data-i18n="Timer">Timer</button><button data-route="workouts" data-i18n="Allenamenti">Allenamenti</button><button data-route="history" data-i18n="Attività">Attività</button></nav>
+  <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+  <main id="main" tabindex="-1"></main>
+  <dialog id="save-dialog" aria-labelledby="save-title"><form id="save-form"><p class="eyebrow" data-i18n="SOLO SU QUESTO DISPOSITIVO">SOLO SU QUESTO DISPOSITIVO</p><h2 id="save-title" data-i18n="Salva allenamento">Salva allenamento</h2><label><span id="save-name-label" data-i18n="Nome dell’allenamento">Nome dell’allenamento</span><input id="save-name" maxlength="120" required autocomplete="off" placeholder="Es. Il mio Tabata" data-i18n-placeholder="Es. Il mio Tabata"></label><p id="save-description" class="muted" data-i18n="Lo ritroverai in Allenamenti anche dopo aver chiuso il browser. Il salvataggio vale per questo browser e questo indirizzo.">Lo ritroverai in Allenamenti anche dopo aver chiuso il browser. Il salvataggio vale per questo browser e questo indirizzo.</p><p id="save-error" class="field-error" role="alert" hidden></p><div class="row"><button class="primary" type="submit" data-i18n="Salva sul dispositivo">Salva sul dispositivo</button><button id="cancel-save" type="button" data-i18n="Annulla">Annulla</button></div></form></dialog>
+  <dialog id="import-dialog" aria-labelledby="import-title"><h2 id="import-title" data-i18n="Anteprima importazione">Anteprima importazione</h2><div id="import-preview"></div><p data-i18n="La conferma sostituisce programmi e attività di entrambe le modalità. Esporta prima una copia JSON per conservarli.">La conferma sostituisce programmi e attività di entrambe le modalità. Esporta prima una copia JSON per conservarli.</p><div class="row"><button id="confirm-import" class="primary" data-i18n="Sostituisci dati">Sostituisci dati</button><button id="cancel-import" data-i18n="Annulla">Annulla</button></div></dialog>
+  <input id="import-file" type="file" accept=".json,application/json" hidden>
+  <noscript data-i18n="Attiva JavaScript per usare editor e timer. Nessun dato viene inviato a server.">Attiva JavaScript per usare editor e timer. Nessun dato viene inviato a server.</noscript>
+</body>
+</html>

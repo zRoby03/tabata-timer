@@ -1,0 +1,31 @@
+import { writeFile } from 'node:fs/promises';
+import { pathToFileURL } from 'node:url';
+import assert from 'node:assert/strict';
+const {chromium}=await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE).href);
+const browser=await chromium.launch({channel:'msedge',headless:true});
+try {
+ const page=await browser.newPage({ locale: 'it-IT',viewport:{width:390,height:900}});
+ await page.goto('http://127.0.0.1:5500/?mode=studio');
+ await page.getByRole('button',{name:'+ Aggiungi attività',exact:true}).click();
+ await page.getByRole('textbox',{name:'Nome attività · Attività 1',exact:true}).fill('Lettura');
+ await page.getByRole('button',{name:'Elimina Attività 2',exact:true}).click();
+ assert.equal(await page.locator('.study-activity').count(),1);
+ assert.equal(await page.getByRole('textbox',{name:'Nome attività · Attività 1',exact:true}).inputValue(),'Lettura');
+ assert.equal(await page.getByRole('button',{name:'Elimina Attività 1',exact:true}).isDisabled(),true);
+ await page.evaluate(async()=>{document.activeElement.blur();scrollTo(0,0);await document.fonts.ready;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));});
+ await page.screenshot({path:'output/screenshots/web-studio-v170-390.png'});
+ await page.getByRole('switch').click();
+ await page.getByRole('button',{name:'Allenamenti',exact:true}).click();
+ await page.getByRole('button',{name:'+ Crea allenamento',exact:true}).click();
+ await page.getByRole('button',{name:'+ Aggiungi esercizio',exact:true}).click();
+ await page.getByRole('button',{name:'+ Aggiungi esercizio',exact:true}).click();
+ assert.equal(await page.locator('input[data-path$=".restBetweenExercisesSec"]').count(),1);
+ assert.equal(await page.locator('input[data-path$=".restAfterExerciseSec"]').count(),0);
+ await page.locator('[data-path="blocks.0.restBetweenExercisesSec"]').fill('7');
+ assert.equal(await page.locator('.phase-list li').filter({hasText:'Recupero tra esercizi'}).count(),2);
+ const labels=await page.locator('#workout-form label').allTextContents();
+ assert.ok(labels.every(x=>!/(?:\bmin\b|\bsec\b|\(s\))/.test(x)));
+ await page.screenshot({path:'output/screenshots/web-workout-editor-v170-390.png',fullPage:true});
+ await writeFile('output/browser-simple.json', JSON.stringify({ version: '1.7.0', studyAddDelete: true, finalActivityProtected: true, workoutSingleRestPerBlock: true, unitSuffixesRemoved: true }, null, 2));
+ console.log('Aggiunta/eliminazione Studio, ultima attività protetta, recupero Workout unico anche con tre esercizi: verificati.');
+} finally {await browser.close();}

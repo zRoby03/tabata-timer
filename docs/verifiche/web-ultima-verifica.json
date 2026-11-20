@@ -1,0 +1,26 @@
+{
+  "version": "1.8.2",
+  "scope": "web and hosting only",
+  "date": "2026-11-20",
+  "javascript": {
+    "tests": 82,
+    "failures": 0
+  },
+  "publication": {
+    "url": "https://tabata-timer-ek1.pages.dev",
+    "provider": "Cloudflare Pages",
+    "status": "succeeded",
+    "report": "cloudflare/publication.json"
+  },
+  "android": {
+    "apkVersion": "1.8.1",
+    "unchanged": true,
+    "testsRerun": false,
+    "previousVerification": "verification-v1.8.1.json"
+  },
+  "advertisingServingEnabled": false,
+  "googleReviewPending": true,
+  "publisherOnboardingComplete": true,
+  "paidServicesActivated": false,
+  "publicApkDownload": false
+}

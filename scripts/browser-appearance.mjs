@@ -1,0 +1,76 @@
+import { pathToFileURL } from 'node:url';
+import { mkdir, writeFile } from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import { PALETTES, APPEARANCE_KEY } from '../web/js/appearance.js';
+const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ? pathToFileURL(process.env.PLAYWRIGHT_MODULE).href : 'playwright');
+const browser = await chromium.launch({ channel: process.env.TABATA_BROWSER || 'msedge', headless: true });
+const checks = [], errors = [];
+const base = process.env.TABATA_URL || 'http://127.0.0.1:5500';
+await mkdir('output/screenshots', { recursive: true });
+try {
+  const context = await browser.newContext({ locale: 'it-IT', viewport: { width: 390, height: 900 } });
+  const page = await context.newPage(); page.on('pageerror', e => errors.push(e.message));
+  await page.goto(base); await page.getByRole('heading', { name: 'Tabata Timer' }).waitFor();
+  assert.equal(await page.evaluate(() => localStorage.length), 0);
+  for (const [i, seconds] of [20, 30, 40].entries()) {
+    await page.getByRole('button', { name: `Tabata ${i + 1} ${seconds} / ${seconds / 2}`, exact: true }).click();
+    assert.equal(await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').inputValue(), String(seconds));
+  }
+  checks.push('Tabata 1, 2 e 3 mantengono i tempi 20/10, 30/15 e 40/20');
+  for (const theme of ['light', 'dark']) for (const p of PALETTES) {
+    await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
+    await page.getByRole('button', { name: theme === 'dark' ? 'Scuro' : 'Chiaro', exact: true }).click();
+    await page.getByRole('button', { name: p.name, exact: true }).click();
+    assert.equal(await page.getByRole('button', { name: p.name, exact: true }).getAttribute('aria-pressed'), 'true');
+    assert.deepEqual(await page.evaluate(key => JSON.parse(localStorage.getItem(key)), APPEARANCE_KEY), { theme, palette: p.id });
+    assert.equal(await page.evaluate(() => localStorage.getItem('tabata:v1:data')), null);
+    await page.getByRole('button', { name: 'Timer', exact: true }).click();
+    assert.deepEqual(await page.evaluate(() => ({ ...document.documentElement.dataset })), { theme, palette: p.id });
+    const colors = await page.locator('#quick-start-button').evaluate(b => { const c = getComputedStyle(b); return { fill: c.backgroundColor, text: c.color }; });
+    const rgb = hex => `rgb(${hex.slice(1).match(/../g).map(x => parseInt(x, 16)).join(', ')})`;
+    assert.equal(colors.fill, rgb(p[theme][1])); assert.equal(colors.text, rgb(p[theme][2]));
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    if (['yellow', 'blue'].includes(p.id)) await page.screenshot({ path: `output/screenshots/web-${theme}-${p.id}.png`, fullPage: true });
+  }
+  checks.push('Tutti i 18 abbinamenti tema/palette: colori effettivi, testo leggibile e archivio allenamenti invariato');
+  await page.reload();
+  await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
+  assert.equal(await page.getByRole('button', { name: 'Scuro', exact: true }).getAttribute('aria-pressed'), 'true');
+  assert.equal(await page.getByRole('button', { name: 'Rosa', exact: true }).getAttribute('aria-pressed'), 'true');
+  await page.setViewportSize({ width: 320, height: 800 });
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.screenshot({ path: 'output/screenshots/web-dark-settings-320.png', fullPage: true });
+  await page.getByRole('button', { name: 'Allenamenti', exact: true }).click();
+  await page.getByRole('button', { name: '+ Crea allenamento', exact: true }).click();
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  await page.screenshot({ path: 'output/screenshots/web-dark-editor-320.png', fullPage: true });
+  await page.getByRole('button', { name: 'Torna agli allenamenti' }).click();
+  await page.getByRole('button', { name: 'Attività', exact: true }).click();
+  await page.getByRole('button', { name: 'Statistiche →', exact: true }).click();
+  assert.equal(await page.locator('svg rect').first().evaluate(r => getComputedStyle(r).fill), 'rgb(242, 154, 197)');
+  await page.getByRole('button', { name: 'Guida', exact: true }).click();
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+  checks.push('Preferenze conservate al reload; impostazioni, editor, grafici e guida compatibili con tema scuro a 320 px');
+  await page.evaluate(async () => { await navigator.serviceWorker.ready; });
+  await page.reload(); await context.setOffline(true); await page.reload();
+  await page.getByRole('heading', { name: 'Tabata Timer' }).waitFor();
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), 'dark');
+  await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
+  await page.getByRole('button', { name: 'Verde chiaro', exact: true }).click();
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.palette), 'lime');
+  checks.push('Aspetto disponibile e modificabile anche offline');
+  await context.close();
+  const denied = await browser.newContext({ locale: 'it-IT' });
+  await denied.addInitScript(key => { const set = Storage.prototype.setItem; Storage.prototype.setItem = function (k, v) { if (k === key) throw new Error('denied'); return set.call(this, k, v); }; }, APPEARANCE_KEY);
+  const blocked = await denied.newPage(); await blocked.goto(base);
+  await blocked.getByRole('button', { name: 'Impostazioni', exact: true }).click();
+  await blocked.getByRole('button', { name: 'Scuro', exact: true }).click();
+  assert.equal(await blocked.evaluate(() => document.documentElement.dataset.theme), 'dark');
+  assert.match(await blocked.locator('#notice').textContent(), /non ha potuto salvare/);
+  assert.equal(await blocked.evaluate(() => localStorage.length), 0);
+  await denied.close();
+  checks.push('Storage negato: tema applicato alla visita e avviso, senza falso salvataggio');
+  assert.deepEqual(errors, []);
+  await writeFile('output/browser-appearance.json', JSON.stringify({ checks, errors }, null, 2));
+  console.log(checks.join('\n'));
+} finally { await browser.close(); }

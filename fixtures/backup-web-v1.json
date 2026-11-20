@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "exportedAt": "2026-11-17T09:00:00.000Z",
+  "workouts": [
+    {
+      "schemaVersion": 1,
+      "id": "reference",
+      "title": "Riferimento 3:40",
+      "description": "Due cicli, tre ripetizioni",
+      "color": "#9153b7",
+      "warmupSec": 0,
+      "cooldownSec": 0,
+      "blocks": [
+        {
+          "id": "b1",
+          "title": "Blocco",
+          "cycles": 2,
+          "restBetweenCyclesSec": 60,
+          "restAfterBlockSec": 90,
+          "exercises": [
+            {
+              "id": "e1",
+              "title": "Lavoro",
+              "repetitions": 3,
+              "workSec": 20,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 90
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "fixture-session",
+      "workoutId": "reference",
+      "workoutTitle": "Riferimento 3:40",
+      "startedAt": "2026-11-16T10:00:00.000Z",
+      "endedAt": "2026-11-16T10:02:00.000Z",
+      "plannedMs": 220000,
+      "elapsedMs": 100000,
+      "workMs": 60000,
+      "completedWorkIntervals": 3,
+      "plannedWorkIntervals": 6,
+      "pauses": 1,
+      "status": "INTERRUPTED"
+    }
+  ]
+}

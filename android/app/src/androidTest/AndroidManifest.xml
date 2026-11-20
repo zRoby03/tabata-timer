@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <application>
+        <!-- Separate test APK/UID: a local music player, never included in the delivered app. -->
+        <service android:name="it.tabatastudio.MediaPlaybackProbeService" android:exported="true" android:foregroundServiceType="mediaPlayback" />
+    </application>
+</manifest>

@@ -1,0 +1,96 @@
+{
+  "version": "1.8.1",
+  "publicName": "Tabata Timer",
+  "date": "2026-11-20",
+  "javascript": {
+    "tests": 81,
+    "failures": 0
+  },
+  "jvm": {
+    "tests": 39,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "android": {
+    "tests": 16,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": {
+    "errors": 0,
+    "warnings": 15
+  },
+  "whistle": {
+    "durationMs": 500,
+    "estimatedFrequencyHz": 1757.5,
+    "peak": 13200,
+    "playbackGain": 1,
+    "otherEightSoundsUnchanged": true,
+    "webAndroidIdentical": true
+  },
+  "branding": {
+    "browserTitle": "Tabata Timer",
+    "homeTitle": "Tabata Timer",
+    "applicationLabel": "Tabata Timer",
+    "pwaName": "Tabata Timer",
+    "pwaShortName": "Tabata Timer",
+    "adaptiveLauncherIcon": "t.",
+    "roundAndMonochromeIcon": true,
+    "notificationIcon": "t.",
+    "launcherVisuallyChecked": true,
+    "cleanUrl": true
+  },
+  "currentBrowserChecks": [
+    "browser-branding.mjs",
+    "browser-countdown.mjs",
+    "browser-languages.mjs"
+  ],
+  "languages": [
+    "it",
+    "en",
+    "es"
+  ],
+  "background": {
+    "version": "1.8.1",
+    "emulator": "Medium_Phone Android 17/API 37",
+    "backgroundCasesPassed": [
+      "externalMediaKeepsFocusWhileCuesPlayWithScreenOff",
+      "studySurvivesActivityDestructionAndScreenOff",
+      "backgroundAndNotificationActionsKeepOneSession",
+      "consecutiveTimersAreSavedWithoutDuplicates"
+    ],
+    "foregroundService": "specialUse",
+    "screenOffTested": true,
+    "activityDestructionAndReopeningTested": true,
+    "notificationPauseResumeSkipStopTested": true,
+    "wakeLockReleasedOnPauseAndFinish": true,
+    "externalPlayerDifferentUid": true,
+    "externalPlayerKeptFocusAndPlayback": true,
+    "timerCuesConfirmedByAudioService": true,
+    "physicalSpotifyYouTubeTested": false
+  },
+  "lastForceStopRecoveryCheck": {
+    "androidVersion": "1.8.0",
+    "workoutsPreserved": 2,
+    "sessionsBefore": 0,
+    "sessionsAfter": 1,
+    "sessionsAfterSecondRestart": 1,
+    "recoveredStatus": "INTERRUPTED",
+    "checkpointCleared": true
+  },
+  "published": true,
+  "paidServicesActivated": false,
+  "publicationRequires": "andiamo — autorizzazione ricevuta il 20 novembre 2026",
+  "physicalDeviceTested": false,
+  "apkSha256": "4d93b0e5b8cdc3632f16bd5355165dcb0873090abd92ddd1003347567cd2cc7d",
+  "publication": {
+    "url": "https://tabata-timer.paddedlotus8.chatgpt.site",
+    "status": "succeeded",
+    "commit_sha": "4b56c74cfba23e89799cede01cce79b3585406a7",
+    "report": "publication.json",
+    "apkPubliclyDistributed": false
+  },
+  "websiteZipSha256": "bc6c0566e413ae50a9b4457920a22f9ad2af3cba942820dcdec71614d6a7c1fd"
+}

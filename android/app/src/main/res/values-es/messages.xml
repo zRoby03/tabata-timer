@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated; edit locales/messages.json. -->
+<resources>
+    <string name="msg_17defa620093" formatted="false"> (copia)</string>
+    <string name="msg_c68abcf9cce3" formatted="false"> · Actividad {0}</string>
+    <string name="msg_326a74eebb9c" formatted="false">%.1f {0} · %.0f%% de cumplimiento medio</string>
+    <string name="msg_39e916a75cad" formatted="false">+ 0:20 de preparación antes de empezar</string>
+    <string name="msg_ab6295e67d6b" formatted="false">+ 0:20 para prepararte</string>
+    <string name="msg_d67ee8e4f79c" formatted="false">+ Añadir entrenamientos prediseñados</string>
+    <string name="msg_87173caf8d22" formatted="false">+ Añadir actividad</string>
+    <string name="msg_f2b078eb70d4" formatted="false">+ Añadir bloque</string>
+    <string name="msg_5756c0b67452" formatted="false">+ Añadir ejercicio</string>
+    <string name="msg_f26ec0774e0f" formatted="false">+ Añadir programas prediseñados</string>
+    <string name="msg_4497f18519b8" formatted="false">+ Añadir {0}</string>
+    <string name="msg_41f4d9c0c239" formatted="false">+ Bloque</string>
+    <string name="msg_535ad8304480" formatted="false">+ Crear {0}</string>
+    <string name="msg_b5fa9cef76d6" formatted="false">+ Ejercicio</string>
+    <string name="msg_d52f3bbf3eb9" formatted="false">20 segundos para prepararte</string>
+    <string name="msg_81515d84722c" formatted="false">ENTRENAMIENTO PERSONALIZADO</string>
+    <string name="msg_c10f62a3d74e" formatted="false">VISTA PREVIA</string>
+    <string name="msg_8a4e0ffde97d" formatted="false">Entrenamientos</string>
+    <string name="msg_83ebf973aaa1" formatted="false">Los entrenamientos y la actividad siguen disponibles al cerrar.</string>
+    <string name="msg_ca620288946b" formatted="false">Entrenamientos y actividad guardados en este navegador.</string>
+    <string name="msg_cd42f4eb4f9d" formatted="false">Los entrenamientos y la actividad ya se guardan automáticamente en el teléfono.</string>
+    <string name="msg_94238b16333f" formatted="false">Los entrenamientos y la actividad se guardan automáticamente en el teléfono, incluso al cerrar la aplicación.</string>
+    <string name="msg_0362dfb8e10f" formatted="false">Entrenamiento</string>
+    <string name="msg_f57275364ae5" formatted="false">Entrenamiento por intervalos</string>
+    <string name="msg_7be64953db8e" formatted="false">Entrenamiento completado.</string>
+    <string name="msg_1d652ad0503d" formatted="false">Entrenamiento duplicado.</string>
+    <string name="msg_9d46d21a4c3b" formatted="false">Entrenamiento eliminado</string>
+    <string name="msg_35e7c5a19346" formatted="false">Entrenamiento anterior: el descanso entre ejercicios ahora es común a cada bloque y utiliza el primer valor anterior. El original permanece en la biblioteca hasta que lo guardes.</string>
+    <string name="msg_a78290b1ae76" formatted="false">Entrenamiento guardado en el dispositivo.</string>
+    <string name="msg_8b1fca52a04d" formatted="false">Entrenamiento guardado.</string>
+    <string name="msg_03a466c12c59" formatted="false">Más opciones</string>
+    <string name="msg_017dc504a3f1" formatted="false">Más opciones +</string>
+    <string name="msg_4044f261f6a6" formatted="false">Más controles</string>
+    <string name="msg_915b3d37bd55" formatted="false">Más controles +</string>
+    <string name="msg_18c9d912a210" formatted="false">Cancelar</string>
+    <string name="msg_e9bcaec77820" formatted="false">Vista previa</string>
+    <string name="msg_6307056c3abc" formatted="false">Vista previa del entrenamiento</string>
+    <string name="msg_ea4160ea558b" formatted="false">Vista previa de importación</string>
+    <string name="msg_40a16f140e38" formatted="false">Vista previa del programa</string>
+    <string name="msg_d8693e932daf" formatted="false">Abriendo la biblioteca local…</string>
+    <string name="msg_4337eaff274f" formatted="false">Abrir la guía</string>
+    <string name="msg_65dcff44f6b8" formatted="false">Naranja</string>
+    <string name="msg_88b03fc50fb2" formatted="false">Naranja</string>
+    <string name="msg_eae2947cbc9d" formatted="false">Biblioteca importada.</string>
+    <string name="msg_3741cc39dfca" formatted="false">Biblioteca no disponible: {0}. Vuelve a abrir la aplicación o comprueba el espacio libre.</string>
+    <string name="msg_e7a7b78ef331" formatted="false">Biblioteca no disponible: {0}. Se usa memoria temporal; la biblioteca anterior se ha conservado.</string>
+    <string name="msg_8308abfe0692" formatted="false">Biblioteca demasiado grande</string>
+    <string name="msg_f9ce8fd2b603" formatted="false">Apariencia</string>
+    <string name="msg_65d54262cbe5" formatted="false">Apariencia actualizada para esta visita. El navegador no ha podido guardar la preferencia.</string>
+    <string name="msg_338c17ce68d6" formatted="false">Espera a que se guarde la sesión.</string>
+    <string name="msg_66df300a8510" formatted="false">Activa JavaScript para usar el editor y el temporizador. No se envían datos a ningún servidor.</string>
+    <string name="msg_387ad1fd422d" formatted="false">Actividad</string>
+    <string name="msg_e7e2c4421312" formatted="false">Actividad de estudio</string>
+    <string name="msg_c3a988420413" formatted="false">Actividad registrada para esta visita. Activa el guardado o exporta una copia JSON para conservarla.</string>
+    <string name="msg_765dbc0a1573" formatted="false">Actividad {0}</string>
+    <string name="msg_bcf56f2a886d" formatted="false">Actividad {0} · {1} · sesión {2}/{3}</string>
+    <string name="msg_18d328f84ce5" formatted="false">Activo en este navegador</string>
+    <string name="msg_584ec336df27" formatted="false">Activo en este dispositivo</string>
+    <string name="msg_8113cbd7ac9d" formatted="false">Progreso y controles del temporizador, incluso con la pantalla apagada</string>
+    <string name="msg_0532b2063141" formatted="false">Progreso de las fases</string>
+    <string name="msg_58e2fac3ae63" formatted="false">Iniciar</string>
+    <string name="msg_4997e8e59c69" formatted="false">Inicia un {0} desde el temporizador. Al terminar encontrarás aquí el resumen.</string>
+    <string name="msg_6a5effca57ae" formatted="false">¿Iniciar y descartar los cambios sin guardar?</string>
+    <string name="msg_869d96933765" formatted="false">Iniciando el temporizador…</string>
+    <string name="msg_f65495a3dda1" formatted="false">No se puede iniciar en segundo plano: {0}. Inténtalo con la aplicación abierta.</string>
+    <string name="msg_2b0aa6fa7c52" formatted="false">Celeste</string>
+    <string name="msg_838557924a5c" formatted="false">Backup</string>
+    <string name="msg_40c076ed6e5b" formatted="false">Límite de copia: 5 MiB</string>
+    <string name="msg_4f070b56ff2a" formatted="false">Copia demasiado grande: máximo 5 MiB</string>
+    <string name="msg_058b0e072396" formatted="false">Pitidos breves en 3, 2, 1. Un silbido inicia el trabajo, un suspiro inicia el descanso y tres campanadas marcan el final del entrenamiento, antes de la vuelta a la calma opcional.</string>
+    <string name="msg_cd8a211fdb66" formatted="false">Bloque</string>
+    <string name="msg_244040671827" formatted="false">Bloque {0}</string>
+    <string name="msg_be284ff59808" formatted="false">Azul</string>
+    <string name="msg_388147542c1d" formatted="false">CUMPLIMIENTO MEDIO</string>
+    <string name="msg_4aa1c87d51db" formatted="false">CONSTANCIA Y VOLUMEN</string>
+    <string name="msg_5c125632c9c1" formatted="false">CSV exportado.</string>
+    <string name="msg_2941257b95f3" formatted="false">Caché sin conexión no disponible. La página abierta funciona; para recargarla se necesita el servidor local.</string>
+    <string name="msg_6874ae2d7e26" formatted="false">Eliminar todos los datos</string>
+    <string name="msg_521fb6ba9e7a" formatted="false">¿Eliminar todos los entrenamientos y toda la actividad? Esta acción no se puede deshacer.</string>
+    <string name="msg_8f1b4ead585e" formatted="false">Claro</string>
+    <string name="msg_32d4079b315b" formatted="false">Cerrar</string>
+    <string name="msg_c4de71c37f19" formatted="false">Cerrar detalles</string>
+    <string name="msg_1ed1b6ecbc9d" formatted="false">Ciclos</string>
+    <string name="msg_911a837ac56e" formatted="false">Circuito</string>
+    <string name="msg_371b8615b6a3" formatted="false">Circuito completo</string>
+    <string name="msg_fd6e2e9f66f8" formatted="false">Las colecciones de la copia no son válidas o son demasiado grandes</string>
+    <string name="msg_245eccd84730" formatted="false">Color</string>
+    <string name="msg_afaf16c6fccd" formatted="false">Color no válido</string>
+    <string name="msg_e83403e8636a" formatted="false">Color principal: {0} por semana (lunes, UTC).</string>
+    <string name="msg_47a9b7f51a78" formatted="false">Color principal: {0} · neutro: pausas y otras fases</string>
+    <string name="msg_e65ca56825b3" formatted="false">Color principal: {0} · semanas desde el lunes (UTC)</string>
+    <string name="msg_563cc416b91b" formatted="false">Completado</string>
+    <string name="msg_bd6e5feef5f8" formatted="false">Completado %</string>
+    <string name="msg_97967f1a5ab3" formatted="false">Completada</string>
+    <string name="msg_17a9466e66f4" formatted="false">Concentración</string>
+    <string name="msg_ac19a1dfd719" formatted="false">Concentración · Actividad {0}</string>
+    <string name="msg_662c0e47713f" formatted="false">Confirmar</string>
+    <string name="msg_382107139383" formatted="false">Comparar sesiones</string>
+    <string name="msg_f985b7abd1c0" formatted="false">Comparación de sesiones</string>
+    <string name="msg_73b0a6d50b17" formatted="false">Continúa con la pantalla apagada o mientras usas otras aplicaciones. La notificación permite Pausar, Reanudar, Saltar y Finalizar. Los sonidos se mezclan con la música y usan el volumen multimedia.</string>
+    <string name="msg_42379a219aa4" formatted="false">Revisa los campos</string>
+    <string name="msg_c1a0ea4d0f59" formatted="false">Copia JSON exportada.</string>
+    <string name="msg_6453c49bc3b9" formatted="false">Copia de seguridad</string>
+    <string name="msg_9bf626657ea3" formatted="false">Crear</string>
+    <string name="msg_cf6b2541e066" formatted="false">Crear {0}</string>
+    <string name="msg_fa5bc8c15335" formatted="false">Crear un {0} personalizado</string>
+    <string name="msg_cc91da834ddf" formatted="false">Historial</string>
+    <string name="msg_02ebc3ab2eee" formatted="false">Ya hay una sesión activa. Finaliza primero la sesión actual.</string>
+    <string name="msg_cec3a9b89b2e" formatted="false">Fecha</string>
+    <string name="msg_351fc3007315" formatted="false">Se requiere una fecha UTC</string>
+    <string name="msg_8d9f22e513c3" formatted="false">Fecha no válida</string>
+    <string name="msg_ecb295480f74" formatted="false">Datos</string>
+    <string name="msg_c55d2a0437b3" formatted="false">Datos eliminados.</string>
+    <string name="msg_05eb38675c65" formatted="false">Datos eliminados. Modo temporal activado.</string>
+    <string name="msg_9387c3e0867c" formatted="false">Vuelta a la calma</string>
+    <string name="msg_9c0a82cb8f65" formatted="false">Demo studio</string>
+    <string name="msg_3b59737de9cc" formatted="false">Demo · il tuo primo ritmo</string>
+    <string name="msg_6fb818621896" formatted="false">Descripción</string>
+    <string name="msg_d34fbeea7d75" formatted="false">Descripción o color no válido</string>
+    <string name="msg_1a45b008319a" formatted="false">Detalles</string>
+    <string name="msg_3b30f34b8e9b" formatted="false">Duplicar</string>
+    <string name="msg_743f3d12a5d7" formatted="false">Duplicar bloque</string>
+    <string name="msg_9229ff7e4414" formatted="false">Duración del entrenamiento</string>
+    <string name="msg_8547c139cf6e" formatted="false">Duración fuera de rango: Studio usa minutos enteros (máximo 60)</string>
+    <string name="msg_60f3ab84a5c8" formatted="false">Duración prevista</string>
+    <string name="msg_56485dfb674c" formatted="false">Duración prevista: {0}\nIntervalos {1}: {2}/{3}\nPausas: {4}</string>
+    <string name="msg_af5b3befb2d9" formatted="false">Duración del programa</string>
+    <string name="msg_28d99bfec2a4" formatted="false">Duración del {0}</string>
+    <string name="msg_936a161c3931" formatted="false">Editor</string>
+    <string name="msg_2a3fcc33841e" formatted="false">Efectivo</string>
+    <string name="msg_7efe336bd548" formatted="false">Eliminar</string>
+    <string name="msg_e336f902bb6a" formatted="false">Eliminar Actividad {0}</string>
+    <string name="msg_9474d8555f2f" formatted="false">Eliminar actividad</string>
+    <string name="msg_eb124778bee1" formatted="false">Eliminar actividad {0}</string>
+    <string name="msg_c1f5fe904c83" formatted="false">Eliminar bloque</string>
+    <string name="msg_1dfe47c45d34" formatted="false">¿Eliminar este bloque?</string>
+    <string name="msg_d5aee36f351f" formatted="false">¿Eliminar este ejercicio?</string>
+    <string name="msg_9064b02133e9" formatted="false">¿Eliminar esta sesión?</string>
+    <string name="msg_e7ceda578bca" formatted="false">¿Eliminar este elemento?</string>
+    <string name="msg_e2581186a022" formatted="false">¿Eliminar {0}? Se conserva el historial.</string>
+    <string name="msg_63b8134a480c" formatted="false">¿Eliminar «{0}»? Las sesiones se conservan en el historial.</string>
+    <string name="msg_ba118bf7fc9c" formatted="false">English</string>
+    <string name="msg_dae4a03ca53e" formatted="false">P. ej. Mi Tabata</string>
+    <string name="msg_7dce9a8674a1" formatted="false">Salir de pantalla completa</string>
+    <string name="msg_edb5104b1d70" formatted="false">Ejercicio</string>
+    <string name="msg_4d6a208842cc" formatted="false">Ejercicio libre</string>
+    <string name="msg_125bdfebef67" formatted="false">Ejercicio {0}</string>
+    <string name="msg_94b382b61b9d" formatted="false">Español</string>
+    <string name="msg_17c82cd85794" formatted="false">Exportar actividad CSV</string>
+    <string name="msg_fcb898421af4" formatted="false">Exportar copia JSON</string>
+    <string name="msg_52b3ca2ebd18" formatted="false">Exportación</string>
+    <string name="msg_7e77043ab420" formatted="false">No se ha podido exportar: {0}</string>
+    <string name="msg_1dc249307ef7" formatted="false">Fase {0} de {1} · Tiempo activo {2}</string>
+    <string name="msg_9e62a9987e5e" formatted="false">Fases completadas</string>
+    <string name="msg_61f06f910352" formatted="false">Fases completadas: {0}/{1}</string>
+    <string name="msg_0fdc11303b0e" formatted="false">Fases previstas</string>
+    <string name="msg_dad522b5d9b7" formatted="false">Archivo no disponible</string>
+    <string name="msg_7fc16cf19515" formatted="false">Archivo demasiado grande: máximo 5 MiB</string>
+    <string name="msg_fa67303aecda" formatted="false">Fin</string>
+    <string name="msg_a72e9147a14c" formatted="false">El final es anterior al inicio</string>
+    <string name="msg_46228f9050fc" formatted="false">Frecuencia de pausa larga</string>
+    <string name="msg_08653bd72d7e" formatted="false">Gestión de datos</string>
+    <string name="msg_55e3eac0a53a" formatted="false">Gestionar datos</string>
+    <string name="msg_464dabe236e5" formatted="false">Amarillo</string>
+    <string name="msg_74560979e961" formatted="false">Rondas</string>
+    <string name="msg_79df3a2273ed" formatted="false">Guía</string>
+    <string name="msg_cc93057ec22e" formatted="false">Guía de uso</string>
+    <string name="msg_3a78695388b3" formatted="false">Inicio</string>
+    <string name="msg_415a2929da37" formatted="false">TUS DATOS, EN TU DISPOSITIVO</string>
+    <string name="msg_b83b24720eab" formatted="false">Los datos duran solo esta visita. Activa el guardado para encontrarlos al volver a abrir.</string>
+    <string name="msg_4a139454b907" formatted="false">Los datos permanecen en este navegador. Exporta una copia JSON para conservarlos también en otro lugar.</string>
+    <string name="msg_621b20affe47" formatted="false">Los datos permanecen en el teléfono. Para conservar una copia o transferirlos a la web, exporta el JSON desde Ajustes e impórtalo en el otro dispositivo.</string>
+    <string name="msg_7b90a4a2848e" formatted="false">Los datos temporales se pierden al cerrar o recargar la página.</string>
+    <string name="msg_341f55e6d0e7" formatted="false">ID de actividad duplicado</string>
+    <string name="msg_3af4c25e591c" formatted="false">ID duplicado en la copia</string>
+    <string name="msg_b5cce74ddc5c" formatted="false">ID duplicado en el entrenamiento</string>
+    <string name="msg_5955b96c7b0b" formatted="false">ID no válido</string>
+    <string name="msg_2b8deb3797df" formatted="false">ID no válido o duplicado</string>
+    <string name="msg_411ac27999ff" formatted="false">EL TIEMPO QUE TE DEDICAS</string>
+    <string name="msg_4a184b62b55f" formatted="false">TU TIEMPO, TU RITMO</string>
+    <string name="msg_a1264d20e575" formatted="false">El CSV contiene la actividad del modo actual y sirve para hojas de cálculo. Para restaurar los datos en la aplicación usa el JSON.</string>
+    <string name="msg_922e5e48903a" formatted="false">El CSV sirve para hojas de cálculo. Para restaurar los datos en la aplicación usa el JSON.</string>
+    <string name="msg_e33dd8f115e0" formatted="false">El archivo JSON contiene entrenamientos, programas de estudio y actividad de ambos modos. Guárdalo en tus archivos o transfiérelo manualmente a otro dispositivo.</string>
+    <string name="msg_810ab609e9ce" formatted="false">El archivo JSON contiene entrenamientos, programas de estudio y actividad de ambos modos. Puedes guardarlo en el teléfono o transferirlo manualmente a otro dispositivo.</string>
+    <string name="msg_11235e63a8f7" formatted="false">Mi entrenamiento</string>
+    <string name="msg_0db5d2e96b7f" formatted="false">Mi programa de estudio</string>
+    <string name="msg_29ac786502e8" formatted="false">El descanso se aplica solo entre rondas, nunca después de la última.</string>
+    <string name="msg_89907ab05b65" formatted="false">El descanso se aplica entre rondas, nunca después de la última.</string>
+    <string name="msg_cc56b898d989" formatted="false">Al guardar, el {0} permanece en este navegador incluso al cerrarlo.</string>
+    <string name="msg_5d65fdef3955" formatted="false">El guardado se aplica a este navegador y esta dirección. Borrar los datos del navegador puede eliminarlo.</string>
+    <string name="msg_14c7707f9d44" formatted="false">El servicio del temporizador se ha detenido. Abre el temporizador para reanudarlo.</string>
+    <string name="msg_25eb482d73f0" formatted="false">El temporizador continúa en segundo plano y con la pantalla apagada. Puedes controlarlo desde la notificación y escuchar música o vídeos.</string>
+    <string name="msg_09e4c2fafc2b" formatted="false">El temporizador continúa en segundo plano. Activa las notificaciones en los ajustes de Android para ver sus controles.</string>
+    <string name="msg_e898f9cce557" formatted="false">El temporizador recupera el tiempo al volver a la página. El audio y la vibración pueden no funcionar en segundo plano, con la pantalla bloqueada o con el navegador suspendido.</string>
+    <string name="msg_64bbf3708396" formatted="false">Tu primer {0}</string>
+    <string name="msg_417a9c1e668b" formatted="false">Importar copia JSON</string>
+    <string name="msg_982c6286c4b5" formatted="false">Importación completada y guardada en el dispositivo.</string>
+    <string name="msg_b9aa663b190c" formatted="false">Importación completada para esta visita. Activa el guardado para conservarla.</string>
+    <string name="msg_bc7fff52145d" formatted="false">Importación rechazada: {0}</string>
+    <string name="msg_7f15e8aaef5d" formatted="false">No se pueden eliminar los datos guardados anteriores. Usa los ajustes del navegador antes de cambiar al modo temporal.</string>
+    <string name="msg_4e8c126dd0ce" formatted="false">Elige los tiempos en el temporizador y pulsa Guardar {0}.</string>
+    <string name="msg_7b855ce7525e" formatted="false">Ajustes</string>
+    <string name="msg_16cf252a5ad4" formatted="false">Ajustes rápidos</string>
+    <string name="msg_64758541298c" formatted="false">En Más opciones puedes personalizar las pausas y las series según tus preferencias y necesidades.</string>
+    <string name="msg_4d0a2ad8caac" formatted="false">En Ajustes → Apariencia elige Claro u Oscuro y una paleta: Morado, Azul, Verde claro, Verde oscuro, Celeste, Naranja, Amarillo, Rojo, Rosa.</string>
+    <string name="msg_2f4e01b4c978" formatted="false">En pausa</string>
+    <string name="msg_46b2417557e8" formatted="false">Información</string>
+    <string name="msg_b86b1e4d16c3" formatted="false">Inicio</string>
+    <string name="msg_0f7f3f69434e" formatted="false">Introduce un número entero {0}–{1}</string>
+    <string name="msg_f19989e51054" formatted="false">Introduce un nombre válido</string>
+    <string name="msg_52b2e0a2bef4" formatted="false">Interrumpida</string>
+    <string name="msg_1447bca21ae2" formatted="false">Intervalos</string>
+    <string name="msg_74ad5b5f2c16" formatted="false">Intervalos completados</string>
+    <string name="msg_a35da2991e62" formatted="false">Intervalos de trabajo</string>
+    <string name="msg_d28a4b15eb33" formatted="false">Intervalos previstos</string>
+    <string name="msg_432a99a172dd" formatted="false">Italiano</string>
+    <string name="msg_ad9e7216b358" formatted="false">JSON no válido</string>
+    <string name="msg_21cb8e11a28d" formatted="false">TU COLECCIÓN</string>
+    <string name="msg_f52d2b7aced3" formatted="false">La eliminación borra los datos de ambos modos y requiere confirmación.</string>
+    <string name="msg_91cd3dc4dd88" formatted="false">Al confirmar se sustituyen los programas y la actividad de ambos modos. Exporta antes una copia JSON para conservarlos.</string>
+    <string name="msg_5e18c6166cee" formatted="false">El idioma inicial sigue el del dispositivo. Tu elección se guarda en este dispositivo.</string>
+    <string name="msg_6e0a1a39889c" formatted="false">La sesión anterior aún no se ha guardado. Exporta una copia JSON antes de volver a empezar.</string>
+    <string name="msg_a99a658352ad" formatted="false">Trabajo</string>
+    <string name="msg_2839e158e443" formatted="false">Trabajo realizado</string>
+    <string name="msg_1653084425c3" formatted="false">Las preferencias cambian al instante y se guardan en este dispositivo.</string>
+    <string name="msg_ce660f654eca" formatted="false">Los ajustes rápidos cambian los tiempos de la primera actividad.</string>
+    <string name="msg_160588c5acb6" formatted="false">Tus sesiones, completadas o interrumpidas.</string>
+    <string name="msg_0fcc9b7d744c" formatted="false">Idioma</string>
+    <string name="msg_5852c12b0150" formatted="false">Lo encontrarás en {0}, incluso después de cerrar el navegador. El guardado se aplica a este navegador y esta dirección.</string>
+    <string name="msg_3b23f47e3d66" formatted="false">Lo encontrarás en {0}, incluso después de cerrar la aplicación.</string>
+    <string name="msg_0a02ab4c03ac" formatted="false">Lo encontrarás en {0}, incluso después de cerrar la aplicación. Los datos permanecen solo en el teléfono.</string>
+    <string name="msg_3cee5a9b9baf" formatted="false">La importación muestra una vista previa y sustituye los datos solo tras confirmar.</string>
+    <string name="msg_fb55d9813636" formatted="false">MINUTOS DE {0}</string>
+    <string name="msg_604af10b5c5b" formatted="false">Mantén al menos un bloque y un ejercicio.</string>
+    <string name="msg_1b6b3196df13" formatted="false">Mantén la página visible: los avisos en segundo plano no están garantizados.</string>
+    <string name="msg_0bb8062608b3" formatted="false">Máximo 10.000 fases y 24 horas</string>
+    <string name="msg_70396e20cdce" formatted="false">Materia o actividad</string>
+    <string name="msg_e08fc366bf73" formatted="false">Menos controles −</string>
+    <string name="msg_5264ba01d9ec" formatted="false">Menos opciones −</string>
+    <string name="msg_6a5b6fe34fd9" formatted="false">Métricas de sesión no válidas</string>
+    <string name="msg_c6de63306903" formatted="false">Prepárate. Empezamos en un momento.</string>
+    <string name="msg_b29caf923252" formatted="false">Minutos de concentración</string>
+    <string name="msg_1c59cdf9dfbd" formatted="false">Minutos de concentración y sesiones de estudio.</string>
+    <string name="msg_37e96dab9118" formatted="false">Minutos de trabajo</string>
+    <string name="msg_84dd9c44b499" formatted="false">Medimos el tiempo de trabajo y la constancia, sin evaluar la mejora física.</string>
+    <string name="msg_272d9fe0d527" formatted="false">Modo Studio</string>
+    <string name="msg_aad6e6963a3c" formatted="false">Modo no válido</string>
+    <string name="msg_e483b1e6ab15" formatted="false">Modo de sesión no válido</string>
+    <string name="msg_400ed33bb064" formatted="false">Modo temporal</string>
+    <string name="msg_49e493ba9d9c" formatted="false">Editar</string>
+    <string name="msg_801787dde56f" formatted="false">Editar {0}</string>
+    <string name="msg_27a88c518157" formatted="false">Se muestran las primeras 150 de {0} fases. El temporizador ejecuta todas las fases.</string>
+    <string name="msg_7e45118bb367" formatted="false">Se muestran las primeras 150 fases. El temporizador las ejecuta todas.</string>
+    <string name="msg_bdd66131a87e" formatted="false">Muévete a tu ritmo</string>
+    <string name="msg_1932ecdd23ce" formatted="false">En el temporizador pulsa Guardar entrenamiento (Workout) o Guardar programa de estudio (Studio), elige un nombre y confirma Guardar en el dispositivo. Lo encontrarás en Entrenamientos o Programas de estudio, en el mismo modo.</string>
+    <string name="msg_1ee8717327b2" formatted="false">No hay ningún {0} guardado. Crea uno o añade los prediseñados.</string>
+    <string name="msg_6bc182d35512" formatted="false">No hay actividad en el período seleccionado. Los gráficos se actualizarán después de un entrenamiento.</string>
+    <string name="msg_5f1e341003f9" formatted="false">No hay sesiones en el período seleccionado.</string>
+    <string name="msg_5086900635fe" formatted="false">Nombre</string>
+    <string name="msg_30520933f814" formatted="false">Nombre de actividad</string>
+    <string name="msg_7dce85a6d056" formatted="false">Nombre de actividad · Actividad {0}</string>
+    <string name="msg_7ca1e69a57dc" formatted="false">Nombre del bloque</string>
+    <string name="msg_a3866da04068" formatted="false">Nombre del programa</string>
+    <string name="msg_ad8196663c78" formatted="false">Nombre del entrenamiento</string>
+    <string name="msg_13fe38a51184" formatted="false">Nombre del ejercicio</string>
+    <string name="msg_c8221d7e1cda" formatted="false">Nombre histórico</string>
+    <string name="msg_98ece4c25ab3" formatted="false">Notificaciones de Android</string>
+    <string name="msg_cca1ca1e5e70" formatted="false">Nuevo bloque</string>
+    <string name="msg_3e5c7df92fae" formatted="false">Nuevo ejercicio</string>
+    <string name="msg_9b1cbadd8b47" formatted="false">Nuevo temporizador</string>
+    <string name="msg_65e79e8718ba" formatted="false">No se ha podido completar la operación: {0}</string>
+    <string name="msg_8ae6805407c3" formatted="false">Opciones de {0}</string>
+    <string name="msg_eb9f0667b246" formatted="false">Ocho intervalos de trabajo, sin descanso final.</string>
+    <string name="msg_f807c9110745" formatted="false">Ocho intervalos de trabajo. Sin descanso después del último.</string>
+    <string name="msg_6cddd7074619" formatted="false">Paleta de colores</string>
+    <string name="msg_9bd4d1e04ad5" formatted="false">Pausa</string>
+    <string name="msg_6bd6dc8cb6db" formatted="false">Pausa final</string>
+    <string name="msg_69b27f8598fc" formatted="false">Pausa larga</string>
+    <string name="msg_fcf86c7690f9" formatted="false">Pausa larga no válida</string>
+    <string name="msg_91c2c562f224" formatted="false">Pausa entre actividades</string>
+    <string name="msg_432a783a5635" formatted="false">Pausa entre bloques</string>
+    <string name="msg_81464af72461" formatted="false">Pausa entre series</string>
+    <string name="msg_45850c8801ef" formatted="false">Pausa entre sesiones</string>
+    <string name="msg_91c91512df7d" formatted="false">Pausa · Actividad {0}</string>
+    <string name="msg_858e4ba7a29f" formatted="false">Pausas</string>
+    <string name="msg_728e25df7a35" formatted="false">Guardar un entrenamiento</string>
+    <string name="msg_fb5065f3c8c1" formatted="false">Período</string>
+    <string name="msg_0b4528710265" formatted="false">Previsto</string>
+    <string name="msg_74c0ca2fe102" formatted="false">Plank</string>
+    <string name="msg_563a14d2baf5" formatted="false">Después: {0} · {1}</string>
+    <string name="msg_f5ab40be2cd5" formatted="false">Preferencias de apariencia no disponibles. Puedes volver a elegir el tema y los colores.</string>
+    <string name="msg_531d000a8986" formatted="false">Preparación</string>
+    <string name="msg_e9f061a47c03" formatted="false">Programa</string>
+    <string name="msg_b2468290cd2f" formatted="false">Programa eliminado</string>
+    <string name="msg_db03d8a80d46" formatted="false">Programa anterior: las series se convierten en actividades y se excluyen las pausas largas y finales. La pausa entre actividades utiliza el primer valor anterior. El original permanece en la biblioteca hasta que lo guardes.</string>
+    <string name="msg_e8d0acf2898c" formatted="false">Programas de estudio</string>
+    <string name="msg_fde6149b6641" formatted="false">Los programas, la actividad y las estadísticas están separados; el tema y la paleta son comunes.</string>
+    <string name="msg_039eb59231cc" formatted="false">Listo</string>
+    <string name="msg_964b7ed176b6" formatted="false">Puedes borrar la biblioteca de ambos modos en este navegador. La acción requiere confirmación.</string>
+    <string name="msg_b604f5f0c947" formatted="false">Puedes probarlos ahora. Guárdalos en el dispositivo para conservarlos.</string>
+    <string name="msg_e0a78c5efc6a" formatted="false">Push-up</string>
+    <string name="msg_867899f310b5" formatted="false">Se ha recuperado una actividad interrumpida al cerrarse la aplicación.</string>
+    <string name="msg_294d467e3ca1" formatted="false">Descanso</string>
+    <string name="msg_76df4aa64057" formatted="false">Descanso entre bloques</string>
+    <string name="msg_efc4bfa44638" formatted="false">Descanso entre ciclos</string>
+    <string name="msg_8a38a00bea3b" formatted="false">Descanso entre ejercicios</string>
+    <string name="msg_0a5094b17a3e" formatted="false">Descanso entre repeticiones</string>
+    <string name="msg_1deadf441c4a" formatted="false">Descanso entre bloques</string>
+    <string name="msg_9c0749065b3d" formatted="false">Descanso entre ciclos</string>
+    <string name="msg_51fa6774636c" formatted="false">Descanso entre ejercicios</string>
+    <string name="msg_e1f4ec27b36b" formatted="false">Descanso entre repeticiones</string>
+    <string name="msg_ca3d06d2000b" formatted="false">Descanso entre series</string>
+    <string name="msg_fd52f44034bc" formatted="false">¿Eliminar los datos guardados de este navegador y continuar solo durante esta visita? Exporta antes una copia JSON para conservarlos.</string>
+    <string name="msg_d4e1d6b072f6" formatted="false">Repeticiones</string>
+    <string name="msg_b0cc9c2660cb" formatted="false">Reanudar</string>
+    <string name="msg_d32f7292650a" formatted="false">No se puede reanudar: {0}. Inténtalo con la aplicación abierta.</string>
+    <string name="msg_22e2fe9e7054" formatted="false">Calentamiento</string>
+    <string name="msg_75f9577a1637" formatted="false">Rosa</string>
+    <string name="msg_4b3b85359957" formatted="false">Rojo</string>
+    <string name="msg_6acf48535d72" formatted="false">SESIONES</string>
+    <string name="msg_84c0b3935630" formatted="false">SOLO EN ESTE DISPOSITIVO</string>
+    <string name="msg_fb397a42956c" formatted="false">Saltar</string>
+    <string name="msg_ced26ddcf009" formatted="false">Saltar →</string>
+    <string name="msg_65e494ddf81e" formatted="false">Guardar historial</string>
+    <string name="msg_2b80bdd3b536" formatted="false">Guardar en el dispositivo</string>
+    <string name="msg_5343e814b173" formatted="false">Guardar {0}</string>
+    <string name="msg_2fb609839b7f" formatted="false">Guardado</string>
+    <string name="msg_45caae1bdcbb" formatted="false">Almacenamiento del navegador no disponible. Modo temporal activo: exporta una copia antes de cerrar.</string>
+    <string name="msg_6b0a59b139f5" formatted="false">No se ha podido guardar. Los datos siguen en memoria: exporta una copia JSON antes de cerrar.</string>
+    <string name="msg_482acfe6831e" formatted="false">No se ha podido guardar. El entrenamiento sigue disponible durante esta visita. Inténtalo de nuevo o cierra este diálogo y exporta una copia JSON desde Ajustes.</string>
+    <string name="msg_ae17b4fccafb" formatted="false">No se ha podido guardar: {0}. Exporta una copia JSON antes de cerrar.</string>
+    <string name="msg_8d4393224c15" formatted="false">No se ha podido guardar: {0}. Puedes volver a intentarlo.</string>
+    <string name="msg_c4f57f0165aa" formatted="false">Guardando…</string>
+    <string name="msg_a60862a556e4" formatted="false">Guardados en este navegador, listos para empezar.</string>
+    <string name="msg_85d8b47e0f50" formatted="false">Guardado en este dispositivo</string>
+    <string name="msg_821d8bf5f05b" formatted="false">Guardado en el dispositivo. Lo encontrarás en {0}.</string>
+    <string name="msg_010ca36438a3" formatted="false">¿Descartar los cambios sin guardar y cambiar de modo?</string>
+    <string name="msg_d777b44742a4" formatted="false">¿Descartar los cambios sin guardar?</string>
+    <string name="msg_80079f180a43" formatted="false">¿Descartar los cambios?</string>
+    <string name="msg_7242caca1990" formatted="false">Elige el tema y el color de la aplicación. El cambio es inmediato y se guarda en este dispositivo.</string>
+    <string name="msg_6bd1d392117d" formatted="false">Mantener la pantalla encendida</string>
+    <string name="msg_e14c5d230d03" formatted="false">No se puede mantener la pantalla encendida: {0}</string>
+    <string name="msg_9eedd4106209" formatted="false">Este navegador no permite mantener la pantalla encendida.</string>
+    <string name="msg_dfd986c06545" formatted="false">Pantalla completa</string>
+    <string name="msg_342ceb566a6b" formatted="false">Pantalla completa no disponible: puedes usar el temporizador en la página.</string>
+    <string name="msg_ae23a832c713" formatted="false">Descubre cómo usar cada función y conservar tus entrenamientos.</string>
+    <string name="msg_316022ce70b0" formatted="false">Oscuro</string>
+    <string name="msg_97e6d777d97a" formatted="false">Si desinstalas la aplicación o borras sus datos, se elimina la biblioteca. Exporta una copia JSON para conservarla también en tus archivos.</string>
+    <string name="msg_f96228ec134f" formatted="false">Si el sistema cierra la aplicación, al volver a abrirla la actividad se guarda como interrumpida hasta el último punto registrado. Girar la pantalla conserva el temporizador. Los sonidos dependen del volumen del dispositivo.</string>
+    <string name="msg_9994f79b0a66" formatted="false">Si no ves los controles en la notificación, activa las notificaciones de Tabata Timer en los ajustes de Android.</string>
+    <string name="msg_4aa7c33e99cf" formatted="false">Selecciona un {0} para seguir sus sesiones a lo largo del tiempo.</string>
+    <string name="msg_ab7743a4ad9a" formatted="false">Series</string>
+    <string name="msg_6a3807614847" formatted="false">Se necesita al menos una actividad (máximo 5000)</string>
+    <string name="msg_415b6e4a754a" formatted="false">Servicio del temporizador no disponible: {0}</string>
+    <string name="msg_1ba3ce6146f6" formatted="false">Se requieren entre 1 y 100 ejercicios</string>
+    <string name="msg_b85c23a771ca" formatted="false">Se requieren entre 1 y 100 ejercicios por bloque</string>
+    <string name="msg_cb2760e6b403" formatted="false">Se requieren entre 1 y 50 bloques</string>
+    <string name="msg_fcdd128a34ed" formatted="false">Sesión</string>
+    <string name="msg_a9e4f6f2144e" formatted="false">Sesión completada</string>
+    <string name="msg_1a556bad9d80" formatted="false">Sesión interrumpida</string>
+    <string name="msg_abea04fc9f70" formatted="false">Sesión interrumpida.</string>
+    <string name="msg_fdc8e039f44b" formatted="false">Sesión registrada</string>
+    <string name="msg_e6c2a4346d9d" formatted="false">Sesión guardada en este navegador.</string>
+    <string name="msg_14eca671429d" formatted="false">Sesión guardada en el teléfono.</string>
+    <string name="msg_733ff6dca718" formatted="false">Sesiones</string>
+    <string name="msg_554736f28d73" formatted="false">Sesiones de concentración</string>
+    <string name="msg_a61d9f94c1ec" formatted="false">Sesiones por semana</string>
+    <string name="msg_a670d1122d47" formatted="false">Sesiones · Actividad {0}</string>
+    <string name="msg_7f352bc0510b" formatted="false">Semana del</string>
+    <string name="msg_04b28a09d58a" formatted="false">Empieza aquí</string>
+    <string name="msg_5cc79e1e2610" formatted="false">Solo durante esta visita</string>
+    <string name="msg_39cecdaff630" formatted="false">Sustituir datos</string>
+    <string name="msg_c898322ccc56" formatted="false">Subir {0}</string>
+    <string name="msg_ecf3d0e61d94" formatted="false">Bajar {0}</string>
+    <string name="msg_87af5781c013" formatted="false">Squat</string>
+    <string name="msg_29b83f6291ae" formatted="false">Estadísticas</string>
+    <string name="msg_93a0730dbc54" formatted="false">Estadísticas de estudio</string>
+    <string name="msg_97b28889578e" formatted="false">Estadísticas →</string>
+    <string name="msg_ff057243f67f" formatted="false">Estado de sesión no válido</string>
+    <string name="msg_0aa91af2ec4c" formatted="false">Studio</string>
+    <string name="msg_88c9a0a2a1bf" formatted="false">Studio 1</string>
+    <string name="msg_76922489cfb1" formatted="false">Studio 2</string>
+    <string name="msg_48a8ec671da7" formatted="false">Studio 3</string>
+    <string name="msg_6f35c66fe3df" formatted="false">Estudio completado.</string>
+    <string name="msg_124f9906627b" formatted="false">Sonidos</string>
+    <string name="msg_e7dcb9a9a1e1" formatted="false">Sonidos no disponibles en este navegador. El temporizador continúa sin audio.</string>
+    <string name="msg_e8ca98df8966" formatted="false">Sonido no disponible</string>
+    <string name="msg_e1782dd2d300" formatted="false">Tabata</string>
+    <string name="msg_e7a8b322135f" formatted="false">Tabata 1</string>
+    <string name="msg_c7692d06de0b" formatted="false">Tabata 2</string>
+    <string name="msg_1c64c6458607" formatted="false">Tabata 3</string>
+    <string name="msg_0b0bdb8c0911" formatted="false">Tabata Studio</string>
+    <string name="msg_7e39b584c027" formatted="false">Tabata Timer</string>
+    <string name="msg_efc26feba7d5" formatted="false">Tabata Timer, página de inicio</string>
+    <string name="msg_964a65aa1ef0" formatted="false">Tabata Workout</string>
+    <string name="msg_fd86b635b5a2" formatted="false">Tabata Workout en segundos y Tabata Studio en minutos. Temporizador local gratuito, sin cuenta.</string>
+    <string name="msg_0c3b3e349ccc" formatted="false">Tabata clásico</string>
+    <string name="msg_ac098ebaeadf" formatted="false">Tabla de datos · {0}</string>
+    <string name="msg_d5df3708bc68" formatted="false">Tema</string>
+    <string name="msg_ad5e9eba0c95" formatted="false">Tema y Colores</string>
+    <string name="msg_dec6a743f15c" formatted="false">Tiempo activo</string>
+    <string name="msg_2de5c31fd40d" formatted="false">Tiempo restante</string>
+    <string name="msg_0a96e7da4104" formatted="false">Tiempo restante {0}</string>
+    <string name="msg_f5c0a84d0b93" formatted="false">Finalizar</string>
+    <string name="msg_47b44612a438" formatted="false">Finaliza el temporizador para cambiar de modo.</string>
+    <string name="msg_971e229135c6" formatted="false">Finaliza la sesión y espera a que se guarde antes de importar o eliminar datos.</string>
+    <string name="msg_d8d26859b70f" formatted="false">Finaliza la sesión antes de cambiar de modo.</string>
+    <string name="msg_6dd52cd4fbd0" formatted="false">Finaliza la sesión antes de eliminar los datos.</string>
+    <string name="msg_d21fec6018a4" formatted="false">Finaliza la sesión antes de importar.</string>
+    <string name="msg_1fcfacbe9235" formatted="false">Finaliza primero la sesión actual.</string>
+    <string name="msg_3b76e8b20990" formatted="false">¿Finalizar y registrar la sesión como interrumpida?</string>
+    <string name="msg_43d7babc5267" formatted="false">¿Finalizar la sesión y registrarla como interrumpida?</string>
+    <string name="msg_c0e50add1e5c" formatted="false">¿Necesitas ayuda?</string>
+    <string name="msg_cdeec2b374c1" formatted="false">Temporizador</string>
+    <string name="msg_be3a8f13053b" formatted="false">Temporizador Pomodoro para estudiar y trabajar</string>
+    <string name="msg_ee4a41fedef7" formatted="false">Temporizador en segundo plano</string>
+    <string name="msg_8a71af960dc0" formatted="false">Temporizador en curso</string>
+    <string name="msg_5d8036b94adf" formatted="false">Temporizador no disponible</string>
+    <string name="msg_d8f4eedefb37" formatted="false">Título</string>
+    <string name="msg_4b70d6545bd5" formatted="false">Título del bloque</string>
+    <string name="msg_896e5488f74f" formatted="false">Título del ejercicio</string>
+    <string name="msg_26fddcaf6e1e" formatted="false">Título no válido</string>
+    <string name="msg_8b4259456d39" formatted="false">Volver a entrenamientos</string>
+    <string name="msg_14b53f3453db" formatted="false">Volver a programas</string>
+    <string name="msg_e0f9f64f9665" formatted="false">Volver a actividad</string>
+    <string name="msg_fb83e7961108" formatted="false">Tres movimientos, dos rondas. Adapta el ritmo a ti.</string>
+    <string name="msg_730c8380f42c" formatted="false">Demasiadas actividades en el programa anterior</string>
+    <string name="msg_7f65ef4af637" formatted="false">Todos</string>
+    <string name="msg_e178ef7e4d21" formatted="false">Todos los entrenamientos</string>
+    <string name="msg_3b4cee7bac6e" formatted="false">Todos los programas</string>
+    <string name="msg_2b19df48726c" formatted="false">Todo permanece en local. Sin cuenta ni sincronización automática.</string>
+    <string name="msg_db25cf4f37f2" formatted="false">Última fase</string>
+    <string name="msg_ef36520c7855" formatted="false">Última fase. Ya casi lo has conseguido.</string>
+    <string name="msg_16c63b444314" formatted="false">Últimos {0} días</string>
+    <string name="msg_80eaa7573696" formatted="false">Usa el mismo navegador y dirección. Para transferir los datos a Android o conservar una copia, exporta el JSON desde Ajustes e impórtalo en el otro dispositivo.</string>
+    <string name="msg_5aa8e4302c94" formatted="false">Usa el interruptor junto a Tabata Timer: Workout utiliza segundos y Studio minutos. Se recuerda el último modo utilizado.</string>
+    <string name="msg_b43a69897fa0" formatted="false">Usar modo temporal</string>
+    <string name="msg_a26b23272377" formatted="false">¿Salir y descartar los cambios sin guardar?</string>
+    <string name="msg_649b9da29556" formatted="false">Ir al contenido</string>
+    <string name="msg_5d7aee87f8ea" formatted="false">Ir al temporizador</string>
+    <string name="msg_cfd9cd8fa5ee" formatted="false">Ver actividad</string>
+    <string name="msg_40598e1cb1d2" formatted="false">Verde</string>
+    <string name="msg_38a5db9e5c58" formatted="false">Verde claro</string>
+    <string name="msg_6b0d55557859" formatted="false">Verde oscuro</string>
+    <string name="msg_13fbf6f4af7c" formatted="false">Versión de entrenamiento no compatible</string>
+    <string name="msg_d10bc10d4bbd" formatted="false">Versión de copia no compatible</string>
+    <string name="msg_b8cedfb787ed" formatted="false">Vibración</string>
+    <string name="msg_2d30a4d9651a" formatted="false">Este navegador no admite vibración.</string>
+    <string name="msg_caeda42e92f6" formatted="false">Morado</string>
+    <string name="msg_7b3abf24fddd" formatted="false">Workout</string>
+    <string name="msg_788f73bf9b46" formatted="false">Workout y Studio</string>
+    <string name="msg_5692d6ee3614" formatted="false">Workout en segundos, Studio en minutos. Finaliza la sesión para cambiar de modo.</string>
+    <string name="msg_3e9fec7e32be" formatted="false">entrenamientos prediseñados</string>
+    <string name="msg_4e07eabe958e" formatted="false">entrenamiento</string>
+    <string name="msg_9f4450f8be2f" formatted="false">concentración</string>
+    <string name="msg_054d5bf38977" formatted="false">concentración efectiva</string>
+    <string name="msg_90e13a1dafdf" formatted="false">de concentración</string>
+    <string name="msg_bea828484ccc" formatted="false">de trabajo</string>
+    <string name="msg_204054a1e49b" formatted="false">intervalos de trabajo</string>
+    <string name="msg_ac814f06a9a1" formatted="false">intervalos de trabajo completados</string>
+    <string name="msg_15e64d090f49" formatted="false">trabajo</string>
+    <string name="msg_2247cd20ff84" formatted="false">trabajo efectivo</string>
+    <string name="msg_d96f7fdec7af" formatted="false">minutos de concentración</string>
+    <string name="msg_a5d2305f2cae" formatted="false">minutos de trabajo</string>
+    <string name="msg_6ec7ef1e5636" formatted="false">en el período seleccionado</string>
+    <string name="msg_b48ff07ba0ea" formatted="false">programa</string>
+    <string name="msg_8cf40df2f520" formatted="false">programa de estudio</string>
+    <string name="msg_c16ff0226657" formatted="false">programas prediseñados</string>
+    <string name="msg_96a6dc118959" formatted="false">sesiones de concentración</string>
+    <string name="msg_c03d24960ce8" formatted="false">sesiones de concentración completadas</string>
+    <string name="msg_bea18aabb468" formatted="false">tiempo efectivo realizado</string>
+    <string name="msg_03667a2842c4" formatted="false">{0} (copia)</string>
+    <string name="msg_eb91f332fc67" formatted="false">{0} / {1}</string>
+    <string name="msg_14a4f4c4b06c" formatted="false">{0} entrenamientos · {1} sesiones · exportado el {2}</string>
+    <string name="msg_3d8ad5de4640" formatted="false">{0} fases · {1} {2}</string>
+    <string name="msg_6db555adb008" formatted="false">{0} días</string>
+    <string name="msg_ecd38a459db2" formatted="false">{0} intervalos</string>
+    <string name="msg_6ae46922b958" formatted="false">{0} programa de estudio</string>
+    <string name="msg_20a1c8fe683d" formatted="false">{0} programas (Workout y Studio) · {1} sesiones. Al confirmar se sustituyen todos los datos. Exporta antes una copia JSON para conservarlos.</string>
+    <string name="msg_460ede46239f" formatted="false">{0} sesiones</string>
+    <string name="msg_1e907aa978c6" formatted="false">{0} entre ciclos</string>
+    <string name="msg_10866a9df5f8" formatted="false">{0} {1}</string>
+    <string name="msg_e3f0473032f8" formatted="false">{0} · Tabata Timer</string>
+    <string name="msg_358bc069b21f" formatted="false">{0} · ronda {1}/{2} · {3}/{4}</string>
+    <string name="msg_cd55a9d95751" formatted="false">{0} · {1}</string>
+    <string name="msg_b53ad8474ad3" formatted="false">{0} · {1}\n{2} de trabajo · {3}%</string>
+    <string name="msg_e27ae780546e" formatted="false">{0} · {1} intervalos</string>
+    <string name="msg_6c04e61698da" formatted="false">{0}%</string>
+    <string name="msg_71801315a190" formatted="false">{0}% completado</string>
+    <string name="msg_0f9e0e745519" formatted="false">{0}% completado · {1} {2}</string>
+    <string name="msg_e1337cfa0d18" formatted="false">{0}. Color principal: {1} por semana. Valores en la tabla siguiente.</string>
+    <string name="msg_8a47b1efb506" formatted="false">{0}. Elige los tiempos y pulsa Iniciar.</string>
+    <string name="msg_a325f88ae6ee" formatted="false">{0}. Valores en la tabla siguiente.</string>
+    <string name="msg_0a13f43b33f0" formatted="false">{0}. {1} · {2}</string>
+    <string name="msg_8c3eb8309242" formatted="false">{0}: ID no válido</string>
+    <string name="msg_ffc4c554939b" formatted="false">{0}: Studio usa minutos enteros (máximo 60)</string>
+    <string name="msg_920b15331930" formatted="false">{0}: fecha UTC no válida</string>
+    <string name="msg_8e3819399f75" formatted="false">{0}: número entero no válido</string>
+    <string name="msg_6d788dd543ae" formatted="false">{0}: número entero entre {1} y {2}</string>
+    <string name="msg_343c3505c232" formatted="false">{0}: se requiere un objeto</string>
+    <string name="msg_a867f31ffeb0" formatted="false">{0}: texto no válido (máx. {1})</string>
+    <string name="msg_a107e0ac74b3" formatted="false">{0}: se requiere texto</string>
+    <string name="msg_e536a5914372" formatted="false">· {0} de {1} · {2} pausas</string>
+    <string name="msg_b6f1c6d040ab" formatted="false">← Anterior</string>
+    <string name="msg_7acd1ebe3d3b" formatted="false">↑ Bloque</string>
+    <string name="msg_57784018903b" formatted="false">↑ Ejercicio</string>
+    <string name="msg_3a346c6687b3" formatted="false">↓ Bloque</string>
+    <string name="msg_58232be8e1a1" formatted="false">↓ Ejercicio</string>
+    <string name="msg_b020cc62d862" formatted="false">segundos</string>
+    <string name="msg_143b1aacbd60" formatted="false">minutos</string>
+    <string name="msg_90fc7331f662" formatted="false">bloque</string>
+    <string name="msg_39b142bcfee3" formatted="false">ejercicio</string>
+    <string name="msg_d87bfc2403e6" formatted="false">Fase {0}/{1} · Tiempo activo {2}</string>
+    <string name="msg_dc89b93e6472" formatted="false">{0}/{1} intervalos completados</string>
+    <string name="msg_f0d4a220144f" formatted="false">Guardar entrenamiento</string>
+    <string name="msg_1b57bcea242f" formatted="false">Guardar programa de estudio</string>
+    <string name="msg_675a6e40f7ef" formatted="false">Preferencia aplicada para esta visita. El navegador no ha podido guardarla.</string>
+    <string name="msg_418f499149ed" formatted="false">Pausar</string>
+    <string name="msg_7b234f1b8e95" formatted="false">Tabata Timer: Workout en segundos y Studio en minutos. Temporizador gratuito, sin cuenta.</string>
+</resources>

@@ -1,0 +1,25 @@
+{
+  "publisher": "pub-9043574024513063",
+  "adClient": "ca-pub-9043574024513063",
+  "adSlot": "9553674851",
+  "unitName": "Tabata Timer",
+  "unitType": "display-responsive",
+  "site": "https://tabata-timer-ek1.pages.dev",
+  "privacyUrl": "https://tabata-timer-ek1.pages.dev/privacy",
+  "siteReviewRequested": true,
+  "publisherOnboardingComplete": true,
+  "lastObservedReviewStatus": "in_preparation",
+  "adsTxtAuthorized": true,
+  "consentMessage": {
+    "name": "Tabata Timer",
+    "status": "published",
+    "languages": ["it", "en", "es"],
+    "defaultLanguage": "it",
+    "rejectInAllRegions": true,
+    "consentOptimization": false,
+    "legitimateInterestEnabledByDefault": false
+  },
+  "servingEnabled": false,
+  "plannedPlacement": "about.html only, below original content; no timer ads",
+  "autoAdsEnabled": false
+}

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "exportedAt": "2026-11-19T12:00:00.000Z",
+  "workouts": [
+    {
+      "schemaVersion": 1,
+      "id": "simple-workout",
+      "title": "Circuito semplice",
+      "description": "",
+      "color": "#9153b7",
+      "warmupSec": 0,
+      "cooldownSec": 0,
+      "blocks": [
+        {
+          "id": "shared-block",
+          "title": "Circuito",
+          "cycles": 1,
+          "restBetweenCyclesSec": 60,
+          "restAfterBlockSec": 60,
+          "restBetweenExercisesSec": 7,
+          "exercises": [
+            {
+              "id": "shared-exercise-1",
+              "title": "E1",
+              "repetitions": 2,
+              "workSec": 10,
+              "restBetweenRepsSec": 3,
+              "restAfterExerciseSec": 99
+            },
+            {
+              "id": "shared-exercise-2",
+              "title": "E2",
+              "repetitions": 2,
+              "workSec": 10,
+              "restBetweenRepsSec": 3,
+              "restAfterExerciseSec": 99
+            },
+            {
+              "id": "shared-exercise-3",
+              "title": "E3",
+              "repetitions": 2,
+              "workSec": 10,
+              "restBetweenRepsSec": 3,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": 1,
+      "mode": "STUDIO",
+      "id": "simple-study",
+      "title": "Matematica e storia",
+      "description": "",
+      "color": "#9153b7",
+      "warmupSec": 0,
+      "cooldownSec": 0,
+      "blocks": [],
+      "activities": [
+        {
+          "id": "study-math",
+          "title": "Matematica",
+          "concentrationSec": 60,
+          "sessions": 2,
+          "pauseSec": 120
+        },
+        {
+          "id": "study-history",
+          "title": "Storia",
+          "concentrationSec": 180,
+          "sessions": 1,
+          "pauseSec": 3600
+        }
+      ],
+      "restBetweenActivitiesSec": 240
+    }
+  ],
+  "sessions": []
+}

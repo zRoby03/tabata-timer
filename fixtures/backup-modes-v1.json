@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "exportedAt": "2026-11-19T14:00:00.000Z",
+  "workouts": [
+    {
+      "schemaVersion": 1,
+      "mode": "STUDIO",
+      "longBreakSec": 900,
+      "longBreakEvery": 4,
+      "id": "studio-fixture",
+      "title": "Matematica · 25/5",
+      "description": "",
+      "color": "#9153b7",
+      "warmupSec": 0,
+      "cooldownSec": 0,
+      "blocks": [
+        {
+          "id": "quick-block",
+          "title": "Intervalli",
+          "cycles": 1,
+          "restBetweenCyclesSec": 300,
+          "restAfterBlockSec": 0,
+          "exercises": [
+            {
+              "id": "quick-exercise",
+              "title": "Concentrazione",
+              "repetitions": 8,
+              "workSec": 1500,
+              "restBetweenRepsSec": 300,
+              "restAfterExerciseSec": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "sessions": [
+    {
+      "id": "studio-session-fixture",
+      "mode": "STUDIO",
+      "workoutId": "studio-fixture",
+      "workoutTitle": "Matematica · 25/5",
+      "startedAt": "2026-11-19T09:00:00.000Z",
+      "endedAt": "2026-11-19T13:05:20.000Z",
+      "plannedMs": 14700000,
+      "elapsedMs": 14700000,
+      "workMs": 12000000,
+      "completedWorkIntervals": 8,
+      "plannedWorkIntervals": 8,
+      "completedPhases": 15,
+      "plannedPhases": 15,
+      "pauses": 0,
+      "status": "COMPLETED"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "source": "https://www.youtube.com/watch?v=1E-WbRI_R64",
+  "title": "Sigh Sound Effect #soundeffects",
+  "author": "Popcorn81 Extras",
+  "sourceDurationSec": 3.7152083333333334,
+  "excerptStartSec": 1.421375,
+  "excerptDurationSec": 0.5,
+  "sampleRate": 24000,
+  "selection": "500 ms window with highest RMS; 5 ms fade-in and 10 ms fade-out",
+  "license": "not specified in video metadata"
+}
