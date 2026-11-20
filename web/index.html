@@ -1,26 +1,51 @@
 <!doctype html>
+<!-- DOC L0002: Definisce la struttura dichiarativa html nel documento: Struttura HTML iniziale della web app. -->
 <html lang="it">
+<!-- DOC L0003: Definisce la struttura dichiarativa head nel documento: Struttura HTML iniziale della web app. -->
 <head>
+  <!-- DOC L0004: Definisce la struttura dichiarativa meta nel documento: Struttura HTML iniziale della web app. -->
   <meta charset="utf-8">
+  <!-- DOC L0005: Definisce la struttura dichiarativa meta nel documento: Struttura HTML iniziale della web app. -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- DOC L0006: Definisce la struttura dichiarativa meta nel documento: Struttura HTML iniziale della web app. -->
   <meta name="theme-color" content="#8950a9">
+  <!-- DOC L0007: Marca testo o attributi dell’app per la traduzione esplicita, senza attraversare i valori utente. -->
   <meta name="description" data-i18n-content="Tabata Timer: Workout in secondi e Studio in minuti. Timer gratuito, senza account." content="Tabata Timer: Workout in secondi e Studio in minuti. Timer gratuito, senza account.">
+  <!-- DOC L0008: Definisce la CSP del documento: risorse locali consentite e contenuti attivi esterni bloccati. Lo snippet AdSense richiede un’integrazione separata prima di poter essere caricato. -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <!-- DOC L0009: Definisce la struttura dichiarativa title nel documento: Struttura HTML iniziale della web app. -->
   <title>Tabata Timer</title>
+  <!-- DOC L0010: Definisce la struttura dichiarativa link nel documento: Struttura HTML iniziale della web app. -->
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <!-- DOC L0011: Definisce la struttura dichiarativa link nel documento: Struttura HTML iniziale della web app. -->
   <link rel="stylesheet" href="./styles.css">
+  <!-- DOC L0012: Definisce la struttura dichiarativa link nel documento: Struttura HTML iniziale della web app. -->
   <link rel="manifest" href="./manifest.webmanifest">
+  <!-- DOC L0013: Collega lo script locale indicato dal documento; type=module abilita import/export e non avvia servizi cloud. -->
   <script type="module" src="./js/main.js"></script>
+<!-- DOC L0014: Definisce la struttura dichiarativa head nel documento: Struttura HTML iniziale della web app. -->
 </head>
+<!-- DOC L0015: Definisce la struttura dichiarativa body nel documento: Struttura HTML iniziale della web app. -->
 <body>
+  <!-- DOC L0016: Marca testo o attributi dell’app per la traduzione esplicita, senza attraversare i valori utente. -->
   <a class="skip-link" href="#main" data-i18n="Vai al contenuto">Vai al contenuto</a>
+  <!-- DOC L0017: Marca testo o attributi dell’app per la traduzione esplicita, senza attraversare i valori utente. -->
   <header class="site-header"><div class="brand-modes"><a class="brand" href="#home" aria-label="Tabata Timer, pagina iniziale" data-i18n-aria-label="Tabata Timer, pagina iniziale"><span class="brand-symbol" aria-hidden="true" data-i18n="t.">t.</span>Tabata <b>Timer</b></a><button id="mode-switch" class="mode-switch" role="switch" aria-checked="false" aria-label="Modalità Studio" data-i18n-aria-label="Modalità Studio" data-action="mode" title="Workout in secondi, Studio in minuti. Termina la sessione per cambiare modalità." data-i18n-title="Workout in secondi, Studio in minuti. Termina la sessione per cambiare modalità."><span data-i18n="Workout">Workout</span><span data-i18n="Studio">Studio</span></button></div><div class="header-actions"><button class="text-button" data-action="help" data-i18n="Guida">Guida</button><button class="settings-button" data-action="settings" aria-label="Impostazioni" data-i18n-aria-label="Impostazioni" title="Impostazioni" data-i18n-title="Impostazioni">⚙</button></div></header>
+  <!-- DOC L0018: Marca testo o attributi dell’app per la traduzione esplicita, senza attraversare i valori utente. -->
   <nav aria-label="Navigazione principale" data-i18n-aria-label="Navigazione principale"><button data-route="home" data-i18n="Timer">Timer</button><button data-route="workouts" data-i18n="Allenamenti">Allenamenti</button><button data-route="history" data-i18n="Attività">Attività</button></nav>
+  <!-- DOC L0019: Definisce la struttura dichiarativa div nel documento: Struttura HTML iniziale della web app. -->
   <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+  <!-- DOC L0020: Definisce la struttura dichiarativa main nel documento: Struttura HTML iniziale della web app. -->
   <main id="main" tabindex="-1"></main>
+  <!-- DOC L0021: Marca testo o attributi dell’app per la traduzione esplicita, senza attraversare i valori utente. -->
   <dialog id="save-dialog" aria-labelledby="save-title"><form id="save-form"><p class="eyebrow" data-i18n="SOLO SU QUESTO DISPOSITIVO">SOLO SU QUESTO DISPOSITIVO</p><h2 id="save-title" data-i18n="Salva allenamento">Salva allenamento</h2><label><span id="save-name-label" data-i18n="Nome dell’allenamento">Nome dell’allenamento</span><input id="save-name" maxlength="120" required autocomplete="off" placeholder="Es. Il mio Tabata" data-i18n-placeholder="Es. Il mio Tabata"></label><p id="save-description" class="muted" data-i18n="Lo ritroverai in Allenamenti anche dopo aver chiuso il browser. Il salvataggio vale per questo browser e questo indirizzo.">Lo ritroverai in Allenamenti anche dopo aver chiuso il browser. Il salvataggio vale per questo browser e questo indirizzo.</p><p id="save-error" class="field-error" role="alert" hidden></p><div class="row"><button class="primary" type="submit" data-i18n="Salva sul dispositivo">Salva sul dispositivo</button><button id="cancel-save" type="button" data-i18n="Annulla">Annulla</button></div></form></dialog>
+  <!-- DOC L0022: Marca testo o attributi dell’app per la traduzione esplicita, senza attraversare i valori utente. -->
   <dialog id="import-dialog" aria-labelledby="import-title"><h2 id="import-title" data-i18n="Anteprima importazione">Anteprima importazione</h2><div id="import-preview"></div><p data-i18n="La conferma sostituisce programmi e attività di entrambe le modalità. Esporta prima una copia JSON per conservarli.">La conferma sostituisce programmi e attività di entrambe le modalità. Esporta prima una copia JSON per conservarli.</p><div class="row"><button id="confirm-import" class="primary" data-i18n="Sostituisci dati">Sostituisci dati</button><button id="cancel-import" data-i18n="Annulla">Annulla</button></div></dialog>
+  <!-- DOC L0023: Definisce la struttura dichiarativa input nel documento: Struttura HTML iniziale della web app. -->
   <input id="import-file" type="file" accept=".json,application/json" hidden>
+  <!-- DOC L0024: Marca testo o attributi dell’app per la traduzione esplicita, senza attraversare i valori utente. -->
   <noscript data-i18n="Attiva JavaScript per usare editor e timer. Nessun dato viene inviato a server.">Attiva JavaScript per usare editor e timer. Nessun dato viene inviato a server.</noscript>
+<!-- DOC L0025: Definisce la struttura dichiarativa body nel documento: Struttura HTML iniziale della web app. -->
 </body>
+<!-- DOC L0026: Definisce la struttura dichiarativa html nel documento: Struttura HTML iniziale della web app. -->
 </html>

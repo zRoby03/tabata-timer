@@ -1,0 +1,6 @@
+{
+  "name": "tabata-documentation-tools",
+  "private": true,
+  "type": "module",
+  "devDependencies": { "acorn": "8.15.0" }
+}

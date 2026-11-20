@@ -1,8 +1,15 @@
+<!-- DOC L0001: Definisce la struttura dichiarativa manifest nel documento: Prove di regressione in AndroidManifest.xml. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- DOC L0002: Dichiara il permesso Android riportato qui; la richiesta runtime delle notifiche è gestita nell’Activity, mentre il manifest non concede Internet. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- DOC L0003: Dichiara il permesso Android riportato qui; la richiesta runtime delle notifiche è gestita nell’Activity, mentre il manifest non concede Internet. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <!-- DOC L0004: Dichiara componenti e attributi Android: application. I nomi collegano il manifest alle classi del progetto. -->
     <application>
         <!-- Separate test APK/UID: a local music player, never included in the delivered app. -->
+        <!-- DOC L0006: Dichiara componenti e attributi Android: service. I nomi collegano il manifest alle classi del progetto. -->
         <service android:name="it.tabatastudio.MediaPlaybackProbeService" android:exported="true" android:foregroundServiceType="mediaPlayback" />
+    <!-- DOC L0007: Dichiara componenti e attributi Android: application. I nomi collegano il manifest alle classi del progetto. -->
     </application>
+<!-- DOC L0008: Definisce la struttura dichiarativa manifest nel documento: Prove di regressione in AndroidManifest.xml. -->
 </manifest>

@@ -1,0 +1,24 @@
+{
+  "result": "PASS",
+  "baseCommit": "5d18d6d633e8fd8c8241aed078246f1953b084ef",
+  "coverage": {
+    "sourceFiles": 137,
+    "binaryFiles": 23,
+    "sourceLines": 11538,
+    "explainedLines": 11538,
+    "inlineComments": 5273,
+    "functions": 865
+  },
+  "javascriptAstFiles": 44,
+  "kotlinLexerFiles": 44,
+  "checks": [
+    "righe e mappa",
+    "solo commenti aggiunti",
+    "AST JavaScript",
+    "AST Python",
+    "token Kotlin",
+    "JSON",
+    "XML/SVG",
+    "hash asset"
+  ]
+}

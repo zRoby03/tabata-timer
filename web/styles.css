@@ -1,275 +1,545 @@
 /* Tabata Studio: system fonts, local assets, a single lightweight stylesheet. */
+/* DOC L0002: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 :root {
+  /* DOC L0003: Imposta le proprietà CSS di questa riga sul selettore corrente: font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; */
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* DOC L0004: Imposta le proprietà CSS di questa riga sul selettore corrente: color: var(--text); background: var(--bg); color-scheme: light; font-synthesis: none; */
   color: var(--text); background: var(--bg); color-scheme: light; font-synthesis: none;
+  /* DOC L0005: Definisce un token di colore o dimensione riutilizzato dai componenti; tema e palette possono cambiarne il valore. */
   --text: #202632; --bg: #f4f6f8; --surface: #ffffff; --surface-alt: #f7f8fa;
+  /* DOC L0006: Definisce un token di colore o dimensione riutilizzato dai componenti; tema e palette possono cambiarne il valore. */
   --accent: #713b91; --accent-dark: #713b91; --accent-fill: #8650a7; --on-accent: #ffffff;
+  /* DOC L0007: Definisce un token di colore o dimensione riutilizzato dai componenti; tema e palette possono cambiarne il valore. */
   --muted: #5d6571; --line: #dce1e7; --soft: #713b910e; --danger: #a12e4b;
+  /* DOC L0008: Definisce un token di colore o dimensione riutilizzato dai componenti; tema e palette possono cambiarne il valore. */
   --warn-bg: #fff3df; --warn-text: #704c1f; --warn-line: #e4cba7; --radius: 18px;
+/* DOC L0009: Chiude il selettore o la media query precedentemente aperti. */
 }
+/* DOC L0010: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 :root[data-theme="dark"] {
+  /* DOC L0011: Imposta le proprietà CSS di questa riga sul selettore corrente: color-scheme: dark; */
   color-scheme: dark;
+  /* DOC L0012: Definisce un token di colore o dimensione riutilizzato dai componenti; tema e palette possono cambiarne il valore. */
   --text: #edf1f7; --bg: #11151c; --surface: #1c222c; --surface-alt: #242c38;
+  /* DOC L0013: Definisce un token di colore o dimensione riutilizzato dai componenti; tema e palette possono cambiarne il valore. */
   --muted: #b2bdcc; --line: #414c5e; --danger: #ff9ba7;
+  /* DOC L0014: Definisce un token di colore o dimensione riutilizzato dai componenti; tema e palette possono cambiarne il valore. */
   --warn-bg: #352b1e; --warn-text: #ffd8a1; --warn-line: #716045;
+/* DOC L0015: Chiude il selettore o la media query precedentemente aperti. */
 }
 
 * { box-sizing: border-box; }
+/* DOC L0018: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 body { margin: 0; }
+/* DOC L0019: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 button, input, textarea, select { font: inherit; }
+/* DOC L0020: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 button, input, textarea, select, summary { touch-action: manipulation; }
+/* DOC L0021: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 button {
+  /* DOC L0022: Imposta le proprietà CSS di questa riga sul selettore corrente: min-width: 44px; min-height: 44px; border: 1px solid var(--line); */
   min-width: 44px; min-height: 44px; border: 1px solid var(--line);
+  /* DOC L0023: Imposta le proprietà CSS di questa riga sul selettore corrente: border-radius: 12px; padding: 11px 16px; background: var(--surface); color: var(--text); */
   border-radius: 12px; padding: 11px 16px; background: var(--surface); color: var(--text);
+  /* DOC L0024: Imposta le proprietà CSS di questa riga sul selettore corrente: cursor: pointer; font-weight: 600; line-height: 1.35; */
   cursor: pointer; font-weight: 600; line-height: 1.35;
+/* DOC L0025: Chiude il selettore o la media query precedentemente aperti. */
 }
+/* DOC L0026: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 button:hover { background: var(--soft); border-color: var(--accent); }
+/* DOC L0027: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 button:disabled { opacity: .48; cursor: default; }
+/* DOC L0028: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .primary { color: var(--on-accent); background: var(--accent-fill); border-color: var(--accent-fill); }
+/* DOC L0029: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .primary:hover { color: var(--on-accent); background: var(--accent-fill); filter: brightness(.95); }
+/* DOC L0030: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .danger { color: var(--danger); }
+/* DOC L0031: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .text-button { background: transparent; border-color: transparent; padding: 10px 6px; color: var(--accent); font-weight: 500; font-size: 13px; }
+/* DOC L0032: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .text-button:hover { border-color: transparent; background: var(--soft); }
+/* DOC L0033: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 a { color: var(--accent-dark); }
+/* DOC L0034: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+/* DOC L0035: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 [hidden] { display: none !important; }
+/* DOC L0036: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .public-content { max-width: 800px; }
+/* DOC L0037: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .public-content > .card { margin-top: 24px; }
+/* DOC L0038: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .public-content h2 { margin-top: 28px; }
+/* DOC L0039: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .site-links { font-size: 14px; gap: 18px; }
+/* DOC L0040: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 h1, h2, h3, p { overflow-wrap: anywhere; }
+/* DOC L0041: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 h1 { margin: 0 0 10px; font-size: clamp(28px, 3vw, 36px); line-height: 1.15; font-weight: 650; letter-spacing: -1.1px; }
+/* DOC L0042: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 h2 { margin: 0 0 12px; font-size: 20px; line-height: 1.3; font-weight: 650; letter-spacing: -.4px; }
+/* DOC L0043: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 h3 { margin: 0 0 8px; font-size: 17px; }
+/* DOC L0044: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 p { line-height: 1.65; }
+/* DOC L0045: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .muted { color: var(--muted); font-size: 14px; }
+/* DOC L0046: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .small { font-size: 12px; }
+/* DOC L0047: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .eyebrow { color: var(--accent); font-size: 10px; letter-spacing: 1.6px; font-weight: 750; margin: 0 0 10px; }
+/* DOC L0048: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .site-header { max-width: 1120px; padding: 19px 24px; margin: auto; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+/* DOC L0049: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .brand { display: flex; align-items: center; gap: 6px; text-decoration: none; color: var(--text); font-size: 21px; letter-spacing: -.6px; white-space: nowrap; }
+/* DOC L0050: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .brand-modes { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 22px; min-width: 0; }
+/* DOC L0051: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .mode-switch { display: grid; grid-template-columns: 1fr 1fr; position: relative; isolation: isolate; padding: 3px; min-width: 190px; border-radius: 999px; background: var(--surface-alt); font-size: 14px; }
+/* DOC L0052: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .mode-switch::before { content: ''; position: absolute; inset: 3px auto 3px 3px; width: calc(50% - 3px); background: var(--accent-fill); border-radius: inherit; transition: transform .2s ease; z-index: -1; }
+/* DOC L0053: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .mode-switch[aria-checked="true"]::before { transform: translateX(100%); }
+/* DOC L0054: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .mode-switch span { padding: 8px 12px; }
+/* DOC L0055: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .mode-switch[aria-checked="false"] span:first-child, .mode-switch[aria-checked="true"] span:last-child { color: var(--on-accent); }
+/* DOC L0056: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .mode-switch:disabled { opacity: .75; }
+/* DOC L0057: Applica le regole successive soltanto alla condizione responsive indicata, per evitare overflow e adattare i controlli. */
 @media (max-width: 600px) {
+  /* DOC L0058: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .site-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; }
+  /* DOC L0059: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .brand-modes { display: contents; }
+  /* DOC L0060: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .mode-switch { grid-column: 1 / -1; grid-row: 2; justify-self: start; }
+  /* DOC L0061: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .header-actions { grid-column: 2; grid-row: 1; }
+  /* DOC L0062: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .brand { font-size: 18px; }
+/* DOC L0063: Chiude il selettore o la media query precedentemente aperti. */
 }
+/* DOC L0064: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .brand b { font-weight: 400; }
+/* DOC L0065: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .brand-symbol { display: grid; place-items: center; margin-right: 4px; width: 34px; height: 34px; border-radius: 11px; color: var(--on-accent); background: var(--accent-fill); font-weight: 750; font-size: 27px; }
+/* DOC L0066: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .header-actions { display: flex; align-items: center; gap: 8px; }
+/* DOC L0067: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .settings-button { border: 0; background: transparent; font-size: 22px; padding: 4px 10px; color: var(--muted); }
+/* DOC L0068: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 nav { display: flex; justify-content: center; gap: 8px; border-bottom: 1px solid var(--line); padding: 0 16px 15px; }
+/* DOC L0069: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 nav button { min-width: 130px; border: 0; background: transparent; font-size: 14px; font-weight: 500; }
+/* DOC L0070: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 nav button[aria-current="page"] { color: var(--accent-dark); background: var(--soft); font-weight: 650; }
+/* DOC L0071: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 main { max-width: 1120px; margin: auto; padding: 32px 24px 48px; min-height: 70vh; }
+/* DOC L0072: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .skip-link { position: fixed; left: 10px; top: -100px; z-index: 10; padding: 12px; background: var(--surface); }
+/* DOC L0073: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .skip-link:focus { top: 10px; }
+/* DOC L0074: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .notice { max-width: 1072px; margin: 16px auto 0; padding: 14px 18px; border: 1px solid var(--warn-line); border-radius: 12px; background: var(--warn-bg); color: var(--warn-text); font-size: 13px; line-height: 1.5; }
+/* DOC L0075: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .card { padding: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 4px 18px #34233e04; }
+/* DOC L0076: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .stack { display: grid; gap: 14px; }
+/* DOC L0077: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .row { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+/* DOC L0078: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .compact { gap: 6px; }
+/* DOC L0079: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .compact button { font-size: 12px; padding: 9px; }
+/* DOC L0080: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .page-heading, .section-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+/* DOC L0081: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .page-heading p { margin: 6px 0 0; }
+/* DOC L0082: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .section-heading h2 { margin: 0; }
+/* DOC L0083: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; }
+/* DOC L0084: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 label { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; font-size: 13px; font-weight: 550; }
+/* DOC L0085: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 input, textarea, select { width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface-alt); color: var(--text); }
+/* DOC L0086: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 input[type="color"] { height: 44px; padding: 5px; }
+/* DOC L0087: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 input[type="checkbox"] { width: 20px; min-height: 20px; accent-color: var(--accent); }
+/* DOC L0088: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 textarea { min-height: 80px; resize: vertical; }
+/* DOC L0089: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 label.check { flex-direction: row; align-items: center; gap: 9px; margin: 0; }
+/* DOC L0090: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+/* DOC L0091: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .field-error { font-size: 13px; line-height: 1.5; color: var(--danger); }
+/* DOC L0092: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-start { max-width: 510px; margin: auto; }
+/* DOC L0093: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-heading { text-align: center; margin-bottom: 22px; }
+/* DOC L0094: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-heading h1 { font-size: 30px; }
+/* DOC L0095: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-heading .muted { margin: 0; }
+/* DOC L0096: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-presets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 16px; }
+/* DOC L0097: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-presets button { background: var(--surface); border-color: var(--line); padding: 11px 4px; font-weight: 500; }
+/* DOC L0098: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-presets strong, .quick-presets span { display: block; }
+/* DOC L0099: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-presets strong { font-size: 14px; font-weight: 600; }
+/* DOC L0100: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-presets span { font-size: 11px; color: var(--muted); margin-top: 3px; }
+/* DOC L0101: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-presets button[aria-pressed="true"] { background: var(--soft); border-color: var(--accent); color: var(--accent-dark); }
+/* DOC L0102: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-card { padding: 22px 28px 14px; }
+/* DOC L0103: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-total { display: flex; align-items: center; flex-direction: column; padding-bottom: 18px; }
+/* DOC L0104: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-total > span { color: var(--muted); font-size: 12px; }
+/* DOC L0105: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-total > strong { font-size: 58px; line-height: 1.15; font-weight: 650; letter-spacing: -2px; font-variant-numeric: tabular-nums; margin: 4px 0 10px; }
+/* DOC L0106: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-total > .prepare-badge { background: var(--soft); padding: 5px 10px; border-radius: 20px; font-size: 11px; }
+/* DOC L0107: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-field { display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; margin: 0; border-top: 1px solid var(--line); font-size: 15px; font-weight: 500; }
+/* DOC L0108: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-value { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; }
+/* DOC L0109: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-value input { width: 86px; min-height: 48px; text-align: center; font-size: 22px; font-weight: 600; padding: 7px 4px; font-variant-numeric: tabular-nums; background: var(--surface-alt); }
+/* DOC L0110: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-value > span { min-width: 20px; }
+/* DOC L0111: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-actions { display: grid; gap: 10px; margin-top: 14px; }
+/* DOC L0112: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-actions button { width: 100%; min-height: 48px; }
+/* DOC L0113: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-actions .quick-start-button { min-height: 56px; font-size: 18px; }
+/* DOC L0114: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-options { margin-top: 7px; }
+/* DOC L0115: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-options > summary, .timer-options > summary { text-align: center; list-style: none; color: var(--muted); font-size: 13px; }
+/* DOC L0116: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-options > summary:after, .timer-options > summary:after { content: ' ＋'; }
+/* DOC L0117: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-options[open] > summary:after, .timer-options[open] > summary:after { content: ' −'; }
+/* DOC L0118: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-options[open] > summary { margin-bottom: 12px; }
+/* DOC L0119: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-options .row { margin: 12px 0; }
+/* DOC L0120: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .quick-options .row button { flex: 1 1 160px; font-size: 12px; }
+/* DOC L0121: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #a9a0b1; flex-shrink: 0; }
+/* DOC L0122: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .status-dot.saved { background: #4a8069; }
+/* DOC L0123: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .workout-card { display: flex; flex-direction: column; gap: 16px; padding: 20px; border-top: 3px solid var(--workout-color, var(--accent)); }
+/* DOC L0124: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .workout-card > .section-heading { margin: 0; flex-wrap: nowrap; }
+/* DOC L0125: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .workout-card h2 { font-size: 18px; }
+/* DOC L0126: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .workout-card p { margin: 0; }
+/* DOC L0127: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .card-description { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+/* DOC L0128: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .workout-duration { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px; margin-top: auto; }
+/* DOC L0129: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .workout-duration strong { font-size: 28px; font-weight: 650; letter-spacing: -1px; }
+/* DOC L0130: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .workout-duration span { color: var(--muted); font-size: 12px; }
+/* DOC L0131: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .workout-card > button { align-self: flex-start; min-width: 110px; }
+/* DOC L0132: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .workout-menu { position: relative; flex-shrink: 0; }
+/* DOC L0133: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .workout-menu > summary { display: grid; place-items: center; list-style: none; width: 44px; height: 44px; padding: 0; font-size: 24px; color: var(--muted); }
+/* DOC L0134: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .workout-menu[open] > .stack { position: absolute; right: 0; top: 44px; width: 170px; z-index: 2; padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: 0 8px 26px #30203818; gap: 6px; }
+/* DOC L0135: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .editor-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(270px, 1fr); gap: 24px; align-items: start; }
+/* DOC L0136: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .preview { position: sticky; top: 20px; }
+/* DOC L0137: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .preview-time { font-size: 48px; font-weight: 650; letter-spacing: -2px; }
+/* DOC L0138: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 fieldset { margin: 20px 0; padding: 16px; border: 1px solid var(--line); border-radius: 12px; }
+/* DOC L0139: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 legend { padding: 0 6px; color: var(--accent); font-size: 12px; font-weight: 600; }
+/* DOC L0140: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 fieldset > .row { justify-content: flex-end; margin-bottom: 12px; }
+/* DOC L0141: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timeline-strip { display: flex; gap: 2px; height: 10px; border-radius: 8px; overflow: hidden; margin: 20px 0 10px; }
+/* DOC L0142: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timeline-strip span { min-width: 2px; }
+/* DOC L0143: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .work { background: var(--accent-fill); }
+/* DOC L0144: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .rest { background: var(--line); }
+/* DOC L0145: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .phase-list { padding: 0; margin: 16px 0 0; max-height: 400px; overflow: auto; list-style: none; counter-reset: phase; }
+/* DOC L0146: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .phase-list li { display: flex; align-items: center; gap: 10px; padding: 12px 0; border-top: 1px solid var(--line); font-size: 12px; counter-increment: phase; }
+/* DOC L0147: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .phase-list li:before { content: counter(phase); color: var(--muted); min-width: 20px; }
+/* DOC L0148: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .phase-list li span { flex: 1; }
+/* DOC L0149: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .phase-list b { white-space: nowrap; }
+/* DOC L0150: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-panel { max-width: 600px; margin: auto; padding: 28px; text-align: center; }
+/* DOC L0151: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-workout-name { margin: 0; color: var(--muted); font-size: 13px; }
+/* DOC L0152: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-panel h1 { margin: 12px 0; font-size: 28px; }
+/* DOC L0153: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-digits { font-size: clamp(88px, 18vw, 136px); font-weight: 600; line-height: 1.35; letter-spacing: -5px; font-variant-numeric: tabular-nums; color: var(--accent-dark); }
+/* DOC L0154: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-phase { min-height: 1.5em; color: var(--muted); font-size: 14px; }
+/* DOC L0155: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-progress { display: block; width: 100%; height: 8px; accent-color: var(--accent); margin: 22px auto; }
+/* DOC L0156: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-main-controls { display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px; }
+/* DOC L0157: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-main-controls > button { min-height: 54px; font-size: 17px; }
+/* DOC L0158: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-next { padding: 16px; border-radius: 12px; background: var(--soft); font-size: 13px; margin: 22px 0 12px; }
+/* DOC L0159: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-options > .row { justify-content: center; }
+/* DOC L0160: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-settings { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin: 20px 0; }
+/* DOC L0161: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-warning { max-width: 600px; color: var(--muted); font-size: 12px; margin: 12px auto 0; }
+/* DOC L0162: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-panel:fullscreen { max-width: none; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: auto; background: var(--surface-alt); }
+/* DOC L0163: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-panel:fullscreen .timer-digits { font-size: clamp(100px, 22vw, 240px); }
+/* DOC L0164: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-panel:fullscreen .timer-main-controls { width: min(600px, 100%); }
+/* DOC L0165: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .timer-options { width: 100%; }
+/* DOC L0166: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .activity-list { display: grid; gap: 16px; max-width: 820px; margin: auto; }
+/* DOC L0167: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .session-card .section-heading { align-items: flex-start; margin-bottom: 20px; }
+/* DOC L0168: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .session-card h2 { font-size: 18px; }
+/* DOC L0169: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .session-card .section-heading p { margin: 6px 0 0; }
+/* DOC L0170: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .pill { display: inline-block; padding: 6px 10px; border-radius: 20px; font-size: 11px; background: var(--soft); color: var(--accent); white-space: nowrap; }
+/* DOC L0171: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .pill.interrupted { background: var(--warn-bg); color: var(--warn-text); }
+/* DOC L0172: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .session-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+/* DOC L0173: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .session-metrics span { display: block; font-size: 11px; color: var(--muted); }
+/* DOC L0174: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .session-metrics strong { display: block; margin-top: 6px; font-size: 23px; font-weight: 600; }
+/* DOC L0175: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .data-list { margin: 10px 0; font-size: 13px; }
+/* DOC L0176: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .data-list > div { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; }
+/* DOC L0177: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .data-list dt { color: var(--muted); }
+/* DOC L0178: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .data-list dd { margin: 0; font-weight: 600; }
+/* DOC L0179: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .storage-note { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 18px 20px; margin: 24px auto 0; max-width: 820px; border: 1px dashed var(--line); border-radius: 14px; }
+/* DOC L0180: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .storage-note > div { flex: 1 1 220px; }
+/* DOC L0181: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .storage-note strong { font-size: 13px; }
+/* DOC L0182: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .storage-note p { margin: 4px 0 0; font-size: 12px; color: var(--muted); }
+/* DOC L0183: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .filters { display: flex; flex-wrap: wrap; gap: 14px; }
+/* DOC L0184: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .filters label { min-width: 170px; }
+/* DOC L0185: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 20px 0; }
+/* DOC L0186: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .metric strong { display: block; font-size: 34px; letter-spacing: -1px; margin: 10px 0; font-weight: 650; }
+/* DOC L0187: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .metric span { font-size: 11px; color: var(--muted); }
+/* DOC L0188: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .chart-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+/* DOC L0189: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .chart { margin: 0; }
+/* DOC L0190: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .chart figcaption { font-size: 17px; font-weight: 650; }
+/* DOC L0191: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .chart svg { display: block; width: 100%; height: auto; margin-top: 20px; }
+/* DOC L0192: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .chart svg text { font: 11px system-ui; fill: var(--muted); }
+/* DOC L0193: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .comparison { margin-top: 18px; }
+/* DOC L0194: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .table-scroll { overflow: auto; }
+/* DOC L0195: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+/* DOC L0196: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 th, td { padding: 14px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+/* DOC L0197: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 th { color: var(--muted); font-weight: 600; }
+/* DOC L0198: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 summary { cursor: pointer; min-height: 44px; padding: 12px 0; color: var(--accent); font-size: 13px; line-height: 1.5; }
+/* DOC L0199: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .empty { text-align: center; padding: 36px 24px; }
+/* DOC L0200: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+/* DOC L0201: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .settings-grid p { margin: 10px 0 16px; }
+/* DOC L0202: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .storage-state { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+/* DOC L0203: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .help-page { max-width: 850px; margin: auto; }
+/* DOC L0204: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .help-callout { margin-bottom: 20px; border-color: var(--accent); background: var(--soft); }
+/* DOC L0205: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .help-callout ol { padding-left: 22px; font-size: 14px; line-height: 1.9; }
+/* DOC L0206: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .help-list { margin: 0; }
+/* DOC L0207: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .help-list > div { padding: 14px 0; border-top: 1px solid var(--line); }
+/* DOC L0208: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .help-list > div:first-child { border-top: 0; padding-top: 0; }
+/* DOC L0209: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .help-list dt { font-size: 14px; font-weight: 650; margin-bottom: 5px; }
+/* DOC L0210: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .help-list dd { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+/* DOC L0211: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 dialog { background: var(--surface); width: min(520px, calc(100% - 28px)); padding: 28px; color: inherit; border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 20px 80px #30203922; }
+/* DOC L0212: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 dialog::backdrop { background: #30203966; }
+/* DOC L0213: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 dialog .row > button { flex: 1 1 150px; }
+/* DOC L0214: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 dialog h2 { font-size: 24px; margin-bottom: 20px; }
+/* DOC L0215: Applica le regole successive soltanto alla condizione responsive indicata, per evitare overflow e adattare i controlli. */
 @media (max-width: 767px) {
+  /* DOC L0216: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   body { padding-bottom: 74px; }
+  /* DOC L0217: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .site-header { padding: 14px 16px; }
+  /* DOC L0218: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .brand { font-size: 18px; }
+  /* DOC L0219: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .brand-symbol { width: 30px; height: 30px; font-size: 24px; }
+  /* DOC L0220: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .header-actions { gap: 1px; }
+  /* DOC L0221: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 4; padding: 8px 8px max(8px, env(safe-area-inset-bottom)); gap: 4px; background: var(--surface); backdrop-filter: blur(12px); border-top: 1px solid var(--line); border-bottom: 0; }
+  /* DOC L0222: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   nav button { min-width: 0; flex: 1; min-height: 48px; padding: 10px; font-size: 13px; }
+  /* DOC L0223: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   main { padding: 16px 16px 32px; }
+  /* DOC L0224: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-heading { margin: 4px 0 20px; }
+  /* DOC L0225: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-heading h1 { font-size: 26px; }
+  /* DOC L0226: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-heading .eyebrow { font-size: 9px; margin-bottom: 7px; }
+  /* DOC L0227: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-presets { margin-bottom: 12px; }
+  /* DOC L0228: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-card { padding: 18px 20px 10px; }
+  /* DOC L0229: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-total { padding-bottom: 12px; }
+  /* DOC L0230: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-total > strong { font-size: 50px; }
+  /* DOC L0231: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-field { padding: 10px 0; }
+  /* DOC L0232: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-value input { width: 80px; }
+  /* DOC L0233: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-options > summary { padding: 14px 0; }
+  /* DOC L0234: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .page-heading { align-items: flex-start; }
+  /* DOC L0235: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .page-heading h1 { font-size: 28px; }
+  /* DOC L0236: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .card { padding: 20px; }
+  /* DOC L0237: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-card { padding: 18px 20px 10px; }
+  /* DOC L0238: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .editor-layout, .chart-grid, .settings-grid { grid-template-columns: 1fr; }
+  /* DOC L0239: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .preview { position: static; }
+  /* DOC L0240: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .block > .section-heading .row { width: 100%; }
+  /* DOC L0241: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .field-grid { gap: 10px; }
+  /* DOC L0242: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .timer-panel { padding: 22px 16px; }
+  /* DOC L0243: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .timer-panel h1 { font-size: 24px; }
+  /* DOC L0244: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .timer-digits { font-size: 104px; letter-spacing: -3px; }
+  /* DOC L0245: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .timer-progress { margin: 14px auto; }
+  /* DOC L0246: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .timer-panel:fullscreen .timer-digits { font-size: clamp(90px, 24vw, 180px); }
+  /* DOC L0247: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .metrics { gap: 8px; }
+  /* DOC L0248: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .metric { padding: 16px 12px; }
+  /* DOC L0249: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .metric strong { font-size: 27px; }
+  /* DOC L0250: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .session-metrics strong { font-size: 21px; }
+/* DOC L0251: Chiude il selettore o la media query precedentemente aperti. */
 }
+/* DOC L0252: Applica le regole successive soltanto alla condizione responsive indicata, per evitare overflow e adattare i controlli. */
 @media (max-width: 359px) {
+  /* DOC L0253: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .site-header { padding-left: 12px; padding-right: 12px; }
+  /* DOC L0254: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .brand { font-size: 17px; }
+  /* DOC L0255: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .brand-symbol { margin-right: 2px; }
+  /* DOC L0256: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .header-actions .text-button { padding-left: 4px; padding-right: 4px; }
+  /* DOC L0257: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .field-grid, .metrics { grid-template-columns: 1fr; }
+  /* DOC L0258: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-card { padding: 16px 16px 8px; }
+  /* DOC L0259: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .quick-heading h1 { font-size: 24px; }
+  /* DOC L0260: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .metric strong { display: inline-block; margin: 0 12px; }
+  /* DOC L0261: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .session-metrics span { font-size: 10px; }
+  /* DOC L0262: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .session-metrics strong { font-size: 19px; }
+  /* DOC L0263: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   .session-card .section-heading { gap: 10px; }
+/* DOC L0264: Chiude il selettore o la media query precedentemente aperti. */
 }
+/* DOC L0265: Applica le regole successive soltanto alla condizione responsive indicata, per evitare overflow e adattare i controlli. */
 @media (prefers-reduced-motion: reduce) {
+  /* DOC L0266: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
   *, *:before, *:after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+/* DOC L0267: Chiude il selettore o la media query precedentemente aperti. */
 }
 
 /* Named, keyboard-accessible choices; selection is also announced by aria-pressed. */
+/* DOC L0270: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .appearance-group { padding: 0; margin: 20px 0 0; border: 0; }
+/* DOC L0271: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .appearance-group legend { padding: 0; margin-bottom: 10px; color: var(--text); font-size: 13px; }
+/* DOC L0272: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .theme-choices, .palette-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+/* DOC L0273: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .palette-choices button { display: flex; align-items: center; gap: 9px; text-align: left; font-size: 13px; }
+/* DOC L0274: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .color-swatch { width: 18px; height: 18px; flex-shrink: 0; border: 1px solid #0003; border-radius: 50%; }
+/* DOC L0275: Seleziona gli elementi CSS indicati e apre le regole di presentazione, senza cambiare i dati del timer. */
 .appearance-group button[aria-pressed="true"] { border-color: var(--accent); background: var(--soft); color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }

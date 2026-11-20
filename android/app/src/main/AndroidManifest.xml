@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- DOC L0002: Definisce la struttura dichiarativa manifest nel documento: Dichiarazioni Android di componenti e permessi. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- DOC L0003: Dichiara il permesso Android riportato qui; la richiesta runtime delle notifiche è gestita nell’Activity, mentre il manifest non concede Internet. -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- DOC L0004: Dichiara il permesso Android riportato qui; la richiesta runtime delle notifiche è gestita nell’Activity, mentre il manifest non concede Internet. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- DOC L0005: Dichiara il permesso Android riportato qui; la richiesta runtime delle notifiche è gestita nell’Activity, mentre il manifest non concede Internet. -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <!-- DOC L0006: Dichiara il permesso Android riportato qui; la richiesta runtime delle notifiche è gestita nell’Activity, mentre il manifest non concede Internet. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- DOC L0007: Dichiara il permesso Android riportato qui; la richiesta runtime delle notifiche è gestita nell’Activity, mentre il manifest non concede Internet. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- DOC L0008: Dichiara componenti e attributi Android: application. I nomi collegano il manifest alle classi del progetto. -->
     <application android:name=".TabataApplication" android:allowBackup="false" android:fullBackupContent="false" android:dataExtractionRules="@xml/data_extraction_rules" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher" android:label="Tabata Timer" android:theme="@android:style/Theme.Material.Light.NoActionBar" android:supportsRtl="true">
+        <!-- DOC L0009: Dichiara componenti e attributi Android: service. I nomi collegano il manifest alle classi del progetto. -->
         <service android:name=".timer.TimerService" android:exported="false" android:foregroundServiceType="specialUse" android:stopWithTask="false">
+            <!-- DOC L0010: Definisce la struttura dichiarativa property nel documento: Dichiarazioni Android di componenti e permessi. -->
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE" android:value="User-started workout and study interval timer with precise countdown cues while screen is off; stops when the session ends." />
+        <!-- DOC L0011: Dichiara componenti e attributi Android: service. I nomi collegano il manifest alle classi del progetto. -->
         </service>
+        <!-- DOC L0012: Dichiara componenti e attributi Android: activity. I nomi collegano il manifest alle classi del progetto. -->
         <activity android:name=".MainActivity" android:exported="true">
+            <!-- DOC L0013: Definisce la struttura dichiarativa intent-filter nel documento: Dichiarazioni Android di componenti e permessi. -->
             <intent-filter>
+                <!-- DOC L0014: Definisce la struttura dichiarativa action nel documento: Dichiarazioni Android di componenti e permessi. -->
                 <action android:name="android.intent.action.MAIN" />
+                <!-- DOC L0015: Definisce la struttura dichiarativa category nel documento: Dichiarazioni Android di componenti e permessi. -->
                 <category android:name="android.intent.category.LAUNCHER" />
+            <!-- DOC L0016: Definisce la struttura dichiarativa intent-filter nel documento: Dichiarazioni Android di componenti e permessi. -->
             </intent-filter>
+        <!-- DOC L0017: Dichiara componenti e attributi Android: activity. I nomi collegano il manifest alle classi del progetto. -->
         </activity>
+    <!-- DOC L0018: Dichiara componenti e attributi Android: application. I nomi collegano il manifest alle classi del progetto. -->
     </application>
+<!-- DOC L0019: Definisce la struttura dichiarativa manifest nel documento: Dichiarazioni Android di componenti e permessi. -->
 </manifest>

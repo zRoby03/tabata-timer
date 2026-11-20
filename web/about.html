@@ -1,75 +1,149 @@
 <!doctype html>
+<!-- DOC L0002: Definisce la struttura dichiarativa html nel documento: Pagina pubblica di spiegazione del prodotto. -->
 <html lang="it">
+<!-- DOC L0003: Definisce la struttura dichiarativa head nel documento: Pagina pubblica di spiegazione del prodotto. -->
 <head>
+  <!-- DOC L0004: Definisce la struttura dichiarativa meta nel documento: Pagina pubblica di spiegazione del prodotto. -->
   <meta charset="utf-8">
+  <!-- DOC L0005: Definisce la struttura dichiarativa meta nel documento: Pagina pubblica di spiegazione del prodotto. -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- DOC L0006: Definisce la struttura dichiarativa meta nel documento: Pagina pubblica di spiegazione del prodotto. -->
   <meta name="theme-color" content="#8950a9">
+  <!-- DOC L0007: Definisce la struttura dichiarativa meta nel documento: Pagina pubblica di spiegazione del prodotto. -->
   <meta name="description" content="Come usare Tabata Timer: allenamenti a intervalli, studio Pomodoro e salvataggi locali.">
+  <!-- DOC L0008: Definisce la CSP del documento: risorse locali consentite e contenuti attivi esterni bloccati. Lo snippet AdSense richiede un’integrazione separata prima di poter essere caricato. -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <!-- DOC L0009: Definisce la struttura dichiarativa title nel documento: Pagina pubblica di spiegazione del prodotto. -->
   <title>Tabata Timer</title>
+  <!-- DOC L0010: Definisce la struttura dichiarativa link nel documento: Pagina pubblica di spiegazione del prodotto. -->
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <!-- DOC L0011: Definisce la struttura dichiarativa link nel documento: Pagina pubblica di spiegazione del prodotto. -->
   <link rel="stylesheet" href="./styles.css">
+  <!-- DOC L0012: Collega lo script locale indicato dal documento; type=module abilita import/export e non avvia servizi cloud. -->
   <script type="module" src="./js/public-pages.js"></script>
+<!-- DOC L0013: Definisce la struttura dichiarativa head nel documento: Pagina pubblica di spiegazione del prodotto. -->
 </head>
+<!-- DOC L0014: Definisce la struttura dichiarativa body nel documento: Pagina pubblica di spiegazione del prodotto. -->
 <body>
+  <!-- DOC L0015: Definisce la struttura dichiarativa header, a, span, b nel documento: Pagina pubblica di spiegazione del prodotto. -->
   <header class="site-header"><a class="brand" href="./"><span class="brand-symbol" aria-hidden="true">t.</span>Tabata <b>Timer</b></a></header>
+  <!-- DOC L0016: Definisce la struttura dichiarativa main nel documento: Pagina pubblica di spiegazione del prodotto. -->
   <main class="public-content">
+    <!-- DOC L0017: Definisce la struttura dichiarativa div, button nel documento: Pagina pubblica di spiegazione del prodotto. -->
     <div class="row" data-language-picker aria-label="Language"><button data-site-language="it" lang="it" aria-pressed="true">Italiano</button><button data-site-language="en" lang="en" aria-pressed="false">English</button><button data-site-language="es" lang="es" aria-pressed="false">Español</button></div>
+    <!-- DOC L0018: Raggruppa la versione linguistica dell’articolo; public-pages.js ne rende visibile una sola secondo la preferenza. -->
     <article class="card" data-language-content="it" lang="it">
+      <!-- DOC L0019: Definisce la struttura dichiarativa h1 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h1>Il tuo tempo, il tuo ritmo</h1>
+      <!-- DOC L0020: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Tabata Timer è uno strumento gratuito per alternare lavoro e pause. Workout organizza gli intervalli in secondi; Studio aiuta a dividere studio e lavoro in sessioni di concentrazione, con tempi in minuti. Scegli la modalità dallo switch accanto al nome.</p>
+      <!-- DOC L0021: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Un allenamento a intervalli</h2>
+      <!-- DOC L0022: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>In Workout imposta Lavoro, Recupero e Giri, poi premi Avvia. Il preset Tabata 1 alterna otto lavori da 20 secondi con sette recuperi da 10: dura 3:50. Si aggiungono 20 secondi di preparazione, per un totale di 4:10. Non c’è recupero dopo l’ultimo giro.</p>
+      <!-- DOC L0023: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>In Altre opzioni puoi scegliere serie, recupero tra serie e defaticamento. Per esercizi differenti apri Crea allenamento personalizzato: ogni blocco ha un recupero comune tra esercizi, mentre le ripetizioni mantengono i propri recuperi.</p>
+      <!-- DOC L0024: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Una sessione di studio</h2>
+      <!-- DOC L0025: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>In Studio dai un nome a ogni attività e scegli Concentrazione, Sessioni e Pausa. Con 25 minuti di concentrazione, quattro sessioni e pause da 5, l’attività dura 1:55:00, più la preparazione iniziale. Le tre pause separano le sessioni; non c’è una pausa finale.</p>
+      <!-- DOC L0026: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Puoi aggiungere altre attività e impostare una sola Pausa tra attività. Questo intervallo si applica solo tra due attività consecutive. Per cambiare modalità devi terminare il timer attivo.</p>
+      <!-- DOC L0027: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Suoni, pausa e cronologia</h2>
+      <!-- DOC L0028: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Tre bip brevi scandiscono 3, 2, 1. Il fischio segnala l’inizio del lavoro, il sospiro il recupero e la campanella la fine. Puoi disattivare i suoni dai controlli del timer. Pausa ferma il conteggio; Termina registra una sessione interrotta. Attività e statistiche restano separate tra Workout e Studio.</p>
+      <!-- DOC L0029: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Ritrovare e trasferire i programmi</h2>
+      <!-- DOC L0030: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Premi Salva allenamento o Salva programma di studio, scegli il nome e conferma Salva sul dispositivo. Ritroverai il programma nella raccolta della stessa modalità, usando lo stesso browser e indirizzo. Impostazioni → Esporta copia JSON crea un file con entrambe le modalità; Importa copia JSON lo trasferisce su un altro dispositivo o sull’app Android. L’importazione richiede conferma e sostituisce l’archivio di destinazione.</p>
+      <!-- DOC L0031: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Web e Android</h2>
+      <!-- DOC L0032: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Il sito funziona offline dopo il primo caricamento completo. I browser possono sospendere audio e timer a schermo spento; per gli avvisi in background e l’ascolto insieme alla musica è disponibile l’app Android nativa. L’app può essere condivisa separatamente come APK di prova; al momento questa pagina non offre un download pubblico.</p>
+      <!-- DOC L0033: Definisce la struttura dichiarativa p, a nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Progetto curato da RobertStruzzi. Per assistenza: <a href="mailto:robert.struzzi03@gmail.com">robert.struzzi03@gmail.com</a>.</p>
+      <!-- DOC L0034: Definisce la struttura dichiarativa p, a nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p><a href="./">Apri il timer</a></p>
+    <!-- DOC L0035: Definisce la struttura dichiarativa article nel documento: Pagina pubblica di spiegazione del prodotto. -->
     </article>
+    <!-- DOC L0036: Raggruppa la versione linguistica dell’articolo; public-pages.js ne rende visibile una sola secondo la preferenza. -->
     <article class="card" data-language-content="en" lang="en" hidden>
+      <!-- DOC L0037: Definisce la struttura dichiarativa h1 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h1>Your time, your rhythm</h1>
+      <!-- DOC L0038: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Tabata Timer is a free tool for alternating work and breaks. Workout uses seconds for interval training; Studio divides study and work into focus sessions measured in minutes. Choose the mode with the switch next to the name.</p>
+      <!-- DOC L0039: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>An interval workout</h2>
+      <!-- DOC L0040: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>In Workout, set Work, Rest and Rounds, then press Start. Tabata 1 combines eight 20-second work intervals with seven 10-second rests: 3:50. A 20-second preparation brings the total to 4:10. There is no rest after the last round.</p>
+      <!-- DOC L0041: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>More options contains sets, rest between sets and cooldown. For different exercises, open Create custom workout: each block shares one rest between exercises, while repetitions retain their own rests.</p>
+      <!-- DOC L0042: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>A study session</h2>
+      <!-- DOC L0043: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>In Studio, name each activity and choose Focus, Sessions and Break. With 25-minute focus periods, four sessions and 5-minute breaks, an activity lasts 1:55:00 plus initial preparation. Three breaks separate the sessions; there is no final break.</p>
+      <!-- DOC L0044: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>You can add activities and set one Break between activities. It applies only between two consecutive activities. End the active timer before changing modes.</p>
+      <!-- DOC L0045: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Sounds, pause and history</h2>
+      <!-- DOC L0046: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Three short beeps mark 3, 2, 1. A whistle starts work, a sigh starts rest and a bell marks completion. Sounds can be switched off in the timer controls. Pause stops the countdown; Stop records an interrupted session. Workout and Studio keep separate activity and statistics.</p>
+      <!-- DOC L0047: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Finding and transferring programs</h2>
+      <!-- DOC L0048: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Press Save workout or Save study program, choose a name and confirm Save on device. Find it in that mode’s collection using the same browser and address. Settings → Export JSON backup creates a file for both modes; Import JSON backup transfers it to another device or the Android app. Import requires confirmation and replaces the destination library.</p>
+      <!-- DOC L0049: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Web and Android</h2>
+      <!-- DOC L0050: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>The site works offline after the first complete load. Browsers may suspend sound and timers when the screen is off; the native Android app supports background alerts alongside music. A test APK can be shared separately; this page currently has no public download.</p>
+      <!-- DOC L0051: Definisce la struttura dichiarativa p, a nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Maintained by RobertStruzzi. Support: <a href="mailto:robert.struzzi03@gmail.com">robert.struzzi03@gmail.com</a>.</p>
+      <!-- DOC L0052: Definisce la struttura dichiarativa p, a nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p><a href="./">Open the timer</a></p>
+    <!-- DOC L0053: Definisce la struttura dichiarativa article nel documento: Pagina pubblica di spiegazione del prodotto. -->
     </article>
+    <!-- DOC L0054: Raggruppa la versione linguistica dell’articolo; public-pages.js ne rende visibile una sola secondo la preferenza. -->
     <article class="card" data-language-content="es" lang="es" hidden>
+      <!-- DOC L0055: Definisce la struttura dichiarativa h1 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h1>Tu tiempo, tu ritmo</h1>
+      <!-- DOC L0056: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Tabata Timer es una herramienta gratuita para alternar trabajo y descansos. Workout organiza intervalos en segundos; Studio divide el estudio y el trabajo en sesiones de concentración, con tiempos en minutos. Elige el modo con el interruptor junto al nombre.</p>
+      <!-- DOC L0057: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Un entrenamiento por intervalos</h2>
+      <!-- DOC L0058: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>En Workout configura Trabajo, Descanso y Rondas, y pulsa Iniciar. Tabata 1 combina ocho intervalos de trabajo de 20 segundos con siete descansos de 10: dura 3:50. La preparación de 20 segundos lleva el total a 4:10. No hay descanso después de la última ronda.</p>
+      <!-- DOC L0059: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Más opciones incluye series, descanso entre series y vuelta a la calma. Para ejercicios diferentes, abre Crear entrenamiento personalizado: cada bloque comparte un descanso entre ejercicios, y las repeticiones conservan sus propios descansos.</p>
+      <!-- DOC L0060: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Una sesión de estudio</h2>
+      <!-- DOC L0061: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>En Studio da un nombre a cada actividad y elige Concentración, Sesiones y Pausa. Con 25 minutos de concentración, cuatro sesiones y pausas de 5, la actividad dura 1:55:00 más la preparación inicial. Tres pausas separan las sesiones; no hay pausa final.</p>
+      <!-- DOC L0062: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Puedes añadir actividades y configurar una sola Pausa entre actividades. Se aplica únicamente entre dos actividades consecutivas. Termina el temporizador activo para cambiar de modo.</p>
+      <!-- DOC L0063: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Sonidos, pausa e historial</h2>
+      <!-- DOC L0064: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Tres pitidos cortos marcan 3, 2, 1. Un silbato inicia el trabajo, un suspiro inicia el descanso y una campana marca el final. Puedes desactivar los sonidos desde los controles. Pausar detiene la cuenta; Terminar registra una sesión interrumpida. Workout y Studio mantienen actividades y estadísticas separadas.</p>
+      <!-- DOC L0065: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Guardar y transferir programas</h2>
+      <!-- DOC L0066: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Pulsa Guardar entrenamiento o Guardar programa de estudio, elige el nombre y confirma Guardar en el dispositivo. Lo encontrarás en la colección del mismo modo usando el mismo navegador y dirección. Ajustes → Exportar copia JSON crea un archivo con ambos modos; Importar copia JSON permite transferirlo a otro dispositivo o a la app Android. La importación requiere confirmación y sustituye la colección de destino.</p>
+      <!-- DOC L0067: Definisce la struttura dichiarativa h2 nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <h2>Web y Android</h2>
+      <!-- DOC L0068: Definisce la struttura dichiarativa p nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>El sitio funciona sin conexión tras la primera carga completa. El navegador puede suspender sonidos y temporizadores con la pantalla apagada; la app Android nativa permite avisos en segundo plano junto con la música. Se puede compartir un APK de prueba por separado; esta página aún no ofrece una descarga pública.</p>
+      <!-- DOC L0069: Definisce la struttura dichiarativa p, a nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p>Proyecto de RobertStruzzi. Contacto: <a href="mailto:robert.struzzi03@gmail.com">robert.struzzi03@gmail.com</a>.</p>
+      <!-- DOC L0070: Definisce la struttura dichiarativa p, a nel documento: Pagina pubblica di spiegazione del prodotto. -->
       <p><a href="./">Abrir el temporizador</a></p>
+    <!-- DOC L0071: Definisce la struttura dichiarativa article nel documento: Pagina pubblica di spiegazione del prodotto. -->
     </article>
+    <!-- DOC L0072: Definisce la struttura dichiarativa div, p, a nel documento: Pagina pubblica di spiegazione del prodotto. -->
     <div data-site-links><p class="row site-links"><a href="./about.html">Informazioni</a><a href="./privacy.html">Privacy e cookie</a></p></div>
+  <!-- DOC L0073: Definisce la struttura dichiarativa main nel documento: Pagina pubblica di spiegazione del prodotto. -->
   </main>
+<!-- DOC L0074: Definisce la struttura dichiarativa body nel documento: Pagina pubblica di spiegazione del prodotto. -->
 </body>
+<!-- DOC L0075: Definisce la struttura dichiarativa html nel documento: Pagina pubblica di spiegazione del prodotto. -->
 </html>

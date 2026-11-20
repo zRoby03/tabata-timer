@@ -1,2 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- DOC L0002: Definisce la struttura dichiarativa resources, color nel documento: Risorsa grafica o configurazione Android. -->
 <resources><color name="ic_launcher_background">#8650A7</color></resources>

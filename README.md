@@ -1,5 +1,7 @@
 # Tabata Timer
 
+> **Branch documentazione.** Inizia dalla [guida al progetto spiegato](docs/documentazione/README.md) e dall'[indice riga per riga](docs/documentazione/indice-file.md). I commenti didattici sono verificati rispetto al codice originale; questo branch non è collegato alla pubblicazione del sito. Per i sorgenti senza annotazioni consulta [main](https://github.com/zRoby03/tabata-timer/tree/main).
+
 **[Repository pubblico](https://github.com/zRoby03/tabata-timer)** · **[Branch documentazione: codice commentato e guide](https://github.com/zRoby03/tabata-timer/tree/documentazione/docs/documentazione)**. Il push GitHub non aggiorna automaticamente il sito.
 
 Timer per **allenamento e studio, su web e Android**, in italiano, inglese e spagnolo, con un’interfaccia semplice e moderna. Funziona in locale: nessun account, backend, pubblicità, chiave API o abbonamento.

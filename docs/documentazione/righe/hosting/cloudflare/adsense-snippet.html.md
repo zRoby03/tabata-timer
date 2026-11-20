@@ -1,0 +1,24 @@
+# hosting/cloudflare/adsense-snippet.html
+
+Snippet originale dell’unità display creata in Google.
+
+È conservato fuori da web e non viene eseguito dal sito: approvazione, CSP, consenso e revoca restano passaggi distinti.
+I numeri si riferiscono al sorgente originale; il collegamento apre esattamente quella riga. I commenti DOC nel branch sono aggiunte didattiche.
+
+## Ogni riga
+
+| Riga originale | Codice (estratto) | Spiegazione |
+| ---: | --- | --- |
+| [1](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L1) | <code>&lt;!-- Official AdSense unit code. Kept outside web until site approval and consent activation. --&gt;</code> | Commento originale: conserva la motivazione o l’istruzione già presente nel sorgente. Official AdSense unit code. Kept outside web until site approval and consent activation. -- &gt; |
+| [2](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L2) | <code>&lt;script async src=&quot;https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9043574024513063&quot;</code> | Collega lo script locale indicato dal documento; type=module abilita import/export e non avvia servizi cloud. |
+| [3](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L3) | <code>crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;</code> | Esegue il passaggio esplicito «crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;» nel flusso: Snippet originale dell’unità display creata in Google. |
+| [4](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L4) | <code>&lt;!-- Tabata Timer --&gt;</code> | Commento originale: conserva la motivazione o l’istruzione già presente nel sorgente. Tabata Timer -- &gt; |
+| [5](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L5) | <code>&lt;ins class=&quot;adsbygoogle&quot;</code> | Definisce la struttura dichiarativa ins nel documento: Snippet originale dell’unità display creata in Google. |
+| [6](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L6) | <code>style=&quot;display:block&quot;</code> | Esegue il passaggio esplicito «style=&quot;display:block&quot;» nel flusso: Snippet originale dell’unità display creata in Google. |
+| [7](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L7) | <code>data-ad-client=&quot;ca-pub-9043574024513063&quot;</code> | Esegue il passaggio esplicito «data-ad-client=&quot;ca-pub-9043574024513063&quot;» nel flusso: Snippet originale dell’unità display creata in Google. |
+| [8](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L8) | <code>data-ad-slot=&quot;9553674851&quot;</code> | Esegue il passaggio esplicito «data-ad-slot=&quot;9553674851&quot;» nel flusso: Snippet originale dell’unità display creata in Google. |
+| [9](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L9) | <code>data-ad-format=&quot;auto&quot;</code> | Esegue il passaggio esplicito «data-ad-format=&quot;auto&quot;» nel flusso: Snippet originale dell’unità display creata in Google. |
+| [10](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L10) | <code>data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;</code> | Esegue il passaggio esplicito «data-full-width-responsive=&quot;true&quot;&gt;&lt;/ins&gt;» nel flusso: Snippet originale dell’unità display creata in Google. |
+| [11](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L11) | <code>&lt;script&gt;</code> | Collega lo script locale indicato dal documento; type=module abilita import/export e non avvia servizi cloud. |
+| [12](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L12) | <code>(adsbygoogle = window.adsbygoogle &#124;&#124; []).push({});</code> | Esegue il passaggio esplicito «(adsbygoogle = window.adsbygoogle &#124;&#124; []).push({});» nel flusso: Snippet originale dell’unità display creata in Google. |
+| [13](https://github.com/zRoby03/tabata-timer/blob/5d18d6d633e8fd8c8241aed078246f1953b084ef/hosting/cloudflare/adsense-snippet.html#L13) | <code>&lt;/script&gt;</code> | Collega lo script locale indicato dal documento; type=module abilita import/export e non avvia servizi cloud. |

@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- DOC L0002: Definisce la struttura dichiarativa data-extraction-rules nel documento: Risorsa grafica o configurazione Android. -->
 <data-extraction-rules>
+    <!-- DOC L0003: Definisce la struttura dichiarativa cloud-backup nel documento: Risorsa grafica o configurazione Android. -->
     <cloud-backup>
+        <!-- DOC L0004: Definisce la struttura dichiarativa exclude nel documento: Risorsa grafica o configurazione Android. -->
         <exclude domain="root" path="." />
+        <!-- DOC L0005: Definisce la struttura dichiarativa exclude nel documento: Risorsa grafica o configurazione Android. -->
         <exclude domain="file" path="." />
+        <!-- DOC L0006: Definisce la struttura dichiarativa exclude nel documento: Risorsa grafica o configurazione Android. -->
         <exclude domain="database" path="." />
+        <!-- DOC L0007: Definisce la struttura dichiarativa exclude nel documento: Risorsa grafica o configurazione Android. -->
         <exclude domain="sharedpref" path="." />
+        <!-- DOC L0008: Definisce la struttura dichiarativa exclude nel documento: Risorsa grafica o configurazione Android. -->
         <exclude domain="external" path="." />
+    <!-- DOC L0009: Definisce la struttura dichiarativa cloud-backup nel documento: Risorsa grafica o configurazione Android. -->
     </cloud-backup>
+    <!-- DOC L0010: Definisce la struttura dichiarativa device-transfer nel documento: Risorsa grafica o configurazione Android. -->
     <device-transfer>
+        <!-- DOC L0011: Definisce la struttura dichiarativa exclude nel documento: Risorsa grafica o configurazione Android. -->
         <exclude domain="root" path="." />
+        <!-- DOC L0012: Definisce la struttura dichiarativa exclude nel documento: Risorsa grafica o configurazione Android. -->
         <exclude domain="file" path="." />
+        <!-- DOC L0013: Definisce la struttura dichiarativa exclude nel documento: Risorsa grafica o configurazione Android. -->
         <exclude domain="database" path="." />
+        <!-- DOC L0014: Definisce la struttura dichiarativa exclude nel documento: Risorsa grafica o configurazione Android. -->
         <exclude domain="sharedpref" path="." />
+        <!-- DOC L0015: Definisce la struttura dichiarativa exclude nel documento: Risorsa grafica o configurazione Android. -->
         <exclude domain="external" path="." />
+    <!-- DOC L0016: Definisce la struttura dichiarativa device-transfer nel documento: Risorsa grafica o configurazione Android. -->
     </device-transfer>
+<!-- DOC L0017: Definisce la struttura dichiarativa data-extraction-rules nel documento: Risorsa grafica o configurazione Android. -->
 </data-extraction-rules>
