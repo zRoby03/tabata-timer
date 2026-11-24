@@ -37,12 +37,11 @@ export function quickView(w, persistent) {
     ${studio ? `<p class="muted small">${t("Le scelte rapide impostano i tempi della prima attività.")}</p>` : ''}
     <form id="quick-form" class="card quick-card">
       <div class="quick-total"><span>${studio ? t("Durata programma") : t("Durata allenamento")}</span><strong id="quick-total">${formatTime(total)}</strong><span class="prepare-badge">${t("+ 0:20 per prepararti")}</span></div>
-      ${studio ? studyFields(w, true) : numberField(t(labels.focus), 'blocks.0.exercises.0.workSec', e.workSec, unit, 1) + numberField(t(labels.rest), 'blocks.0.exercises.0.restBetweenRepsSec', e.restBetweenRepsSec, unit) + numberField(t(labels.rounds), 'blocks.0.exercises.0.repetitions', e.repetitions, '', 1, 100)}
+      ${studio ? studyFields(w, true) : numberField(t(labels.focus), 'blocks.0.exercises.0.workSec', e.workSec, unit, 5) + numberField(t(labels.rest), 'blocks.0.exercises.0.restBetweenRepsSec', e.restBetweenRepsSec, unit) + numberField(t(labels.rounds), 'blocks.0.exercises.0.repetitions', e.repetitions, '', 1, 100)}
       <p id="quick-error" class="field-error" role="status" ${error ? '' : 'hidden'}>${h(t(error))}</p>
       <div class="quick-actions"><button type="submit" class="primary quick-start-button" id="quick-start-button" ${error ? 'disabled' : ''}>${t("Avvia")}</button><button type="button" data-action="quick-save" ${error ? 'disabled' : ''}>${t("Salva {0}", t(labels.noun))}</button></div>
       ${studio ? '' : `<details class="quick-options"><summary>${t("Altre opzioni")}</summary>
         ${numberField(t("Serie"), 'blocks.0.cycles', w.blocks[0].cycles, '', 1, 100)}
-        ${numberField(t("Recupero tra serie"), 'blocks.0.restBetweenCyclesSec', w.blocks[0].restBetweenCyclesSec, '')}
         ${numberField(t(labels.final), 'cooldownSec', w.cooldownSec, '')}
         <p class="muted">${t("Il recupero si applica tra i giri, mai dopo l’ultimo.")}</p>
         <div class="row"><button type="button" data-action="new">${t("Crea {0} personalizzato", t(labels.noun))}</button></div>

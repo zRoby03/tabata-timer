@@ -7,7 +7,7 @@ import { TimerEngine, TimerSignals } from '../js/timer.js';
 import { newWorkout } from '../js/model.js';
 
 function setup() {
-  let clock = 0; const w = newWorkout(); w.blocks[0].exercises[0].workSec = 4;
+  let clock = 0; const w = newWorkout(); w.blocks[0].exercises[0].workSec = 5;
   const t = new TimerEngine(w, () => clock); t.start();
   return { t, cues: new CountdownCues(), advance: ms => { clock += ms; t.tick(); } };
 }
@@ -20,9 +20,9 @@ test('tre, due, uno una sola volta e nessun suono durante pausa o dopo stop', ()
 });
 test('nessuna raffica di segnali arretrati; nuovo giro e precedente ripristinano i segnali', () => {
   const { t, cues, advance } = setup(); advance(19000); assert.equal(cues.read(t), 1); assert.equal(cues.read(t), null);
-  advance(2000); assert.equal(t.index, 0); assert.equal(cues.read(t), 3);
+  advance(3000); assert.equal(t.index, 0); assert.equal(cues.read(t), 3);
   advance(1000); assert.equal(cues.read(t), 2);
-  t.previous(); assert.equal(cues.read(t), null); advance(1000); assert.equal(cues.read(t), 3);
+  t.previous(); assert.equal(cues.read(t), null); advance(2000); assert.equal(cues.read(t), 3);
   const next = setup(); next.advance(17000); assert.equal(cues.read(next.t), 3);
 });
 test('modalità silenziosa non crea sorgenti audio', () => {

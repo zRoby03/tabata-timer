@@ -1,5 +1,34 @@
 # Installazione Windows, passo per passo
 
+## Revisione locale del 24 novembre 2026
+
+Non sono necessari nuovi installer, dipendenze o servizi. Il lavoro corrente si trova nel worktree `tmp/workout-recuperi-audio`, branch locale `codex/workout-recuperi-audio`. Esegui i comandi dalla sua radice, non dal checkout didattico `documentazione`.
+
+```powershell
+Set-Location 'C:\Users\rober\Documents\ChatGPT\Tabata\tmp\workout-recuperi-audio'
+python scripts/generate-horn.py
+python scripts/generate-locales.py
+python -m http.server 5500 --bind 127.0.0.1 --directory web
+```
+
+I generatori leggono solo risorse incluse: `assets/audio/` contiene estratto e tre DING, `locales/messages.json` e `locales/help.json` testi e struttura della Guida. Non richiedono Downloads, YouTube o cartella demo. La cache statica è `tabata-static-workout-audio-20261124`; l’archivio personale è separato. Ricarica il server locale per ricevere la nuova cache, senza cancellare dati del browser.
+
+In un secondo PowerShell, dalla stessa radice:
+
+```powershell
+$env:JAVA_HOME = 'C:\Program Files\Android\Android Studio\jbr'
+$env:ANDROID_HOME = "$env:LOCALAPPDATA\Android\Sdk"
+node --test web/tests/*.test.js
+.\android\gradlew.bat -p android testDebugUnitTest assembleDebug lintDebug
+node scripts/interop-check.mjs
+# Solo su dispositivo/emulatore dedicato, boot completato:
+.\android\gradlew.bat -p android connectedDebugAndroidTest
+```
+
+APK locale: `android/app/build/outputs/apk/debug/app-debug.apk` in questo worktree. `output/Tabata Timer.apk` già consegnato non viene sovrascritto. Per prova USB, dopo aver esportato un JSON, usa `adb install -r` sul nuovo APK se la firma coincide. Non disinstallare per conservare i dati; nessuna pubblicazione o distribuzione è compresa in questa revisione. [Verifiche](testing.md).
+
+Ambiente di questa revisione: Windows, Node 24.22.3, JBR 21, SDK progetto 36, emulatore API 37. L’elenco seguente conserva anche istruzioni e versioni delle revisioni precedenti.
+
 ## 1. Sorgenti e prerequisiti
 
 La radice contiene `web/`, `android/`, `fixtures/`, `scripts/` e `docs/`. Non ci sono `.env`, segreti o chiavi API.
@@ -86,7 +115,7 @@ Tema e colori si scelgono in **Impostazioni → Aspetto**. Queste preferenze ven
 
 CSV esporta solo le sessioni ed è destinato a fogli di calcolo; l'importazione supporta il backup JSON completo v1. I titoli CSV che iniziano con caratteri formula vengono protetti con un apostrofo.
 
-## 5. Preparazione audio della revisione 1.4.5
+## 5. Preparazione audio (origine storica 1.4.5)
 
 Per l’uso dell’app non si installa nulla: tutti i WAV sono inclusi e funzionano offline. Per rigenerarli basta Python standard, dalla radice del progetto:
 
@@ -108,6 +137,8 @@ Il riferimento pubblico è stato acquisito in `tmp/audio-reference/`, convertito
 
 Il sito è stato pubblicato, dopo autorizzazione, su Cloudflare Pages tramite caricamento diretto dello ZIP: [procedura e stato](pubblicazione.md). I sorgenti sono sul repository pubblico [zRoby03/tabata-timer](https://github.com/zRoby03/tabata-timer). Non è configurato un workflow di deploy GitHub e un push non pubblica il sito. Nessun servizio a pagamento o distribuzione pubblica dell'APK è stato attivato. La cronologia delle sezioni successive conserva i passaggi delle revisioni precedenti.
 
+
+## Revisioni precedenti (cronologia, non istruzioni della build attuale)
 
 ## 7. Aggiornamento Android 1.6.0
 

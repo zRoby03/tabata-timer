@@ -1,4 +1,120 @@
 [
-  {"name":"riferimento-220","workout":{"schemaVersion":1,"id":"reference","title":"Riferimento 3:40","description":"Due cicli, tre ripetizioni","color":"#9153b7","warmupSec":0,"cooldownSec":0,"blocks":[{"id":"b1","title":"Blocco","cycles":2,"restBetweenCyclesSec":60,"restAfterBlockSec":90,"exercises":[{"id":"e1","title":"Lavoro","repetitions":3,"workSec":20,"restBetweenRepsSec":10,"restAfterExerciseSec":90}]}]},"expectedMs":220000,"expectedTypes":["WORK","REST_REP","WORK","REST_REP","WORK","REST_CYCLE","WORK","REST_REP","WORK","REST_REP","WORK"]},
-  {"name":"tutti-i-livelli","workout":{"schemaVersion":1,"id":"all","title":"Tutti i livelli","description":"","warmupSec":5,"cooldownSec":7,"blocks":[{"id":"b1","title":"Uno","cycles":2,"restBetweenCyclesSec":11,"restAfterBlockSec":13,"exercises":[{"id":"e1","title":"A","repetitions":2,"workSec":3,"restBetweenRepsSec":2,"restAfterExerciseSec":4},{"id":"e2","title":"B","repetitions":1,"workSec":6,"restBetweenRepsSec":99,"restAfterExerciseSec":99}]},{"id":"b2","title":"Due","cycles":1,"restBetweenCyclesSec":99,"restAfterBlockSec":99,"exercises":[{"id":"e3","title":"C","repetitions":1,"workSec":8,"restBetweenRepsSec":99,"restAfterExerciseSec":99}]}]},"expectedMs":80000,"expectedTypes":["WARMUP","WORK","REST_REP","WORK","REST_EXERCISE","WORK","REST_CYCLE","WORK","REST_REP","WORK","REST_EXERCISE","WORK","REST_BLOCK","WORK","COOLDOWN"]}
+  {
+    "name": "legacy-riferimento-220-nuova-esecuzione-170",
+    "workout": {
+      "schemaVersion": 1,
+      "id": "reference",
+      "title": "Riferimento 3:40",
+      "description": "Due cicli, tre ripetizioni",
+      "color": "#9153b7",
+      "warmupSec": 0,
+      "cooldownSec": 0,
+      "blocks": [
+        {
+          "id": "b1",
+          "title": "Blocco",
+          "cycles": 2,
+          "restBetweenCyclesSec": 60,
+          "restAfterBlockSec": 90,
+          "exercises": [
+            {
+              "id": "e1",
+              "title": "Lavoro",
+              "repetitions": 3,
+              "workSec": 20,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 90
+            }
+          ]
+        }
+      ]
+    },
+    "expectedMs": 170000,
+    "expectedTypes": [
+      "WORK",
+      "REST_REP",
+      "WORK",
+      "REST_REP",
+      "WORK",
+      "REST_REPEAT",
+      "WORK",
+      "REST_REP",
+      "WORK",
+      "REST_REP",
+      "WORK"
+    ]
+  },
+  {
+    "name": "tutti-i-livelli",
+    "workout": {
+      "schemaVersion": 1,
+      "id": "all",
+      "title": "Tutti i livelli",
+      "description": "",
+      "warmupSec": 5,
+      "cooldownSec": 7,
+      "blocks": [
+        {
+          "id": "b1",
+          "title": "Uno",
+          "cycles": 2,
+          "restBetweenCyclesSec": 11,
+          "restAfterBlockSec": 13,
+          "exercises": [
+            {
+              "id": "e1",
+              "title": "A",
+              "repetitions": 2,
+              "workSec": 3,
+              "restBetweenRepsSec": 2,
+              "restAfterExerciseSec": 4
+            },
+            {
+              "id": "e2",
+              "title": "B",
+              "repetitions": 1,
+              "workSec": 6,
+              "restBetweenRepsSec": 99,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        },
+        {
+          "id": "b2",
+          "title": "Due",
+          "cycles": 1,
+          "restBetweenCyclesSec": 99,
+          "restAfterBlockSec": 99,
+          "exercises": [
+            {
+              "id": "e3",
+              "title": "C",
+              "repetitions": 1,
+              "workSec": 8,
+              "restBetweenRepsSec": 99,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        }
+      ]
+    },
+    "expectedMs": 187000,
+    "expectedTypes": [
+      "WARMUP",
+      "WORK",
+      "REST_REP",
+      "WORK",
+      "REST_EXERCISE",
+      "WORK",
+      "REST_REPEAT",
+      "WORK",
+      "REST_REP",
+      "WORK",
+      "REST_EXERCISE",
+      "WORK",
+      "REST_BLOCK",
+      "WORK",
+      "COOLDOWN"
+    ]
+  }
 ]

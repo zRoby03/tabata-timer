@@ -1,0 +1,73 @@
+[
+  {
+    "title": "Workout e Studio",
+    "entries": [
+      {
+        "kind": "p",
+        "text": "Usa lo switch accanto a Tabata Timer: Workout ha tempi in secondi, Studio in minuti. L'ultima modalità utilizzata viene ricordata. Programmi, attività e statistiche sono separati; tema e palette sono comuni. Termina il timer per cambiare modalità."
+      },
+      {
+        "kind": "p",
+        "text": "In Workout ogni esercizio ha il proprio recupero. Passando al blocco successivo viene usato il recupero tra blocchi: non si somma al recupero dell'ultimo esercizio.\nNon c'è un recupero dopo l'ultimo lavoro. Lavori e recuperi attivi durano almeno 5 secondi; il recupero tra blocchi è obbligatorio. Il defaticamento è facoltativo e dura almeno 10 secondi quando attivo."
+      },
+      {
+        "kind": "h3",
+        "text": "Suoni Workout:"
+      },
+      {
+        "kind": "li",
+        "text": "Un ding: inizio del lavoro ordinario."
+      },
+      {
+        "kind": "li",
+        "text": "Un sospiro: inizio del recupero nello stesso blocco."
+      },
+      {
+        "kind": "li",
+        "text": "Due sospiri: inizio del recupero tra blocchi differenti."
+      },
+      {
+        "kind": "li",
+        "text": "Due ding: inizio di un nuovo ciclo oppure del blocco successivo; sostituiscono il ding singolo."
+      },
+      {
+        "kind": "li",
+        "text": "Tre ding: fine dell'ultimo lavoro."
+      },
+      {
+        "kind": "li",
+        "text": "Durante il defaticamento: solo timer visivo, senza altri segnali iniziali e senza bip. Alla sua fine suonano nuovamente gli stessi tre ding. Se il defaticamento è disattivato, rimangono soltanto i tre ding di fine lavoro."
+      },
+      {
+        "kind": "p",
+        "text": "Il conto alla rovescia suona una nota breve sul 3, una sul 2 e una sull'1.\nLa preparazione iniziale dura 20 secondi ed è separata dalla durata dell'allenamento."
+      },
+      {
+        "kind": "p",
+        "text": "In Studio aggiungi le attività e imposta Concentrazione, Sessioni e Pausa. La pausa personale vale solo tra sessioni della stessa attività; Pausa tra attività vale solo tra attività consecutive. Nessuna pausa finale. Nell'anteprima ogni pausa indica l'attività o il passaggio corrispondente. I segnali Studio rimangono quelli attuali: fischio all'inizio della concentrazione, sospiro all'inizio delle pause e campanella finale, con preparazione e 3-2-1."
+      }
+    ]
+  },
+  {
+    "title": "Per conservare un allenamento",
+    "entries": [
+      {
+        "kind": "p",
+        "text": "In Workout premi Salva allenamento; in Studio premi Salva programma di studio. Scegli il nome e conferma Salva sul dispositivo. Ritrovi il programma nella raccolta della stessa modalità."
+      },
+      {
+        "kind": "p",
+        "text": "Sul web usa lo stesso browser, profilo e indirizzo. Android salva nell'app. Per trasferire o conservare una copia indipendente usa Impostazioni → Esporta copia JSON e importala sull'altro dispositivo. Prima di sostituire un archivio, esportalo se vuoi conservarlo."
+      }
+    ]
+  },
+  {
+    "title": "Tema e Colori",
+    "entries": [
+      {
+        "kind": "p",
+        "text": "In Impostazioni scegli Chiaro o Scuro e una palette: Viola, Blu, Verde chiaro, Verde scuro, Azzurro, Arancione, Giallo, Rosso, Rosa. Tema, palette e lingua sono comuni alle modalità e vengono ricordati localmente."
+      }
+    ]
+  }
+]

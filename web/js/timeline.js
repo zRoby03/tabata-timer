@@ -1,41 +1,46 @@
 import { validateWorkout, normalizeWorkout, LIMITS } from './model.js';
 import { isStudio } from './modes.js';
-export function compileTimeline(workout) {
-  validateWorkout(workout);
-  workout = normalizeWorkout(workout); validateWorkout(workout);
+export function compileTimeline(original) {
+  validateWorkout(original);
+  const w = normalizeWorkout(original); validateWorkout(w);
   const phases = []; let total = 0;
-  const studio = isStudio(workout);
-  const add = (type, sec, label, blockId = null, exerciseId = null) => {
+  const add = (type, sec, labelKey, labelArgs = [], metadata = {}) => {
     if (!sec) return;
     total += sec * 1000;
     if (phases.length >= LIMITS.phases || total > LIMITS.totalMs) throw new Error('Allenamento troppo lungo: massimo 10.000 fasi e 24 ore');
-    phases.push({ type, blockId, exerciseId, durationMs: sec * 1000, label });
+    const label = labelKey.replace(/\{(\d+)\}/g, (_, i) => String(labelArgs[i]));
+    phases.push({ type, blockId: null, exerciseId: null, durationMs: sec * 1000, label, labelKey, labelArgs, ...metadata });
   };
-  if (studio) {
-    workout.activities.forEach((a, i) => {
+  if (isStudio(w)) {
+    w.activities.forEach((a, i) => {
+      const metadata = { exerciseId: a.id, activityIndex: i };
       for (let session = 0; session < a.sessions; session++) {
-        add('WORK', a.concentrationSec, `Attività ${i + 1} · ${a.title} · sessione ${session + 1}/${a.sessions}`, null, a.id);
-        if (session < a.sessions - 1) add('REST_REP', a.pauseSec, 'Pausa tra sessioni', null, a.id);
+        add('WORK', a.concentrationSec, 'Attività {0} · {1} · sessione {2}/{3}', [i + 1, a.title, session + 1, a.sessions], metadata);
+        if (session < a.sessions - 1) add('REST_REP', a.pauseSec, 'Pausa {0} — tra sessioni', [a.title], metadata);
       }
-      if (i < workout.activities.length - 1) add('REST_ACTIVITY', workout.restBetweenActivitiesSec, 'Pausa tra attività', null, a.id);
+      if (i < w.activities.length - 1) add('REST_ACTIVITY', w.restBetweenActivitiesSec, 'Pausa {0} → {1} — tra attività', [a.title, w.activities[i + 1].title], metadata);
     });
     return phases;
   }
-  add('WARMUP', workout.warmupSec, 'Riscaldamento');
-  workout.blocks.forEach((b, bi) => {
+  add('WARMUP', w.warmupSec, 'Riscaldamento');
+  w.blocks.forEach((b, bi) => {
     for (let c = 0; c < b.cycles; c++) {
       b.exercises.forEach((e, ei) => {
+        const metadata = { blockId: b.id, exerciseId: e.id, blockIndex: bi, blockTitle: b.title, cycleIndex: c, cycles: b.cycles, exerciseTitle: e.title };
         for (let r = 0; r < e.repetitions; r++) {
-          add('WORK', e.workSec, `${e.title} · giro ${c + 1}/${b.cycles} · ${r + 1}/${e.repetitions}`, b.id, e.id);
-          if (r < e.repetitions - 1) add('REST_REP', e.restBetweenRepsSec, 'Recupero ripetizioni', b.id, e.id);
+          const entryCue = ei === 0 && r === 0 && (bi > 0 || c > 0) ? 'ding2' : 'ding1';
+          add('WORK', e.workSec, '{0} · giro {1}/{2} · {3}/{4}', [e.title, c + 1, b.cycles, r + 1, e.repetitions], { ...metadata, repetitionIndex: r, entryCue });
+          const nextRep = r < e.repetitions - 1, nextExercise = ei < b.exercises.length - 1, nextCycle = c < b.cycles - 1;
+          if (nextRep || nextExercise || nextCycle) {
+            add(nextRep ? 'REST_REP' : nextExercise ? 'REST_EXERCISE' : 'REST_REPEAT', e.restBetweenRepsSec, 'Recupero {0}', [e.title], metadata);
+          } else if (bi < w.blocks.length - 1) {
+            add('REST_BLOCK', b.restAfterBlockSec, 'Recupero Blocco {0} → {1}', [bi + 1, bi + 2], metadata);
+          }
         }
-        if (ei < b.exercises.length - 1) add('REST_EXERCISE', b.restBetweenExercisesSec, 'Recupero tra esercizi', b.id, e.id);
       });
-      if (c < b.cycles - 1) add('REST_CYCLE', b.restBetweenCyclesSec, 'Recupero cicli', b.id);
     }
-    if (bi < workout.blocks.length - 1) add('REST_BLOCK', b.restAfterBlockSec, 'Recupero blocchi', b.id);
   });
-  add('COOLDOWN', workout.cooldownSec, 'Defaticamento');
+  add('COOLDOWN', w.cooldownSec, 'Defaticamento');
   return phases;
 }
 export const plannedMs = phases => phases.reduce((sum, p) => sum + p.durationMs, 0);

@@ -7,6 +7,7 @@ export class CountdownCues {
       this.engine = engine; this.visit = engine.phaseRun; this.played.clear();
     }
     if (engine.state !== 'running') return null;
+    if (engine.currentPhase?.type === 'COOLDOWN') return null;
     const second = Math.ceil(engine.remainingMs / 1000);
     if (second < 1 || second > 3 || this.played.has(second)) return null;
     this.played.add(second);

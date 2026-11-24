@@ -1,36 +1,34 @@
 # Verifiche e criteri di accettazione
 
-Verifiche locali aggiornate il 20 novembre 2026 alla versione 1.8.0, su web e Android. Nessuna pubblicazione o attivazione di servizi a pagamento. Le prove browser usano profili isolati; quelle Android un emulatore dedicato Medium_Phone Android 17/API 37.
+Revisione **locale del 24 novembre 2026**, branch `codex/workout-recuperi-audio`, base main `82d3580`. Nessun commit/push/deploy; checkout didattico e APK consegnato preservati. I numeri storici più sotto non vanno confusi con questa esecuzione.
 
-La 1.8.0 rimuove i pulsanti demo e i testi sotto al timer/piè di pagina, e aggiunge italiano, inglese e spagnolo con rilevamento iniziale e selettore. Le prove complete browser verificano ogni lingua su editor, salvataggi, timer, statistiche, Guida e offline; nomi personali e archivi restano invariati.
+## Esito attuale
 
-## Risultati osservati
-
-| Controllo | Esito |
+| Controllo eseguito | Risultato |
 | --- | --- |
-| JavaScript node:test | 80/80, zero errori |
-| Kotlin/JVM JUnit | 39/39, zero errori |
-| Android suite completa | 16/16, zero errori o test saltati |
-| APK debug 1.8.0, versionCode 15 | Build riuscita |
-| lintDebug | 0 errori, 15 avvisi su SDK/versioni disponibili/suggerimenti API |
-| Browser principale | 8 gruppi: timer, salvataggio, durata 3:40, pausa/ripresa, statistiche, importazione, offline, assenza di rete esterna |
-| Browser casi limite | 9 gruppi: validazione, modalità temporanea, annullamento, Guida, persistenza editor, viewport equivalente al 200%, quota esaurita, storage negato, importazione errata |
-| Aspetto | 9 palette in ordine richiesto; 18 combinazioni tema/palette; contrasto del testo almeno 4,5:1; persistenza e offline |
-| Browser Workout/Studio | 7 gruppi: attività piatte e pause, layout a 320/390/768/1440, preparazione/audio, archivi e statistiche distinti, Guida esatta, conversione legacy senza riscrittura fino al salvataggio, preferenze e offline |
-| Interazioni semplici | Aggiunta/eliminazione Studio, ultima attività protetta; un solo recupero Workout con tre esercizi, nessun campo per esercizio; anteprima coerente |
-| Lingue | Tre flussi browser completi; catalogo comune e segnaposto verificati; Android cambia lingua a timer attivo, mantiene sessione e aggiorna notifica |
-| Web Audio | PCM identici ad Android, fischio 500 ms ×1,2 con gain 1; sospiro 500 ms gain 0,85; altri suoni invariati; nessuna saturazione |
-| Interoperabilità JS → Kotlin → JS | Vecchio Workout 220000 ms; vecchio Studio conservato e timeline aggiornata 14100000 ms; nuovo Workout 83000 ms; nuovo Studio 660000 ms |
+| Node | 94/94, zero fallimenti, nessun test saltato |
+| Kotlin/JVM | 48/48, zero fallimenti/errori/saltati |
+| Android strumentale su Medium_Phone API 37 | Suite completa 17/17; nuovo caso editor/anteprima 1/1, totale 18 casi distinti. Ultima modifica focus: rieseguiti HornTest e BackgroundTimerTest (6/6) |
+| assembleDebug | Riuscito, APK solo nella cartella build |
+| lintDebug | 0 errori, 18 avvisi: 15 precedenti e 3 TypographyDashes nuovi sul testo richiesto “3-2-1” |
+| Interoperabilità | Quattro export Kotlin riletti in JS; dati originali e sessioni storiche conservati, demo nuova 75000 ms |
+| Browser-countdown | 13 WAV decodificati offline; 3-2-1, due finali identici, nessun bip nel defaticamento, coda da 1,92 s completa, stop/skip/mute |
+| Browser-modes | 7 gruppi: Studio invariato, nomi pause, modalità separate, Guida, compatibilità e offline |
+| Browser-languages | IT/EN/ES, nomi personali invariati, tre card Guida, nove palette, responsive e offline |
+| Browser principale | 8 gruppi: timer 2:50, salvataggio, persistenza, pausa/ripresa, statistiche, importazione, offline e rete solo locale |
+| Browser casi limite | 9 gruppi: input invalidi, uso temporaneo, annullamento, Guida, persistenza editor, viewport/target, quota e storage negato, import errato |
+| Browser-simple | Attività Studio aggiunte/eliminate, ultima protetta, recuperi Workout personali e niente vecchi campi |
+| Browser-workout-recuperi | Recuperi indipendenti, visibilità/reorder/copia/eliminazione, minimi 6/7, anteprima per blocco/ciclo, archivi intatti fino a Salva |
 
-Studio: testano pause soltanto tra le sessioni e tra le attività, con nomi, sessioni, conversione minuti/secondi, nessuna pausa finale e statistiche uguali alla timeline. Workout: tre esercizi con recuperi storici differenti usano il valore comune; restano i recuperi tra ripetizioni. Gli archivi originali e le sessioni storiche non vengono modificati dall’adattatore.
+Le fixture condivise coprono recupero personale dopo ripetizione/esercizio/ciclo, sostituzione al confine anche con valori diversi, tre blocchi, zero consentito, finale senza pausa e demo completa. Il rapido 20/10 × 8 con due serie dura 470 secondi, più 20 di preparazione. La demo ha WORK 35, recuperi 30, defaticamento 10: pianificato 75, con preparazione 95; sola coda audio fino a 96,92.
 
-La prova UI Android modifica due attività, la pausa globale e salva il programma con nome; verifica riapertura e separazione dalla modalità Workout. Il database riapre e scambia la nuova struttura Studio. Guida e palette sono verificate anche nell’app. Il servizio in background non è stato modificato: tutti e quattro i test reali della revisione precedente sono stati rieseguiti con il nuovo modello e i nuovi audio.
+I test dei dati verificano conversioni legacy su copia, avviso, export originale e cronologia invariati. Le anteprime e i segnali usano metadati, non stringhe tradotte. [Motivi dei valori attesi aggiornati](recuperi-audio-2026-11-24.md).
 
-I test di background verificano Pausa/Riprendi/Salta/Termina dalla notifica, wake lock rilasciato in pausa e alla fine, distruzione e riapertura dell’Activity, schermo spento, sessioni consecutive senza duplicati e un lettore multimediale in un altro UID. Quel lettore mantiene focus e riproduzione mentre AudioService registra l’avvio dei segnali SoundPool. Il callback pubblico dell’emulatore non espone SoundPool, quindi il test usa la diagnostica del server audio. Non sono stati aperti account Spotify/YouTube.
+Android: prova reale SoundPool sui 13 campioni, finestra focus continua, rilascio e durata finale. Il lettore di prova nel secondo UID continua senza perdite complete/transitorie, consentendo MAY_DUCK; le prove a schermo spento/notifica restano attive. I test unitari iniettano focus negato e callback/scadenze; non simulano il volume percepito di Spotify/YouTube.
 
-La prova reale force-stop sul nuovo APK conserva 2 allenamenti, registra una sola attività interrotta (0 → 1 → 1 ai riavvii) ed elimina il checkpoint. La verifica dell’aspetto conserva Scuro/Giallo dopo la chiusura del processo. Lo script di recupero prepara le notifiche sul solo emulatore dedicato, per evitare che il dialogo di permesso interferisca con i tap automatici.
+Prime esecuzioni: alcune aspettative erano ancora quelle della precedente logica (220 → 170 e 83 → 85); aggiornate dopo calcolo esplicito e aggiunta di fixture indipendenti. Tre test browser lanciati contemporaneamente hanno avuto timeout iniziali senza raggiungere la UI; rieseguiti singolarmente sono passati, senza correzioni al prodotto per quei timeout. Controllo visivo: eliminate classi CSS generiche che coloravano lo sfondo delle nuove righe, per mantenere testo leggibile.
 
-Le prime esecuzioni hanno rilevato aspettative dei test ancora riferite a pausa lunga, sette palette, vecchie etichette e guadagno audio 0,85. I test sono stati aggiornati ai nuovi comportamenti, aggiungendo controlli delle durate e dei dati originali. Una prima partenza dei test Android ha coinciso con l’avvio incompleto dell’emulatore; la suite finale è stata eseguita dopo il boot e si è conclusa senza errori.
+I 18 avvisi Lint non sono soppressi: SDK/target e versioni disponibili (12), suggerimenti KTX (3), tipografia sul conteggio “3-2-1” (3). Nessun aggiornamento indiscriminato delle dipendenze. I tre avvisi tipografici sono mantenuti per rispettare il testo editoriale dell’utente, che non rappresenta un intervallo numerico.
 
 ## Comandi PowerShell
 
@@ -47,7 +45,7 @@ cd ..
 node scripts/interop-check.mjs
 ```
 
-Il comando interoperabilità richiede prima JUnit: quel test genera `android/app/build/interop/android-export-v1.json` partendo dalla fixture web. Non richiede un server.
+Il comando interoperabilità richiede prima JUnit: genera gli export legacy, modalità, semplice e recovery-v2 in `android/app/build/interop/`. Non richiede un server.
 
 Per i test browser, avvia prima il server statico descritto nel README. Playwright è **opzionale e solo per QA**: durante lo sviluppo è stato usato il pacchetto già incluso nel runtime Codex, senza installare dipendenze nel progetto. `PLAYWRIGHT_MODULE` deve puntare al suo `index.mjs`; se Playwright è già disponibile al progetto, la variabile può essere omessa.
 
@@ -61,6 +59,7 @@ node scripts/browser-countdown.mjs
 node scripts/browser-appearance.mjs
 node scripts/browser-modes.mjs
 node scripts/browser-simple.mjs
+node scripts/browser-workout-recuperi.mjs
 node scripts/browser-languages.mjs
 ```
 
@@ -89,6 +88,10 @@ Non sono stati collegati telefoni fisici. Rimangono da verificare: resa e selett
 Il motore web è verificato con salti di clock e ritardi di polling, ma non certificato per avvisi in un browser congelato dal sistema. La UI dichiara il limite. Android dalla 1.6.0 usa un servizio in primo piano e wake lock parziale: background e schermo spento sono coperti dalle nuove prove. Restano da verificare telefoni fisici e politiche energetiche OEM.
 
 Il 20 novembre 2026 è stata autorizzata ed eseguita la pubblicazione; le verifiche sull’origine HTTPS pubblica sono descritte sotto. Non sono stati eseguiti test di migrazione da vecchi schemi Room perché questa è la prima versione (schema esportato 1); i futuri incrementi dovranno aggiungerli.
+
+## Cronologia delle verifiche precedenti
+
+I risultati da qui in avanti riguardano revisioni precedenti, non descrivono le nuove regole audio/recuperi.
 
 ## Note di verifica della localizzazione
 

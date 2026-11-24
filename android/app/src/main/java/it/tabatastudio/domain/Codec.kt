@@ -31,6 +31,7 @@ private fun instant(value: String): Instant {
 }
 fun workoutFromJson(o: JSONObject): Workout {
     val w = Workout(
+        timingVersion = if (o.has("timingVersion")) o.int("timingVersion", 2, 2) else null,
         activities = if (o.has("activities")) o.getJSONArray("activities").objects().map { a -> StudyActivity(a.string("id"), a.string("title"), a.int("concentrationSec", 60), a.int("sessions", 1, 100), a.int("pauseSec")) } else null,
         restBetweenActivitiesSec = if (o.has("activities") || o.has("restBetweenActivitiesSec")) o.int("restBetweenActivitiesSec") else 300,
         mode = if (o.has("mode")) o.string("mode") else "WORKOUT", longBreakSec = if (o.has("longBreakSec")) o.int("longBreakSec") else 0, longBreakEvery = if (o.has("longBreakEvery")) o.int("longBreakEvery", 2, 100) else 4, schemaVersion = o.int("schemaVersion", 1, 1), id = o.string("id"), title = o.string("title"), description = o.string("description"), color = if (o.has("color")) o.string("color") else "#9153b7", warmupSec = o.int("warmupSec"), cooldownSec = o.int("cooldownSec"), blocks = o.getJSONArray("blocks").objects().map { b ->
@@ -44,6 +45,7 @@ fun workoutFromJson(o: JSONObject): Workout {
 fun workoutJson(w: Workout): JSONObject = JSONObject().put("schemaVersion", 1).put("id", w.id).put("title", w.title).put("description", w.description).put("color", w.color).put("warmupSec", w.warmupSec).put("cooldownSec", w.cooldownSec).put("blocks", JSONArray(w.blocks.map { b ->
     JSONObject().also { if (b.restBetweenExercisesSec != null) it.put("restBetweenExercisesSec", b.restBetweenExercisesSec) }.put("id", b.id).put("title", b.title).put("cycles", b.cycles).put("restBetweenCyclesSec", b.restBetweenCyclesSec).put("restAfterBlockSec", b.restAfterBlockSec).put("exercises", JSONArray(b.exercises.map { e -> JSONObject().put("id", e.id).put("title", e.title).put("repetitions", e.repetitions).put("workSec", e.workSec).put("restBetweenRepsSec", e.restBetweenRepsSec).put("restAfterExerciseSec", e.restAfterExerciseSec) }))
 })).also { o ->
+    if (w.timingVersion != null) o.put("timingVersion", w.timingVersion)
     if (w.studio) {
         o.put("mode", w.mode)
         if (w.activities != null) o.put("activities", JSONArray(w.activities.map { a -> JSONObject().put("id", a.id).put("title", a.title).put("concentrationSec", a.concentrationSec).put("sessions", a.sessions).put("pauseSec", a.pauseSec) })).put("restBetweenActivitiesSec", w.restBetweenActivitiesSec)

@@ -6,7 +6,7 @@ import org.junit.Test
 
 class TimelineTest {
     private val sample = Workout(id = "w", blocks = listOf(Block(id = "b", cycles = 2, exercises = listOf(Exercise(id = "e", repetitions = 3, workSec = 20)))))
-    @Test fun reference220() { assertEquals(220000L, plannedMs(compileTimeline(sample))) }
+    @Test fun reference170() { assertEquals(170000L, plannedMs(compileTimeline(sample))) }
     @Test fun noTrailingRest() {
         val one = sample.copy(blocks = listOf(sample.blocks[0].copy(cycles = 1, exercises = listOf(sample.blocks[0].exercises[0].copy(repetitions = 1)))))
         assertEquals(listOf("WORK"), compileTimeline(one).map { it.type })

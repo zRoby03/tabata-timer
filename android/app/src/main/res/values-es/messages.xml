@@ -520,4 +520,35 @@
     <string name="msg_675a6e40f7ef" formatted="false">Preferencia aplicada para esta visita. El navegador no ha podido guardarla.</string>
     <string name="msg_418f499149ed" formatted="false">Pausar</string>
     <string name="msg_7b234f1b8e95" formatted="false">Tabata Timer: Workout en segundos y Studio en minutos. Temporizador gratuito, sin cuenta.</string>
+    <string name="msg_009fa534b103" formatted="false">Usa el selector junto a Tabata Timer: Workout utiliza segundos y Studio utiliza minutos. Se recuerda el último modo utilizado. Los programas, el historial de actividad y las estadísticas están separados; el tema y la paleta son comunes. Finaliza el temporizador antes de cambiar de modo.</string>
+    <string name="msg_a2a66e6bb239" formatted="false">En Workout cada ejercicio tiene su propia recuperación. Al pasar al bloque siguiente se utiliza la recuperación entre bloques: no se suma a la del último ejercicio.\nNo hay recuperación después del último intervalo de trabajo. Las fases activas de trabajo y recuperación duran al menos 5 segundos; la recuperación entre bloques es obligatoria. La vuelta a la calma es opcional y dura al menos 10 segundos cuando está activada.</string>
+    <string name="msg_6b43fd2b7c54" formatted="false">Sonidos de Workout:</string>
+    <string name="msg_3a8a71e06c83" formatted="false">Un ding: empieza el trabajo normal.</string>
+    <string name="msg_3af8a581d85e" formatted="false">Un suspiro: empieza la recuperación dentro del mismo bloque.</string>
+    <string name="msg_a1f3079404d4" formatted="false">Dos suspiros: empieza la recuperación entre bloques diferentes.</string>
+    <string name="msg_c6317277b8b1" formatted="false">Dos dings: empieza un nuevo ciclo o el bloque siguiente; sustituyen al ding individual.</string>
+    <string name="msg_e6742aebf1a1" formatted="false">Tres dings: termina el último intervalo de trabajo.</string>
+    <string name="msg_396acdd5858d" formatted="false">Durante la vuelta a la calma: solo temporizador visual, sin otra señal inicial ni pitidos de cuenta atrás. Al terminar vuelven a sonar los mismos tres dings. Si está desactivada, solo suenan los tres dings del final del trabajo.</string>
+    <string name="msg_dd4c1c043e0a" formatted="false">La cuenta atrás emite una nota breve en el 3, otra en el 2 y otra en el 1.\nLa preparación inicial dura 20 segundos y está separada de la duración del entrenamiento.</string>
+    <string name="msg_df3d23622749" formatted="false">En Studio añade actividades y configura Concentración, Sesiones y Pausa. La pausa de cada actividad se aplica solo entre sus sesiones; Pausa entre actividades se aplica solo entre actividades consecutivas. No hay pausa final. La vista previa identifica la actividad o el cambio correspondiente a cada pausa. Studio conserva los sonidos actuales: silbido al empezar la concentración, suspiro al empezar las pausas y campanilla final, con preparación y cuenta atrás 3-2-1.</string>
+    <string name="msg_ad2b89262e73" formatted="false">En Workout pulsa Guardar entrenamiento; en Studio pulsa Guardar programa de estudio. Escribe un nombre y confirma Guardar en el dispositivo. Encontrarás el programa en la colección del mismo modo.</string>
+    <string name="msg_ab39fae2eeb7" formatted="false">En la web utiliza el mismo navegador, perfil y dirección. Android guarda dentro de la aplicación. Para transferir datos o conservar una copia independiente usa Ajustes → Exportar copia JSON e impórtala en el otro dispositivo. Antes de sustituir un archivo, expórtalo si quieres conservarlo.</string>
+    <string name="msg_5241c0ece35b" formatted="false">En Ajustes elige Claro u Oscuro y una paleta: Violeta, Azul, Verde claro, Verde oscuro, Celeste, Naranja, Amarillo, Rojo, Rosa. Tema, paleta e idioma son comunes a los modos y se recuerdan localmente.</string>
+    <string name="msg_d5aef35751e7" formatted="false">Versión de tiempos no compatible</string>
+    <string name="msg_f62c21050e14" formatted="false">{0}: mínimo {1}</string>
+    <string name="msg_80ccc7ba1d26" formatted="false">Cero o al menos {0}</string>
+    <string name="msg_84615344946e" formatted="false">Pausa de {0} — entre sesiones</string>
+    <string name="msg_c3417ace5021" formatted="false">Pausa {0} → {1} — entre actividades</string>
+    <string name="msg_9be14e17f235" formatted="false">Recuperación de {0}</string>
+    <string name="msg_ffc10397567f" formatted="false">Recuperación Bloque {0} → {1}</string>
+    <string name="msg_ba8f2d3553c0" formatted="false">Bloque {0} — {1}</string>
+    <string name="msg_664dc734c135" formatted="false">Ciclo {0}/{1}</string>
+    <string name="msg_9acc8de62678" formatted="false">{0} · repetición {1}/{2}</string>
+    <string name="msg_050d211c1a52" formatted="false">Dos dings — empieza el ciclo {0}</string>
+    <string name="msg_d1a3dda811c8" formatted="false">Dos dings — empieza el Bloque {0}</string>
+    <string name="msg_29a238f0539d" formatted="false">Dos suspiros — cambio de bloque</string>
+    <string name="msg_67e1fca9626e" formatted="false">Tres dings — fin del trabajo</string>
+    <string name="msg_bbab7b3d8e7a" formatted="false">Tres dings — fin de la vuelta a la calma</string>
+    <string name="msg_029c57d39ec1" formatted="false">Un ding inicia el trabajo; dos dings, un nuevo ciclo o bloque. Dos suspiros anuncian la recuperación entre bloques. Tres dings finalizan el trabajo y la vuelta a la calma; durante esta última el temporizador permanece en silencio.</string>
+    <string name="msg_8823c4bee7da" formatted="false">Entrenamiento anterior: la recuperación personal también se aplica entre ejercicios y ciclos; entre bloques se sustituye por la recuperación del bloque. Los nuevos mínimos solo se aplican a la copia de ejecución. Revisa la duración en la vista previa. El original permanece en el archivo hasta que guardes.</string>
 </resources>

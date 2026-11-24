@@ -2,7 +2,14 @@ package it.tabatastudio.domain
 
 /** Pure read adapter: old records remain in the archive until the edited copy is saved. */
 fun normalizeWorkout(w: Workout): Workout {
-    if (!w.studio) return w.copy(blocks = w.blocks.map { b -> b.copy(restBetweenExercisesSec = b.restBetweenExercisesSec ?: b.exercises.firstOrNull()?.restAfterExerciseSec ?: 15) })
+    if (!w.studio) {
+        if (w.timingVersion == 2) return w
+        fun active(value: Int, minimum: Int) = if (value > 0) value.coerceAtLeast(minimum) else value
+        return w.copy(timingVersion = 2, cooldownSec = active(w.cooldownSec, 10), blocks = w.blocks.mapIndexed { bi, b ->
+            b.copy(restAfterBlockSec = if (bi < w.blocks.lastIndex) b.restAfterBlockSec.coerceAtLeast(5) else b.restAfterBlockSec,
+                exercises = b.exercises.map { e -> e.copy(workSec = e.workSec.coerceAtLeast(5), restBetweenRepsSec = active(e.restBetweenRepsSec, 5)) })
+        })
+    }
     if (w.activities != null) return w.copy(blocks = emptyList(), warmupSec = 0, cooldownSec = 0, longBreakSec = 0, longBreakEvery = 4)
     val activities = mutableListOf<StudyActivity>()
     val boundaries = mutableListOf<Int>()
@@ -25,6 +32,6 @@ fun normalizeWorkout(w: Workout): Workout {
 }
 fun normalizationNotice(w: Workout): String = when {
     w.studio && w.activities == null -> "Programma precedente: le serie diventano attività; pause lunghe e finali sono escluse. La pausa tra attività usa il primo valore precedente. L’originale resta nell’archivio fino al salvataggio."
-    !w.studio && w.blocks.any { b -> b.restBetweenExercisesSec == null && b.exercises.dropLast(1).map { it.restAfterExerciseSec }.distinct().size > 1 } -> "Allenamento precedente: il recupero tra esercizi è ora unico per blocco e usa il primo valore precedente. L’originale resta nell’archivio fino al salvataggio."
+    !w.studio && w.timingVersion != 2 && (normalizeWorkout(w).copy(timingVersion = w.timingVersion) != w || w.blocks.any { it.cycles > 1 || it.exercises.size > 1 }) -> "Allenamento precedente: uso il recupero personale anche tra esercizi e cicli; tra blocchi lo sostituisce il recupero del blocco. Applico i nuovi minimi alla sola copia di esecuzione. Controlla la durata in anteprima. L’originale resta nell’archivio fino al salvataggio."
     else -> ""
 }

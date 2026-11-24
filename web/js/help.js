@@ -1,4 +1,10 @@
 import { t } from './i18n.js';
+import { escapeHtml as h } from './dom.js';
+import { helpSections } from './help-content.js';
 export function helpView() {
-  return `<section class="help-page"><div class="page-heading"><h1>${t("Guida all’uso")}</h1><button data-action="home">${t("Vai al timer")}</button></div><div class="stack"><section class="card"><h2>${t("Workout e Studio")}</h2><p>${t("Usa lo switch accanto a Tabata Timer: Workout ha tempi in secondi, Studio in minuti. L’ultima modalità utilizzata viene ricordata.")}</p><p>${t("Programmi, attività e statistiche sono separati; tema e palette sono comuni.")}</p><p>${t("In Altre opzioni puoi impostare pause e serie personalizzate a tuo piacimento ed ad ogni tua necessità.")}</p><p>${t("Termina il timer per cambiare modalità.")}</p></section><section class="card"><h2>${t("Per conservare un allenamento")}</h2><p>${t("Nel Timer premi Salva allenamento (Workout) o Salva programma di studio (Studio), scegli un nome e conferma Salva sul dispositivo. Lo ritrovi in Allenamenti o Programmi di studio, nella stessa modalità.")}</p><p>${t("Usa lo stesso browser e indirizzo. Per trasferire i dati su Android o conservare una copia, esporta il JSON da Impostazioni e importalo sull’altro dispositivo.")}</p></section><section class="card"><h2>${t("Tema e Colori")}</h2><p>${t("In Impostazioni → Aspetto scegli Chiaro o Scuro e una palette: Viola, Blu, Verde chiaro, Verde scuro, Azzurro, Arancione, Giallo, Rosso, Rosa.")}</p><p>${t("Le preferenze cambiano subito e restano su questo dispositivo.")}</p></section></div></section>`;
+  return `<section class="help-page"><div class="page-heading"><h1>${t('Guida all’uso')}</h1><button data-action="home">${t('Vai al timer')}</button></div><div class="stack">${helpSections.map(section => `<section class="card"><h2>${h(t(section.title))}</h2>${section.entries.map((entry, index, entries) => {
+    const text = h(t(entry.text));
+    if (entry.kind === 'li') return `${entries[index - 1]?.kind !== 'li' ? '<ul>' : ''}<li>${text}</li>${entries[index + 1]?.kind !== 'li' ? '</ul>' : ''}`;
+    return entry.kind === 'h3' ? `<h3>${text}</h3>` : `<p>${text}</p>`;
+  }).join('')}</section>`).join('')}</div></section>`;
 }

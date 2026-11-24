@@ -27,7 +27,7 @@ test('Studio piatto: pause solo tra sessioni e tra attività, mai finali', () =>
   const phases = compileTimeline(w);
   assert.deepEqual(phases.map(p => p.type), ['WORK', 'REST_REP', 'WORK', 'REST_ACTIVITY', 'WORK']);
   assert.deepEqual(phases.map(p => p.durationMs), [60, 120, 60, 240, 180].map(s => s * 1000));
-  assert.equal(phases[1].label, 'Pausa tra sessioni'); assert.equal(phases[3].label, 'Pausa tra attività');
+  assert.equal(phases[1].label, 'Pausa Concentrazione — tra sessioni'); assert.equal(phases[3].label, 'Pausa Concentrazione → Concentrazione — tra attività');
   let now = 0; const timer = new TimerEngine(w, () => now); timer.start(); now = 20000 + plannedMs(phases); timer.tick();
   assert.equal(timer.result.workMs, 300000); assert.equal(timer.result.plannedMs, 660000); assert.equal(timer.result.plannedWorkIntervals, 3);
   w.restBetweenActivitiesSec = 0; w.activities[0].pauseSec = 0;
@@ -48,14 +48,16 @@ test('vecchio Studio: conversione esplicita, originale e cronologia intatti', ()
   assert.equal(new Set(duplicateWorkout(legacy).activities.map(a => a.id)).size, 2);
 });
 
-test('Workout: recupero unico di blocco, solo tra esercizi e ripetizioni conservate', () => {
-  const w = newWorkout(), b = w.blocks[0]; b.restBetweenExercisesSec = 7;
-  b.exercises = [1, 2, 3].map(n => ({ ...newExercise(), title: `E${n}`, repetitions: 2, workSec: 10, restBetweenRepsSec: 3, restAfterExerciseSec: 99 }));
+test('Workout: recuperi personali anche fra esercizi, campi comuni ignorati', () => {
+  const w = newWorkout(), b = w.blocks[0]; b.restBetweenExercisesSec = 99;
+  b.exercises = [1, 2, 3].map(n => ({ ...newExercise(), title: `E${n}`, repetitions: 2, workSec: 10, restBetweenRepsSec: 5+n, restAfterExerciseSec: 99 }));
   const phases = compileTimeline(w);
-  assert.deepEqual(phases.filter(p => p.type === 'REST_EXERCISE').map(p => p.durationMs), [7000, 7000]);
+  assert.deepEqual(phases.filter(p => p.type === 'REST_EXERCISE').map(p => p.durationMs), [6000, 7000]);
   assert.equal(phases.filter(p => p.type === 'REST_REP').length, 3); assert.equal(phases.at(-1).type, 'WORK');
-  delete b.restBetweenExercisesSec; b.exercises[1].restAfterExerciseSec = 20;
-  assert.match(normalizationNotice(w), /primo valore/); assert.equal(normalizeWorkout(w).blocks[0].restBetweenExercisesSec, 99);
+  const legacy=structuredClone(w);delete legacy.timingVersion;
+  assert.match(normalizationNotice(legacy), /recupero personale/);
+  assert.equal(normalizeWorkout(legacy).blocks[0].restBetweenExercisesSec,99);
+  assert.equal(legacy.timingVersion,undefined);
 });
 
 test('nuovi campi Studio: valori interi, identità e limiti controllati', () => {

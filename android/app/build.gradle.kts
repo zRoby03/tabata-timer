@@ -10,8 +10,8 @@ android {
         applicationId = "it.tabatastudio"
         minSdk = 26
         targetSdk = 36
-        versionCode = 16
-        versionName = "1.8.1"
+        versionCode = 17
+        versionName = "1.9.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     bundle { language { enableSplit = false } }

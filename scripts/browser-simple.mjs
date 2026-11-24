@@ -19,13 +19,13 @@ try {
  await page.getByRole('button',{name:'+ Crea allenamento',exact:true}).click();
  await page.getByRole('button',{name:'+ Aggiungi esercizio',exact:true}).click();
  await page.getByRole('button',{name:'+ Aggiungi esercizio',exact:true}).click();
- assert.equal(await page.locator('input[data-path$=".restBetweenExercisesSec"]').count(),1);
+ assert.equal(await page.locator('input[data-path$=".restBetweenExercisesSec"]').count(),0);
  assert.equal(await page.locator('input[data-path$=".restAfterExerciseSec"]').count(),0);
- await page.locator('[data-path="blocks.0.restBetweenExercisesSec"]').fill('7');
- assert.equal(await page.locator('.phase-list li').filter({hasText:'Recupero tra esercizi'}).count(),2);
+ await page.locator('[data-path="blocks.0.exercises.0.restBetweenRepsSec"]').fill('7');
+  assert.equal(await page.locator('.preview-rest').count(),2);
  const labels=await page.locator('#workout-form label').allTextContents();
  assert.ok(labels.every(x=>!/(?:\bmin\b|\bsec\b|\(s\))/.test(x)));
  await page.screenshot({path:'output/screenshots/web-workout-editor-v170-390.png',fullPage:true});
- await writeFile('output/browser-simple.json', JSON.stringify({ version: '1.7.0', studyAddDelete: true, finalActivityProtected: true, workoutSingleRestPerBlock: true, unitSuffixesRemoved: true }, null, 2));
- console.log('Aggiunta/eliminazione Studio, ultima attività protetta, recupero Workout unico anche con tre esercizi: verificati.');
+ await writeFile('output/browser-simple.json', JSON.stringify({ version: '1.7.0', studyAddDelete: true, finalActivityProtected: true, workoutPersonalRest: true, unitSuffixesRemoved: true }, null, 2));
+ console.log('Aggiunta/eliminazione Studio, ultima attività protetta, recuperi personali Workout con tre esercizi: verificati.');
 } finally {await browser.close();}

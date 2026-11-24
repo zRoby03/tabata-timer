@@ -30,13 +30,13 @@ try {
   await page.locator('[data-quick-path="blocks.0.exercises.0.repetitions"]').fill('3');
   await page.getByText('Altre opzioni', { exact: true }).click();
   await page.locator('[data-quick-path="blocks.0.cycles"]').fill('2');
-  assert.equal(await page.locator('#quick-total').textContent(), '3:40');
+  assert.equal(await page.locator('#quick-total').textContent(), '2:50');
   await page.getByRole('button', { name: 'Salva allenamento', exact: true }).click();
   await page.locator('#save-name').fill('Riferimento 3:40');
   assert.equal(await page.evaluate(() => localStorage.length), 0);
   await page.getByRole('button', { name: 'Salva sul dispositivo', exact: true }).click();
   assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('tabata:v1:data')).workouts.some(w => w.title === 'Riferimento 3:40')), true);
-  checks.push('Timer rapido 3:40, nome e conferma esplicita del salvataggio locale');
+  checks.push('Timer rapido 2:50 (recupero personale al confine delle serie), nome e salvataggio locale');
   await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
   await page.getByRole('button', { name: 'Salva cronologia', exact: true }).click();
   await page.reload();
@@ -46,7 +46,7 @@ try {
   await page.getByRole('button', { name: 'Timer', exact: true }).click();
   await page.getByText('Altre opzioni', { exact: true }).click();
   await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').fill('5');
-  await page.locator('[data-quick-path="blocks.0.exercises.0.restBetweenRepsSec"]').fill('2');
+  await page.locator('[data-quick-path="blocks.0.exercises.0.restBetweenRepsSec"]').fill('5');
   await page.locator('[data-quick-path="blocks.0.exercises.0.repetitions"]').fill('2');
   await page.locator('[data-quick-path="blocks.0.cycles"]').fill('1');
   await page.getByRole('button', { name: 'Avvia', exact: true }).click();
@@ -56,7 +56,7 @@ try {
   await page.waitForTimeout(600); await page.getByRole('button', { name: 'Pausa', exact: true }).click();
   const paused = await page.locator('#timer-digits').textContent(); await page.waitForTimeout(1200); assert.equal(await page.locator('#timer-digits').textContent(), paused);
   await page.getByRole('button', { name: 'Riprendi', exact: true }).click();
-  await page.waitForTimeout(12500); await page.getByRole('heading', { name: 'Allenamento completato.' }).waitFor();
+  await page.waitForTimeout(15500); await page.getByRole('heading', { name: 'Allenamento completato.' }).waitFor();
   assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('tabata:v1:data')).sessions.length), 1);
   await page.getByRole('button', { name: 'Vedi attività' }).click(); await page.getByText('Completata', { exact: true }).waitFor();
   checks.push('Demo completa, pausa/ripresa, sessione unica salvata');

@@ -10,6 +10,7 @@ class CountdownCues {
             engine = current; visit = current.phaseRun; played.clear()
         }
         if (current.state != "running") return null
+        if (current.currentPhase?.type == "COOLDOWN") return null
         val second = ((current.remainingMs + 999) / 1000).toInt()
         if (second !in 1..3 || !played.add(second)) return null
         return second

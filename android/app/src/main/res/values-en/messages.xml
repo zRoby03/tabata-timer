@@ -286,7 +286,7 @@
     <string name="msg_45850c8801ef" formatted="false">Break between sessions</string>
     <string name="msg_91c91512df7d" formatted="false">Break · Activity {0}</string>
     <string name="msg_858e4ba7a29f" formatted="false">Pauses</string>
-    <string name="msg_728e25df7a35" formatted="false">Save a workout</string>
+    <string name="msg_728e25df7a35" formatted="false">Saving a workout</string>
     <string name="msg_fb5065f3c8c1" formatted="false">Period</string>
     <string name="msg_0b4528710265" formatted="false">Planned</string>
     <string name="msg_74c0ca2fe102" formatted="false">Plank</string>
@@ -451,7 +451,7 @@
     <string name="msg_2d30a4d9651a" formatted="false">Vibration is not supported in this browser.</string>
     <string name="msg_caeda42e92f6" formatted="false">Purple</string>
     <string name="msg_7b3abf24fddd" formatted="false">Workout</string>
-    <string name="msg_788f73bf9b46" formatted="false">Workout and Studio</string>
+    <string name="msg_788f73bf9b46" formatted="false">Workout and Study</string>
     <string name="msg_5692d6ee3614" formatted="false">Workout in seconds, Studio in minutes. Stop the session to change modes.</string>
     <string name="msg_3e9fec7e32be" formatted="false">ready-made workouts</string>
     <string name="msg_4e07eabe958e" formatted="false">workout</string>
@@ -520,4 +520,35 @@
     <string name="msg_675a6e40f7ef" formatted="false">Preference applied for this visit. The browser could not save it.</string>
     <string name="msg_418f499149ed" formatted="false">Pause</string>
     <string name="msg_7b234f1b8e95" formatted="false">Tabata Timer: Workout in seconds and Studio in minutes. Free timer, no account needed.</string>
+    <string name="msg_009fa534b103" formatted="false">Use the switch beside Tabata Timer: Workout uses seconds and Study uses minutes. Your last mode is remembered. Programs, activity history and statistics are separate; theme and palette are shared. End the timer before switching modes.</string>
+    <string name="msg_a2a66e6bb239" formatted="false">In Workout, each exercise has its own recovery. When moving to the next block, recovery between blocks is used: it is not added to the last exercise\'s recovery.\nThere is no recovery after the final work interval. Active work and recovery phases last at least 5 seconds; recovery between blocks is required. Cooldown is optional and lasts at least 10 seconds when enabled.</string>
+    <string name="msg_6b43fd2b7c54" formatted="false">Workout sounds:</string>
+    <string name="msg_3a8a71e06c83" formatted="false">One ding: ordinary work begins.</string>
+    <string name="msg_3af8a581d85e" formatted="false">One sigh: recovery within the same block begins.</string>
+    <string name="msg_a1f3079404d4" formatted="false">Two sighs: recovery between different blocks begins.</string>
+    <string name="msg_c6317277b8b1" formatted="false">Two dings: a new cycle or the next block begins; they replace the single ding.</string>
+    <string name="msg_e6742aebf1a1" formatted="false">Three dings: the final work interval ends.</string>
+    <string name="msg_396acdd5858d" formatted="false">During cooldown: visual timer only, with no additional starting signal or countdown beeps. The same three dings sound again at its end. Without cooldown, only the three end-of-work dings are played.</string>
+    <string name="msg_dd4c1c043e0a" formatted="false">The countdown plays one short note on 3, one on 2 and one on 1.\nThe initial 20-second preparation is separate from the workout duration.</string>
+    <string name="msg_df3d23622749" formatted="false">In Study, add activities and set Focus, Sessions and Break. Each activity\'s break applies only between its sessions; Break between activities applies only between consecutive activities. There is no final break. The preview names the activity or transition for each break. Study keeps its current sounds: a whistle when focus starts, a sigh when a break starts and a final bell, with preparation and the 3-2-1 countdown.</string>
+    <string name="msg_ad2b89262e73" formatted="false">In Workout choose Save workout; in Study choose Save study program. Enter a name and confirm Save on device. Find the program in the collection for the same mode.</string>
+    <string name="msg_ab39fae2eeb7" formatted="false">On the web, use the same browser, profile and address. Android saves inside the app. To transfer data or keep an independent copy, use Settings → Export JSON backup and import it on the other device. Before replacing an archive, export it if you want to keep it.</string>
+    <string name="msg_5241c0ece35b" formatted="false">In Settings choose Light or Dark and a palette: Purple, Blue, Light green, Dark green, Sky blue, Orange, Yellow, Red, Pink. Theme, palette and language are shared across modes and remembered locally.</string>
+    <string name="msg_d5aef35751e7" formatted="false">Unsupported timing version</string>
+    <string name="msg_f62c21050e14" formatted="false">{0}: minimum {1}</string>
+    <string name="msg_80ccc7ba1d26" formatted="false">Zero or at least {0}</string>
+    <string name="msg_84615344946e" formatted="false">Break for {0} — between sessions</string>
+    <string name="msg_c3417ace5021" formatted="false">Break {0} → {1} — between activities</string>
+    <string name="msg_9be14e17f235" formatted="false">Recovery after {0}</string>
+    <string name="msg_ffc10397567f" formatted="false">Recovery Block {0} → {1}</string>
+    <string name="msg_ba8f2d3553c0" formatted="false">Block {0} — {1}</string>
+    <string name="msg_664dc734c135" formatted="false">Cycle {0}/{1}</string>
+    <string name="msg_9acc8de62678" formatted="false">{0} · repetition {1}/{2}</string>
+    <string name="msg_050d211c1a52" formatted="false">Two dings — cycle {0} starts</string>
+    <string name="msg_d1a3dda811c8" formatted="false">Two dings — Block {0} starts</string>
+    <string name="msg_29a238f0539d" formatted="false">Two sighs — changing blocks</string>
+    <string name="msg_67e1fca9626e" formatted="false">Three dings — work finished</string>
+    <string name="msg_bbab7b3d8e7a" formatted="false">Three dings — cooldown finished</string>
+    <string name="msg_029c57d39ec1" formatted="false">One ding starts work; two dings start a new cycle or block. Two sighs announce recovery between blocks. Three dings end work and cooldown; the timer stays silent during cooldown.</string>
+    <string name="msg_8823c4bee7da" formatted="false">Previous workout: personal recovery also applies between exercises and cycles; block recovery replaces it between blocks. New minimum durations apply only to the execution copy. Check the preview duration. The original stays in the archive until you save.</string>
 </resources>

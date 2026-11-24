@@ -104,3 +104,17 @@ for start in [0, .3, .6]:
         tone = math.sin(2 * math.pi * 1046.5 * t) + .35 * math.sin(2 * math.pi * 2890 * t) + .12 * math.sin(2 * math.pi * 5651 * t)
         bell[round(start * MARKER_RATE) + i] += envelope * tone
 save_marker('workout_finish', bell)
+
+# User-provided Workout cues: preserve original PCM and keep Studio resources unchanged.
+for number in (1, 2, 3):
+    data = Path(f'assets/audio/workout-ding-{number}.wav').read_bytes()
+    for target in (f'web/audio/workout-ding-{number}.wav', f'android/app/src/main/res/raw/workout_ding_{number}.wav'):
+        Path(target).write_bytes(data)
+with wave.open('web/audio/rest-start.wav', 'rb') as source:
+    frames = source.readframes(source.getnframes())
+out = io.BytesIO()
+with wave.open(out, 'wb') as target:
+    target.setnchannels(1); target.setsampwidth(2); target.setframerate(24000)
+    target.writeframes(frames + bytes(4800 * 2) + frames)
+for target in ('web/audio/rest-double.wav', 'android/app/src/main/res/raw/rest_double.wav'):
+    Path(target).write_bytes(out.getvalue())

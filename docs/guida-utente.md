@@ -1,6 +1,6 @@
 # Tabata Timer — Guida all’uso
 
-Versione 1.8.0 · 20 novembre 2026 · Web e Android.
+Revisione locale del 24 novembre 2026 · Web e Android.
 
 Il nome generale è **Tabata Timer**. Lo switch accanto al logo sceglie **Workout** (secondi) o **Studio** (minuti) e ricorda l’ultima modalità. Allenamenti, programmi di studio, attività e statistiche sono separati; i dati precedenti restano in Workout. Tema e palette sono comuni.
 
@@ -83,14 +83,14 @@ Se il web segnala memoria piena o salvataggio non riuscito, la finestra resta ap
 | **Precedente** | In Altri controlli, riavvia la fase precedente. Il lavoro realmente ripetuto resta conteggiato come tempo svolto, senza duplicare gli intervalli completati. |
 | **Termina** | Chiede conferma e registra l’attività come interrotta. Alla conclusione naturale viene registrata come completata. |
 | **Tema e palette** | Impostazioni → Aspetto: tema Chiaro/Scuro e nove colori, con applicazione immediata e salvataggio locale. |
-| **Conto alla rovescia** | Negli ultimi tre secondi suonano tre note singole, una breve sul 3, una sul 2 e una sull’1, con silenzio tra le note. Sono basse nel lavoro, alte nella preparazione, nei recuperi e nel defaticamento. Allo zero il cambio di fase è segnalato da fischietto (lavoro) o sospiro (recupero). Pausa, salto e disattivazione dei suoni interrompono la nota. Se una fase dura meno di 3 s, suonano solo i secondi disponibili. Non vengono riprodotte in raffica note già trascorse dopo un ritardo. |
-| **Inizio lavoro e recupero** | Fischietto e sospiro durano 500 ms ciascuno, con fischio al 120% equivalente e sospiro invariato all’85%. Il sospiro è un estratto del riferimento indicato dall’utente. Bip e campanella restano al 65%. Pausa e ripresa non ripetono il segnale. Per fasi molto brevi il segnale iniziale sostituisce il bip che cadrebbe nello stesso istante. |
-| **Fine allenamento** | Tre ding suonano una sola volta all’inizio del defaticamento, se previsto; altrimenti alla fine dell’ultimo intervallo. Non suonano quando premi Termina. |
+| **Conto alla rovescia** | Una nota breve sul 3, sul 2 e sull’1, basse nel lavoro e alte in preparazione/recupero. Nessun bip nel defaticamento Workout. Pausa, salto e mute interrompono subito il suono. Nessuna raffica arretrata dopo un ritardo. |
+| **Inizio lavoro e recupero** | Workout: un ding ordinario; due ding al primo lavoro del nuovo ciclo/blocco, in sostituzione del singolo. Un sospiro nel blocco, due al cambio blocco. Studio conserva fischio e sospiro da 500 ms. [Dettagli](audio-countdown.md). |
+| **Fine allenamento** | Workout: tre ding al termine naturale dell’ultimo lavoro e di nuovo alla fine del defaticamento, se attivo. Nessun altro segnale o bip nel defaticamento. Senza defaticamento un solo finale. Termina e salto della fase finale non producono un falso finale. Studio mantiene la campanella. |
 | **Altri controlli** | Include Precedente, Suoni, Vibrazione, Schermo intero e Schermo acceso. Audio e vibrazione dipendono dal dispositivo e dai permessi disponibili. |
 | **Allenamenti** | Mostra gli elementi salvati con durata e numero di intervalli. **Avvia** li esegue; **⋯** apre Modifica, Duplica ed Elimina. L’eliminazione richiede conferma. |
 | **Allenamenti pronti** | Aggiunge alla raccolta modelli da usare o modificare. Sul web temporaneo, attiva il salvataggio per conservarli tra visite. |
-| **Editor** | Gestisce nome, descrizione, colore, defaticamento, blocchi e cicli. Ogni esercizio ha lavoro, ripetizioni, recupero tra ripetizioni e tra esercizi. Puoi duplicare, spostare con le frecce o eliminare elementi con conferma. |
-| **Anteprima** | Mostra durata e ordine delle fasi prima di salvare. I recuperi si applicano solo tra gli elementi del relativo livello, mai dopo l’ultimo. Per sequenze lunghe mostra le prime 150 fasi; il timer le esegue tutte. |
+| **Editor** | Workout: nome, descrizione, colore, defaticamento, blocchi/cicli ed esercizi con lavoro, ripetizioni e recupero personale. Recupero tra blocchi solo se segue un altro blocco. Studio: attività piatte e pausa tra attività. Duplicazione, riordino ed eliminazione con conferma. |
+| **Anteprima** | Workout raggruppato per blocco e ciclo, recuperi con il nome dell’esercizio, cambio blocco senza doppia pausa, segnali come annotazioni. Studio: pausa con nome dell’attività e tipo di passaggio. Prime 150 fasi visibili; il timer le esegue tutte. |
 | **Attività** | Mostra sessioni complete e interrotte, data, tempo attivo, lavoro svolto e percentuale di completamento. **Dettagli** aggiunge durata prevista, intervalli, fasi, pause ed eliminazione della singola attività. |
 | **Statistiche** | Si apre da Attività. Filtra ultimi 7, 30 o 90 giorni e uno specifico allenamento. Mostra sessioni per settimana, minuti di lavoro e completamento medio. Grafici e tabelle riportano gli stessi valori. |
 | **Confronto** | Le sessioni dello stesso allenamento si possono confrontare nel tempo. La percentuale misura gli intervalli completati, non la prestazione fisica. Le copie duplicate sono allenamenti distinti. |
@@ -124,16 +124,18 @@ Non ci sono sincronizzazione automatica o collegamenti tra dispositivi: puoi tra
 ## Uso offline e comportamento alla chiusura
 
 - **Web:** dopo il primo caricamento completo vengono conservati i file dell’app per l’uso offline. Gli allenamenti sono conservati separatamente solo quando attivi il salvataggio. Mantieni la pagina visibile: il sistema può sospendere il browser e impedire i suoni. Ricaricare o chiudere durante una sessione non la riprende; per registrarla premi prima Termina.
-- **Android:** l’app funziona senza Internet. Il timer continua quando passi a un’altra app o spegni lo schermo, anche mentre ascolti musica o video. La notifica offre Pausa, Riprendi, Salta e Termina; al primo timer consenti le notifiche. I segnali usano il volume multimediale senza fermare il lettore. [Guida del background](android-background.md). Ruotare lo schermo conserva la sessione. Se il sistema termina il processo, al successivo avvio la sessione viene registrata una sola volta come interrotta fino all’ultimo punto salvato; può mancare circa l’ultimo secondo, o più in caso di errore di memoria.
+- **Android:** l’app funziona senza Internet. Il timer continua quando passi a un’altra app o spegni lo schermo, anche mentre ascolti musica o video. La notifica offre Pausa, Riprendi, Salta e Termina; al primo timer consenti le notifiche. I segnali chiedono una breve attenuazione MAY_DUCK; il comportamento dipende dal lettore, soprattutto per il parlato. Il volume globale non viene modificato. [Guida del background](android-background.md). Ruotare lo schermo conserva la sessione. Se il sistema termina il processo, al successivo avvio la sessione viene registrata una sola volta come interrotta fino all’ultimo punto salvato; può mancare circa l’ultimo secondo, o più in caso di errore di memoria.
 
-Per avvio web, installazione Android e comandi di verifica, vedi [Installazione Windows](setup-windows.md). Nessun servizio a pagamento è necessario e il progetto non è stato pubblicato.
+Per avvio web, installazione Android e comandi di verifica, vedi [Installazione Windows](setup-windows.md). Nessun nuovo servizio o dipendenza è necessario. Questa revisione è locale e non cambia il sito già attivo.
 
-## Semplificazioni della versione 1.7.0
+## Modello semplice aggiornato al 24 novembre 2026
 
-Studio usa attività piatte; Workout conserva i blocchi con un solo Recupero tra esercizi ciascuno. Il vecchio recupero nelle schede esercizio non viene più mostrato. L’anteprima e l’esecuzione usano gli stessi valori. La Guida integrata ha soltanto Workout e Studio, Per conservare un allenamento, Tema e Colori. Le nove palette hanno questo ordine: Viola, Blu, Verde chiaro, Verde scuro, Azzurro, Arancione, Giallo, Rosso, Rosa. Temi Chiaro/Scuro e preferenze restano locali.
+Studio usa attività piatte; Workout conserva blocchi e cicli. Ogni esercizio ha il proprio Recupero; tra blocchi il recupero del blocco sostituisce quello dell’ultimo esercizio. Non c’è un recupero autonomo tra cicli. L’anteprima e l’esecuzione usano gli stessi valori. La Guida integrata ha soltanto Workout e Studio, Per conservare un allenamento, Tema e Colori. Le nove palette hanno questo ordine: Viola, Blu, Verde chiaro, Verde scuro, Azzurro, Arancione, Giallo, Rosso, Rosa. Temi Chiaro/Scuro e preferenze restano locali.
 
 Gli archivi precedenti restano disponibili: quando serve, un avviso spiega la conversione dei campi rimossi. Aprire o usare un programma non lo sovrascrive; salvarne una modifica adotta la nuova struttura. La cronologia esistente non cambia. [Regole di conversione](workout-studio.md#archivi-precedenti).
 
 ## Interfaccia essenziale della versione 1.8.0
 
 I pulsanti demo sono stati rimossi in entrambe le modalità. Sono stati tolti anche il testo sul salvataggio sotto al timer e il piè di pagina web. Per conservare un programma continua a usare Salva allenamento / Salva programma di studio → nome → Salva sul dispositivo. Le impostazioni conservano le informazioni su salvataggio, copie JSON e modalità temporanea.
+
+Minimi Workout: Lavoro 5, Recupero 0 oppure almeno 5, recupero effettivo tra blocchi almeno 5, Defaticamento 0 oppure almeno 10. I valori 6/7 sono validi. I vecchi programmi mostrano un avviso e una copia adattata; l’originale rimane esportabile fino al salvataggio esplicito. Studio mantiene i tempi in minuti.

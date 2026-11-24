@@ -13,12 +13,12 @@ class ContractTest {
         assertEquals(230000L, plannedMs(compileTimeline(w)))
         val b = w.blocks[0]
         val reference = w.copy(blocks = listOf(b.copy(cycles = 2, exercises = listOf(b.exercises[0].copy(repetitions = 3)))))
-        assertEquals(220000L, plannedMs(compileTimeline(reference)))
+        assertEquals(170000L, plannedMs(compileTimeline(reference)))
     }
     private fun resource(name: String) = javaClass.classLoader!!.getResource(name)!!.readText()
     private fun engine(): Pair<TimerEngine, (Long) -> Unit> {
         var clock = 0L
-        val w = Workout(blocks = listOf(Block(exercises = listOf(Exercise(workSec = 2, repetitions = 2, restBetweenRepsSec = 1)))))
+        val w = Workout(blocks = listOf(Block(exercises = listOf(Exercise(workSec = 5, repetitions = 2, restBetweenRepsSec = 5)))))
         val t = TimerEngine(w, { clock }, { Instant.ofEpochMilli(clock).toString() }); t.start(); clock += PREPARATION_MS; t.tick()
         return t to { ms: Long -> clock += ms; t.tick() }
     }
@@ -28,22 +28,22 @@ class ContractTest {
             assertEquals(c.getLong("expectedMs"), plannedMs(phases)); assertEquals(c.getJSONArray("expectedTypes").toString(), JSONArray(phases.map { it.type }).toString())
         }
     }
-    @Test fun timerCatchup() { val (t, advance) = engine(); advance(99999); assertEquals(5000L, t.result!!.elapsedMs); assertEquals(4000L, t.result!!.workMs); assertEquals("COMPLETED", t.result!!.status); assertEquals(3, t.result!!.completedPhases); assertEquals(3, t.result!!.plannedPhases) }
-    @Test fun timerPause() { val (t, advance) = engine(); advance(700); t.pause(); advance(10000); assertEquals(1300L, t.remainingMs); t.resume(); advance(1300); assertEquals(1, t.index); assertEquals(2000L, t.elapsedMs); assertEquals(1, t.pauses) }
-    @Test fun timerSkip() { val (t, advance) = engine(); advance(500); t.skip(); t.skip(); advance(2000); assertEquals(2500L, t.result!!.workMs); assertEquals(1, t.result!!.completedWorkIntervals); assertEquals("INTERRUPTED", t.result!!.status) }
-    @Test fun timerPrevious() { val (t, advance) = engine(); advance(2000); t.previous(); advance(5000); assertEquals(6000L, t.result!!.workMs); assertEquals(2, t.result!!.completedWorkIntervals) }
+    @Test fun timerCatchup() { val (t, advance) = engine(); advance(99999); assertEquals(15000L, t.result!!.elapsedMs); assertEquals(10000L, t.result!!.workMs); assertEquals("COMPLETED", t.result!!.status); assertEquals(3, t.result!!.completedPhases); assertEquals(3, t.result!!.plannedPhases) }
+    @Test fun timerPause() { val (t, advance) = engine(); advance(700); t.pause(); advance(10000); assertEquals(4300L, t.remainingMs); t.resume(); advance(4300); assertEquals(1, t.index); assertEquals(5000L, t.elapsedMs); assertEquals(1, t.pauses) }
+    @Test fun timerSkip() { val (t, advance) = engine(); advance(500); t.skip(); t.skip(); advance(5000); assertEquals(5500L, t.result!!.workMs); assertEquals(1, t.result!!.completedWorkIntervals); assertEquals("INTERRUPTED", t.result!!.status) }
+    @Test fun timerPrevious() { val (t, advance) = engine(); advance(5000); t.previous(); advance(15000); assertEquals(15000L, t.result!!.workMs); assertEquals(2, t.result!!.completedWorkIntervals) }
     @Test fun stopIdempotent() { val (t, advance) = engine(); advance(1000); t.stop(); val s = t.result; t.stop(); assertSame(s, t.result); assertEquals("INTERRUPTED", s!!.status) }
     @Test fun jsonRoundtrip() {
-        val (t, advance) = engine(); advance(5000)
+        val (t, advance) = engine(); advance(15000)
         val backup = Backup(presets(), listOf(t.result!!)); assertEquals(backup, parseBackup(backupJson(backup)))
     }
     @Test fun webFixtureAndAndroidExport() {
-        val backup = parseBackup(resource("backup-web-v1.json")); assertEquals(220000L, plannedMs(compileTimeline(backup.workouts.first())))
+        val backup = parseBackup(resource("backup-web-v1.json")); assertEquals(170000L, plannedMs(compileTimeline(backup.workouts.first())))
         val out = File("build/interop/android-export-v1.json"); out.parentFile!!.mkdirs(); out.writeText(backupJson(backup))
     }
     @Test fun simpleModelsRoundtripAcrossPlatforms() {
         val backup = parseBackup(resource("backup-simple-v1.json"))
-        assertEquals(83000L, plannedMs(compileTimeline(backup.workouts[0])))
+        assertEquals(85000L, plannedMs(compileTimeline(backup.workouts[0])))
         assertEquals(660000L, plannedMs(compileTimeline(backup.workouts[1])))
         assertEquals(backup, parseBackup(backupJson(backup)))
         val out = File("build/interop/android-export-simple-v1.json"); out.parentFile!!.mkdirs(); out.writeText(backupJson(backup))

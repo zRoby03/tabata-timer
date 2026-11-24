@@ -1,0 +1,416 @@
+[
+  {
+    "name": "singolo",
+    "workout": {
+      "schemaVersion": 1,
+      "timingVersion": 2,
+      "id": "fixture",
+      "title": "Prova recuperi",
+      "description": "",
+      "warmupSec": 0,
+      "cooldownSec": 0,
+      "blocks": [
+        {
+          "id": "b1",
+          "title": "Blocco 1",
+          "cycles": 1,
+          "restBetweenCyclesSec": 60,
+          "restBetweenExercisesSec": 42,
+          "restAfterBlockSec": 5,
+          "exercises": [
+            {
+              "id": "e1",
+              "title": "Squat",
+              "repetitions": 1,
+              "workSec": 5,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        }
+      ],
+      "color": "#9153b7"
+    },
+    "expectedMs": 5000,
+    "expectedTypes": [
+      "WORK"
+    ]
+  },
+  {
+    "name": "ripetizioni",
+    "workout": {
+      "schemaVersion": 1,
+      "timingVersion": 2,
+      "id": "fixture",
+      "title": "Prova recuperi",
+      "description": "",
+      "warmupSec": 0,
+      "cooldownSec": 0,
+      "blocks": [
+        {
+          "id": "b1",
+          "title": "Blocco 1",
+          "cycles": 1,
+          "restBetweenCyclesSec": 60,
+          "restBetweenExercisesSec": 42,
+          "restAfterBlockSec": 5,
+          "exercises": [
+            {
+              "id": "e1",
+              "title": "Squat",
+              "repetitions": 3,
+              "workSec": 5,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        }
+      ],
+      "color": "#9153b7"
+    },
+    "expectedMs": 35000,
+    "expectedTypes": [
+      "WORK",
+      "REST_REP",
+      "WORK",
+      "REST_REP",
+      "WORK"
+    ]
+  },
+  {
+    "name": "esercizi",
+    "workout": {
+      "schemaVersion": 1,
+      "timingVersion": 2,
+      "id": "fixture",
+      "title": "Prova recuperi",
+      "description": "",
+      "warmupSec": 0,
+      "cooldownSec": 0,
+      "blocks": [
+        {
+          "id": "b1",
+          "title": "Blocco 1",
+          "cycles": 1,
+          "restBetweenCyclesSec": 60,
+          "restBetweenExercisesSec": 42,
+          "restAfterBlockSec": 5,
+          "exercises": [
+            {
+              "id": "e1",
+              "title": "Squat",
+              "repetitions": 1,
+              "workSec": 5,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 99
+            },
+            {
+              "id": "e2",
+              "title": "Push-up",
+              "repetitions": 1,
+              "workSec": 5,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        }
+      ],
+      "color": "#9153b7"
+    },
+    "expectedMs": 20000,
+    "expectedTypes": [
+      "WORK",
+      "REST_EXERCISE",
+      "WORK"
+    ]
+  },
+  {
+    "name": "ripeti-blocco",
+    "workout": {
+      "schemaVersion": 1,
+      "timingVersion": 2,
+      "id": "fixture",
+      "title": "Prova recuperi",
+      "description": "",
+      "warmupSec": 0,
+      "cooldownSec": 0,
+      "blocks": [
+        {
+          "id": "b1",
+          "title": "Blocco 1",
+          "cycles": 2,
+          "restBetweenCyclesSec": 60,
+          "restBetweenExercisesSec": 42,
+          "restAfterBlockSec": 5,
+          "exercises": [
+            {
+              "id": "e1",
+              "title": "Squat",
+              "repetitions": 1,
+              "workSec": 5,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        }
+      ],
+      "color": "#9153b7"
+    },
+    "expectedMs": 20000,
+    "expectedTypes": [
+      "WORK",
+      "REST_REPEAT",
+      "WORK"
+    ]
+  },
+  {
+    "name": "sostituzione-diversi",
+    "workout": {
+      "schemaVersion": 1,
+      "timingVersion": 2,
+      "id": "fixture",
+      "title": "Prova recuperi",
+      "description": "",
+      "warmupSec": 0,
+      "cooldownSec": 0,
+      "blocks": [
+        {
+          "id": "b1",
+          "title": "Blocco 1",
+          "cycles": 1,
+          "restBetweenCyclesSec": 60,
+          "restBetweenExercisesSec": 42,
+          "restAfterBlockSec": 5,
+          "exercises": [
+            {
+              "id": "e1",
+              "title": "Squat",
+              "repetitions": 1,
+              "workSec": 5,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        },
+        {
+          "id": "b2",
+          "title": "Blocco 2",
+          "cycles": 1,
+          "restBetweenCyclesSec": 60,
+          "restBetweenExercisesSec": 42,
+          "restAfterBlockSec": 5,
+          "exercises": [
+            {
+              "id": "e2",
+              "title": "Push-up",
+              "repetitions": 1,
+              "workSec": 5,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        }
+      ],
+      "color": "#9153b7"
+    },
+    "expectedMs": 15000,
+    "expectedTypes": [
+      "WORK",
+      "REST_BLOCK",
+      "WORK"
+    ]
+  },
+  {
+    "name": "tre-blocchi",
+    "workout": {
+      "schemaVersion": 1,
+      "timingVersion": 2,
+      "id": "fixture",
+      "title": "Prova recuperi",
+      "description": "",
+      "warmupSec": 0,
+      "cooldownSec": 0,
+      "blocks": [
+        {
+          "id": "b1",
+          "title": "Blocco 1",
+          "cycles": 1,
+          "restBetweenCyclesSec": 60,
+          "restBetweenExercisesSec": 42,
+          "restAfterBlockSec": 5,
+          "exercises": [
+            {
+              "id": "e1",
+              "title": "Squat",
+              "repetitions": 1,
+              "workSec": 5,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        },
+        {
+          "id": "b2",
+          "title": "Blocco 2",
+          "cycles": 1,
+          "restBetweenCyclesSec": 60,
+          "restBetweenExercisesSec": 42,
+          "restAfterBlockSec": 10,
+          "exercises": [
+            {
+              "id": "e2",
+              "title": "Push-up",
+              "repetitions": 1,
+              "workSec": 5,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        },
+        {
+          "id": "b3",
+          "title": "Blocco 3",
+          "cycles": 1,
+          "restBetweenCyclesSec": 60,
+          "restBetweenExercisesSec": 42,
+          "restAfterBlockSec": 5,
+          "exercises": [
+            {
+              "id": "e3",
+              "title": "Plank",
+              "repetitions": 1,
+              "workSec": 5,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        }
+      ],
+      "color": "#9153b7"
+    },
+    "expectedMs": 30000,
+    "expectedTypes": [
+      "WORK",
+      "REST_BLOCK",
+      "WORK",
+      "REST_BLOCK",
+      "WORK"
+    ]
+  },
+  {
+    "name": "recuperi-zero",
+    "workout": {
+      "schemaVersion": 1,
+      "timingVersion": 2,
+      "id": "fixture",
+      "title": "Prova recuperi",
+      "description": "",
+      "warmupSec": 0,
+      "cooldownSec": 0,
+      "blocks": [
+        {
+          "id": "b1",
+          "title": "Blocco 1",
+          "cycles": 2,
+          "restBetweenCyclesSec": 60,
+          "restBetweenExercisesSec": 42,
+          "restAfterBlockSec": 5,
+          "exercises": [
+            {
+              "id": "e1",
+              "title": "Squat",
+              "repetitions": 2,
+              "workSec": 5,
+              "restBetweenRepsSec": 0,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        }
+      ],
+      "color": "#9153b7"
+    },
+    "expectedMs": 20000,
+    "expectedTypes": [
+      "WORK",
+      "WORK",
+      "WORK",
+      "WORK"
+    ]
+  },
+  {
+    "name": "demo-completa",
+    "workout": {
+      "schemaVersion": 1,
+      "timingVersion": 2,
+      "id": "fixture",
+      "title": "Prova recuperi",
+      "description": "",
+      "warmupSec": 0,
+      "cooldownSec": 10,
+      "blocks": [
+        {
+          "id": "b1",
+          "title": "Blocco 1",
+          "cycles": 2,
+          "restBetweenCyclesSec": 60,
+          "restBetweenExercisesSec": 42,
+          "restAfterBlockSec": 5,
+          "exercises": [
+            {
+              "id": "e1",
+              "title": "Squat",
+              "repetitions": 2,
+              "workSec": 5,
+              "restBetweenRepsSec": 5,
+              "restAfterExerciseSec": 99
+            },
+            {
+              "id": "e2",
+              "title": "Push-up",
+              "repetitions": 1,
+              "workSec": 5,
+              "restBetweenRepsSec": 5,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        },
+        {
+          "id": "b2",
+          "title": "Blocco 2",
+          "cycles": 1,
+          "restBetweenCyclesSec": 60,
+          "restBetweenExercisesSec": 42,
+          "restAfterBlockSec": 5,
+          "exercises": [
+            {
+              "id": "e3",
+              "title": "Plank",
+              "repetitions": 1,
+              "workSec": 5,
+              "restBetweenRepsSec": 10,
+              "restAfterExerciseSec": 99
+            }
+          ]
+        }
+      ],
+      "color": "#9153b7"
+    },
+    "expectedMs": 75000,
+    "expectedTypes": [
+      "WORK",
+      "REST_REP",
+      "WORK",
+      "REST_EXERCISE",
+      "WORK",
+      "REST_REPEAT",
+      "WORK",
+      "REST_REP",
+      "WORK",
+      "REST_EXERCISE",
+      "WORK",
+      "REST_BLOCK",
+      "WORK",
+      "COOLDOWN"
+    ]
+  }
+]

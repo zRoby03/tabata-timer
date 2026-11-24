@@ -37,7 +37,7 @@ class UiTest {
     private fun startDemo() {
         homeReady()
         compose.onNodeWithContentDescription("Lavoro").performTextReplacement("5")
-        compose.onNodeWithContentDescription("Recupero").performTextReplacement("2")
+        compose.onNodeWithContentDescription("Recupero").performTextReplacement("5")
         compose.onNodeWithContentDescription("Giri").performTextReplacement("2")
         compose.onNodeWithText("Avvia").performScrollTo().performClick()
         compose.onNodeWithText("Preparazione").assertExists()
@@ -76,7 +76,7 @@ class UiTest {
         compose.onNodeWithText("Workout e Studio").assertExists()
         compose.onNodeWithText("Tema e Colori").assertExists()
         compose.onNodeWithText("Parti in pochi tocchi").assertDoesNotExist()
-        compose.onNodeWithText("In Altre opzioni puoi impostare pause e serie personalizzate a tuo piacimento ed ad ogni tua necessità.").assertExists()
+        compose.onNodeWithText("Un ding: inizio del lavoro ordinario.", substring = true).assertExists()
     }
     @Test fun demoAndRotation() {
         startDemo()
@@ -112,6 +112,30 @@ class UiTest {
         compose.onNodeWithContentDescription("Opzioni per Tabata classico").performClick()
         compose.onNodeWithText("Modifica").performClick()
         compose.onNodeWithText("Modifica allenamento").assertExists()
+    }
+    @Test fun personalRecoveriesAndBlockPreview() {
+        homeReady()
+        lateinit var vm: it.tabatastudio.ui.StudioViewModel
+        compose.activityRule.scenario.onActivity { activity ->
+            vm = androidx.lifecycle.ViewModelProvider(activity)[it.tabatastudio.ui.StudioViewModel::class.java]
+            val blocks = (1..3).map { n -> it.tabatastudio.domain.Block(
+                id = "test_block_$n", title = "Circuito $n", cycles = if (n == 1) 2 else 1,
+                restAfterBlockSec = n * 5, exercises = listOf(it.tabatastudio.domain.Exercise(
+                    id = "test_ex_$n", title = "Movimento $n", workSec = 5, restBetweenRepsSec = 5))) }
+            vm.edit(it.tabatastudio.domain.Workout(id = "test_editor", title = "Prova recuperi", timingVersion = 2, blocks = blocks))
+        }
+        compose.onAllNodesWithText("Recupero tra blocchi").assertCountEquals(2)
+        compose.onAllNodesWithText("Recupero").assertCountEquals(3)
+        compose.onNodeWithText("Recupero tra cicli").assertDoesNotExist()
+        compose.onNodeWithText("Recupero tra esercizi").assertDoesNotExist()
+        compose.onAllNodesWithText("↑ Blocco")[2].performScrollTo().performClick()
+        org.junit.Assert.assertEquals(listOf(5, 15, 10), vm.draft!!.blocks.map { it.restAfterBlockSec })
+        compose.onAllNodesWithText("Recupero tra blocchi").assertCountEquals(2)
+        compose.onNodeWithText("Ciclo 2/2").performScrollTo().assertExists()
+        compose.onNodeWithText("Recupero Movimento 1").performScrollTo().assertExists()
+        compose.onNodeWithText("Recupero Blocco 1 → 2").performScrollTo().assertExists()
+        compose.onNodeWithText("Due ding — inizio ciclo 2").performScrollTo().assertExists()
+        compose.onNodeWithText("Tre ding — fine lavoro").performScrollTo().assertExists()
     }
     @Test fun studioModeMinutesSaveAndSeparation() {
         homeReady()

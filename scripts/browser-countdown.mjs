@@ -21,7 +21,7 @@ try {
     AudioContext.prototype.decodeAudioData = async function (...args) {
       const file = window.__assetInputs.get(args[0]);
       const buffer = await decode.apply(this, args), data = buffer.getChannelData(0);
-      const marker = { 'work-start.wav': 'whistle', 'rest-start.wav': 'sigh', 'workout-finish.wav': 'finish' }[file];
+      const marker = { 'work-start.wav': 'whistle', 'rest-start.wav': 'sigh', 'workout-finish.wav': 'finish', 'workout-ding-1.wav': 'ding1', 'workout-ding-2.wav': 'ding2', 'workout-ding-3.wav': 'ding3', 'rest-double.wav': 'double-sigh' }[file];
       if (marker) { window.__clipNames.set(buffer, marker); window.__hornDecoded++; return buffer; }
       const expected = { 'work-3': 330, 'work-2': 370, 'work-1': 440, 'rest-3': 660, 'rest-2': 740, 'rest-1': 880 };
       const start = Math.round(buffer.sampleRate * .005), end = Math.round(buffer.sampleRate * (buffer.duration - .015));
@@ -54,18 +54,17 @@ try {
   await page.evaluate(async () => { await navigator.serviceWorker.ready; });
   await page.reload(); await page.getByRole('heading', { name: 'Tabata Timer', exact: true }).waitFor();
   await context.setOffline(true); await page.reload();
-  await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').fill('4');
-  await page.locator('[data-quick-path="blocks.0.exercises.0.restBetweenRepsSec"]').fill('4');
+  await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').fill('5');
+  await page.locator('[data-quick-path="blocks.0.exercises.0.restBetweenRepsSec"]').fill('5');
   await page.locator('[data-quick-path="blocks.0.exercises.0.repetitions"]').fill('2');
   await page.getByText('Altre opzioni', { exact: true }).click();
-  await page.locator('[data-quick-path="cooldownSec"]').fill('4');
+  await page.locator('[data-quick-path="cooldownSec"]').fill('10');
   await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
   await page.getByRole('button', { name: 'Salva cronologia', exact: true }).click();
   await page.getByRole('button', { name: 'Timer', exact: true }).click();
   await page.getByRole('button', { name: 'Avvia', exact: true }).click();
   await page.getByRole('heading', { name: 'Preparazione', exact: true }).waitFor();
-  assert.equal(await page.locator('#timer-digits').textContent(), '0:20');
-  await page.waitForFunction(() => window.__hornDecoded === 9);
+  await page.waitForFunction(() => window.__hornDecoded === 13);
   const at = async (time, digits, notes) => {
     await page.evaluate(value => { window.__timerClock = value; }, time);
     await page.waitForFunction(expected => document.querySelector('#timer-digits').textContent === expected, digits);
@@ -75,51 +74,35 @@ try {
   await page.getByRole('button', { name: 'Pausa', exact: true }).click();
   await at(27000, '0:03', 1);
   await page.getByRole('button', { name: 'Riprendi', exact: true }).click();
-  await at(28000, '0:02', 2); await at(29000, '0:01', 3);
-  await at(30000, '0:04', 4); await page.getByRole('heading', { name: 'Lavoro', exact: true }).waitFor();
-  await at(31000, '0:03', 5); await at(31500, '0:03', 5); await at(32000, '0:02', 6); await at(33000, '0:01', 7);
-  await at(34000, '0:04', 8); await page.getByRole('heading', { name: 'Recupero', exact: true }).waitFor();
-  await at(35000, '0:03', 9); await at(36000, '0:02', 10); await at(37000, '0:01', 11);
-  await at(38000, '0:04', 12); await at(39000, '0:03', 13); await at(40000, '0:02', 14); await at(41000, '0:01', 15);
-  await at(42000, '0:04', 16); await page.getByRole('heading', { name: 'Defaticamento', exact: true }).waitFor();
-  await at(43000, '0:03', 17); await at(44000, '0:02', 18); await at(45000, '0:01', 19); await at(46000, '0:00', 19);
-  const rates = await page.evaluate(() => __hornRates);
-  assert.deepEqual(rates, Array(19).fill(1));
-  const samples = await page.evaluate(() => __hornSamples);
-  assert.deepEqual(samples, ['rest-3', 'rest-2', 'rest-1', 'whistle', 'work-3', 'work-2', 'work-1', 'sigh', 'rest-3', 'rest-2', 'rest-1', 'whistle', 'work-3', 'work-2', 'work-1', 'finish', 'rest-3', 'rest-2', 'rest-1']);
-  const events = await page.evaluate(() => __hornEvents);
-  assert.deepEqual(events.map(e => e.at), [17000, 28000, 29000, ...Array.from({ length: 16 }, (_, i) => (30 + i) * 1000)]);
-  events.forEach((event, i) => assert.ok(Math.abs(event.duration - ({ whistle: .5, sigh: .5, finish: .9 }[samples[i]] ?? .12)) < .001));
-  events.forEach((event, i) => assert.ok(Math.abs(event.volume - (samples[i] === 'whistle' ? 1 : samples[i] === 'sigh' ? .85 : .65)) < .00001));
-  const session = await page.evaluate(() => JSON.parse(localStorage.getItem('tabata:v1:data')).sessions[0]);
-  assert.equal(session.plannedMs, 16000); assert.equal(session.elapsedMs, 16000); assert.equal(session.workMs, 8000); assert.equal(session.pauses, 1);
-  // A one-second interval: phase-start whistle has priority over the coincident beep.
-  await page.getByRole('button', { name: 'Nuovo timer', exact: true }).click();
+  for(const [time,digits,count] of [[28000,'0:02',2],[29000,'0:01',3],[30000,'0:05',4],[31000,'0:04',4],[32000,'0:03',5],[33000,'0:02',6],[34000,'0:01',7],[35000,'0:05',8],[37000,'0:03',9],[38000,'0:02',10],[39000,'0:01',11],[40000,'0:05',12],[42000,'0:03',13],[43000,'0:02',14],[44000,'0:01',15],[45000,'0:10',16],[52000,'0:03',16],[53000,'0:02',16],[54000,'0:01',16],[55000,'0:00',17]]) await at(time,digits,count);
+  const samples=await page.evaluate(()=>__hornSamples),events=await page.evaluate(()=>__hornEvents);
+  assert.deepEqual(samples,['rest-3','rest-2','rest-1','ding1','work-3','work-2','work-1','sigh','rest-3','rest-2','rest-1','ding1','work-3','work-2','work-1','ding3','ding3']);
+  assert.deepEqual(events.map(e=>e.at),[17,28,29,30,32,33,34,35,37,38,39,40,42,43,44,45,55].map(s=>s*1000));
+  events.forEach((event,i)=>{
+    assert.ok(Math.abs(event.duration-({ding1:1.05,ding3:1.92,sigh:.5}[samples[i]]??.12))<.001);
+    assert.ok(Math.abs(event.volume-(samples[i]==='sigh'?.85:.65))<.00001);
+  });
+  const session=await page.evaluate(()=>JSON.parse(localStorage.getItem('tabata:v1:data')).sessions[0]);
+  assert.equal(session.plannedMs,25000);assert.equal(session.elapsedMs,25000);assert.equal(session.workMs,10000);assert.equal(session.pauses,1);
+  const stopCount=await page.evaluate(()=>__stopEvents.filter(e=>e.clip==='ding3').length);
+  await page.waitForTimeout(2050);
+  assert.equal(await page.evaluate(()=>__stopEvents.filter(e=>e.clip==='ding3').length),stopCount);
+  await page.getByRole('button',{name:'Nuovo timer',exact:true}).click();
   await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').fill('1');
+  assert.equal(await page.getByRole('button',{name:'Avvia',exact:true}).isDisabled(),true);
+  await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').fill('5');
   await page.locator('[data-quick-path="blocks.0.exercises.0.restBetweenRepsSec"]').fill('0');
   await page.locator('[data-quick-path="blocks.0.exercises.0.repetitions"]').fill('1');
-  await page.getByText('Altre opzioni', { exact: true }).click();
-  await page.locator('[data-quick-path="cooldownSec"]').fill('0');
-  const beforeShort = await page.evaluate(() => __hornSamples.length);
-  await page.getByRole('button', { name: 'Avvia', exact: true }).click();
-  await page.getByRole('button', { name: 'Salta →', exact: true }).click();
-  assert.deepEqual(await page.evaluate(n => __hornSamples.slice(n), beforeShort), ['whistle']);
-  await page.evaluate(() => { window.__timerClock = 47000; });
-  await page.getByRole('heading', { name: 'Allenamento completato.', exact: true }).waitFor();
-  assert.deepEqual(await page.evaluate(n => __hornSamples.slice(n), beforeShort), ['whistle', 'finish']);
-  const stopCount = await page.evaluate(() => __stopEvents.filter(e => e.clip === 'finish').length);
-  await page.waitForTimeout(1100);
-  assert.equal(await page.evaluate(() => __stopEvents.filter(e => e.clip === 'finish').length), stopCount);
-  // Manual interruption must never be announced as completed training.
-  await page.getByRole('button', { name: 'Nuovo timer', exact: true }).click();
-  const beforeStop = await page.evaluate(() => __hornSamples.length);
-  await page.getByRole('button', { name: 'Avvia', exact: true }).click();
-  await page.getByRole('button', { name: 'Salta →', exact: true }).click();
-  page.once('dialog', d => d.accept());
-  await page.getByRole('button', { name: 'Termina', exact: true }).click();
-  await page.getByRole('heading', { name: 'Sessione interrotta.', exact: true }).waitFor();
-  assert.deepEqual(await page.evaluate(n => __hornSamples.slice(n), beforeStop), ['whistle']);
-  assert.deepEqual(errors, []);
-  await writeFile('output/browser-countdown.json', JSON.stringify({ offline: true, shortIntervalPriority: true, completionWithoutCooldown: true, finishPlaysToEnd: true, noBellOnManualStop: true, preparationMs: 20000, hornRates: rates, hornSamples: samples, noteEvents: events, elapsedMs: session.elapsedMs, workMs: session.workMs, pauses: session.pauses, errors }, null, 2));
-  console.log('Offline: bip 3-2-1 conservati, fischietto e sospiro 500 ms con fischio PCM 120% e sospiro 85%, conto basso nel lavoro e alto nel riposo, tre ding prima del defaticamento; pause senza duplicati e statistiche corrette.');
-} finally { await browser.close(); }
+  await page.getByText('Altre opzioni',{exact:true}).click();await page.locator('[data-quick-path="cooldownSec"]').fill('0');
+  const beforeShort=await page.evaluate(()=>__hornSamples.length);
+  await page.getByRole('button',{name:'Avvia',exact:true}).click();await page.getByRole('button',{name:'Salta →',exact:true}).click();
+  assert.deepEqual(await page.evaluate(n=>__hornSamples.slice(n),beforeShort),['ding1']);
+  await page.evaluate(()=>{window.__timerClock=60000;});await page.getByRole('heading',{name:'Allenamento completato.',exact:true}).waitFor();
+  assert.deepEqual(await page.evaluate(n=>__hornSamples.slice(n),beforeShort),['ding1','ding3']);
+  await page.getByRole('button',{name:'Nuovo timer',exact:true}).click();const beforeStop=await page.evaluate(()=>__hornSamples.length);
+  await page.getByRole('button',{name:'Avvia',exact:true}).click();await page.getByRole('button',{name:'Salta →',exact:true}).click();page.once('dialog',d=>d.accept());await page.getByRole('button',{name:'Termina',exact:true}).click();
+  await page.getByRole('heading',{name:'Sessione interrotta.',exact:true}).waitFor();assert.deepEqual(await page.evaluate(n=>__hornSamples.slice(n),beforeStop),['ding1']);
+  assert.deepEqual(errors,[]);
+  await writeFile('output/browser-countdown.json',JSON.stringify({offline:true,minimumInputs:true,completeFinalTail:true,silentCooldown:true,actualDecodedEvents:events,session,errors},null,2));
+  console.log('Offline: 13 WAV decodificati, 3-2-1, due finali ding identici, defaticamento silenzioso, campione finale completo e controlli verificati.');
+}finally{await browser.close();}

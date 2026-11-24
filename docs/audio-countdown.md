@@ -1,69 +1,42 @@
 # Segnali sonori di Tabata Timer
 
-Ogni avvio include 20 secondi di preparazione, separati dall’allenamento. Alla fine di ogni fase suonano **tre note singole in tre secondi complessivi**: una sul 3, una sul 2, una sull’1. Ogni nota è un bip di circa 120 millisecondi, con attacco immediato e silenzio fino al numero successivo. Allo zero, il segnale della nuova fase distingue lavoro, recupero e conclusione dell’allenamento.
+## Preparazione e conto alla rovescia
 
-Le stesse regole valgono in Studio: lavoro significa concentrazione, recupero significa pausa e non è prevista una pausa finale. Anche Studio inizia con 20 secondi di preparazione, tre bip alti e fischio al primo turno.
+Ogni avvio aggiunge 20 secondi di preparazione, esclusi da durata pianificata e statistiche. Negli ultimi tre secondi delle fasi attive suona un bip breve sul 3, sul 2 e sull’1: circa 120 ms ciascuno, senza note prolungate o avvisi arretrati in raffica. Lavoro e concentrazione usano 330/370/440 Hz; preparazione e recuperi 660/740/880 Hz. Il defaticamento Workout non emette bip.
 
-## Segnali di cambio turno
+## Workout
 
-| Quando | Suono | Durata |
-| --- | --- | --- |
-| Inizia ogni intervallo di lavoro | Fischio da arbitro dal timbro morbido | 500 ms |
-| Inizia un recupero tra ripetizioni, esercizi, cicli o blocchi Workout, oppure tra sessioni e attività Studio | Sospiro tratto dal riferimento dell’utente | 500 ms |
-| Inizia il defaticamento, oppure finisce la sequenza senza defaticamento | Campanellina con tre ding | 900 ms totali, colpi a 0 / 300 / 600 ms |
+| Evento | Campione | Durata | Guadagno |
+| --- | --- | ---: | ---: |
+| Primo lavoro e lavori ordinari | workout-ding-1.wav, file 01 dell’utente | 1050 ms | 0,65 |
+| Primo lavoro del nuovo ciclo o blocco | workout-ding-2.wav, file 02, sostituisce il ding singolo | 1485 ms | 0,65 |
+| Recupero personale, anche prima di ripetere il blocco | rest-start.wav, sospiro attuale | 500 ms | 0,85 |
+| Recupero tra blocchi differenti | rest-double.wav, sospiro + 200 ms silenzio + sospiro | 1200 ms | 0,85 |
+| Fine naturale dell’ultimo lavoro | workout-ding-3.wav, file 03 | 1920 ms | 0,65 |
+| Fine naturale del defaticamento, se attivo | lo stesso file 03, una seconda volta | 1920 ms | 0,65 |
 
-La campanella suona una sola volta per allenamento: con defaticamento viene emessa al suo inizio, senza essere ripetuta alla sua fine. Termina manuale non produce la campanella. Pausa e ripresa non ripetono il segnale di inizio turno; tornare alla fase precedente è invece una nuova visita. Eventuali segnali di inizio turno già trascorsi da oltre 500 ms non vengono recuperati in ritardo.
+L’ingresso nel defaticamento non ha un segnale proprio: i tre ding appartengono alla fine del lavoro. Senza defaticamento il finale suona una sola volta. I finali hanno identità distinte e possono suonare al massimo una volta ciascuno per sessione, anche tornando indietro. Termina manuale e salto dell’ultima fase non producono un falso finale.
 
-Una sola voce suona alla volta. Se una fase dura tre secondi o meno, il segnale iniziale ha precedenza sul bip che cadrebbe nello stesso istante; i bip successivi restano regolari. I tre ding durano meno di un secondo e terminano prima del bip successivo del defaticamento. Tutti i segnali rispettano Suoni e Vibrazione.
+I dings non diventano fasi e non aumentano durata o statistiche. La coda finale termina anche dopo lo zero. I lavori e i recuperi attivi durano almeno 5 secondi, il defaticamento almeno 10: i campioni terminano prima del successivo 3-2-1.
 
-Il fischio passa dall’85% al **120% equivalente**, sempre 500 ms. SoundPool Android accetta guadagni tra 0 e 1: il WAV del solo fischio è quindi preamplificato di 1,2 e riprodotto con guadagno 1, identico sul web. Il picco PCM passa da 11000 a 13200 su 32767, senza saturazione. Il vecchio picco effettivo era 11000 × 0,85 = 9350; il nuovo è 13200. Sospiro all’85%, bip e campanella al 65%, campioni e durate invariati. Nessuna richiesta di focus o pausa/attenuazione della musica. Il livello percepito dipende dal volume multimediale del dispositivo e dal timbro.
+## Studio, invariato
 
-Il fischio di avvio ora usa una risonanza principale di circa 1760 Hz, una secondaria leggera a 1880 Hz e un trillo delicato, con attacco di 12 ms e uscita graduale di 55 ms. Il vecchio componente principale a 2700 Hz e la componente a 3400 Hz sono stati rimossi: il segnale è meno acuto e più rotondo, mantenendo 500 ms, livello e riconoscibilità dell’avvio. Gli altri otto WAV sono verificati identici byte per byte. L’anteprima del solo segnale è in `output/audio/Fischio.wav`.
+Fischio morbido da arbitro di 500 ms a inizio concentrazione; sospiro di 500 ms a inizio pausa; campanella di 900 ms alla fine. Fischio: WAV già preamplificato ×1,2, gain 1 (non applicare 1,2 di nuovo); sospiro 0,85; campanella e bip 0,65. Nessuna pausa finale. I nove campioni precedenti sono conservati byte per byte.
 
-Fischietto e campanella sono sintetizzati localmente con Python standard. Il sospiro usa un estratto di 500 ms del video [Sigh Sound Effect #soundeffects, Popcorn81 Extras](https://www.youtube.com/watch?v=1E-WbRI_R64), indicato dall’utente: da 1,421375 a 1,921375 s, convertito in mono, con brevi dissolvenze e normalizzazione del picco. Provenienza ed elaborazione sono documentate in [assets/audio/README.md](../assets/audio/README.md). I tre segnali sono PCM mono a 24000 Hz, identici tra web e Android. I nove campioni dell’app, compresi i bip, occupano 123348 byte per piattaforma, circa 121 KiB. L’app usa soltanto i file locali, senza contattare YouTube.
+## Risorse e riproduzione
 
-## Note alte e basse
-
-| Fase | Sul 3 | Sul 2 | Sull’1 |
-| --- | --- | --- | --- |
-| Lavoro | 330 Hz, 120 ms | 370 Hz, 120 ms | 440 Hz, 120 ms |
-| Preparazione, recuperi e defaticamento | 660 Hz, 120 ms | 740 Hz, 120 ms | 880 Hz, 120 ms |
-
-I vecchi riscaldamenti eventualmente presenti negli archivi usano le note alte. Non c’è un controllo Riscaldamento nell’interfaccia.
-
-Ogni file del conto alla rovescia contiene una sola nota breve, con attacco di 3 ms e chiusura morbida di 20 ms. La velocità di riproduzione è sempre 1, così la durata rimane breve anche per le note basse. I sei WAV sono PCM mono a 22050 Hz, 16 bit, identici tra web e Android; occupano complessivamente circa 32 kB per piattaforma. Per usare l’app o rigenerare i campioni non servono librerie aggiuntive o servizi online: l’estratto del sospiro è già incluso nel progetto.
-
-Rigenerazione con Python standard:
+I tre WAV originali dell’utente sono in `assets/audio/`; il generatore non dipende da Downloads o dalla demo. I campioni sono copiati identici in `web/audio/` e `android/app/src/main/res/raw/`. Il set complessivo contiene 13 WAV, tutti offline. [Provenienza](../assets/audio/README.md).
 
 ```powershell
 python scripts/generate-horn.py
 ```
 
-Il comando genera anche due anteprime di esattamente tre secondi in `output/audio/countdown-work-short-3s.wav` e `output/audio/countdown-rest-short-3s.wav`, con le tre note effettivamente usate dal timer, collocate a 0, 1 e 2 secondi e intervallate dal silenzio. Le anteprime non vengono caricate dall’app.
+Il generatore usa solo Python standard, conserva i vecchi timbri e compone il doppio sospiro senza sovrapposizione. I nuovi dings sono PCM mono, 16 bit, 24000 Hz; nessun campione raggiunge la saturazione. Il guadagno viene applicato una volta dal player. Velocità sempre 1. Web Audio e SoundPool hanno una sola voce attiva. Pausa, salto, precedente, termine, nuova sessione e Suoni disattivati cancellano la riproduzione precedente. Ripresa e ridisegni non ripetono gli avvisi già emessi.
 
-## Comportamento
+Android richiede un focus MAY_DUCK breve, comune alle modalità: dal primo bip alla fine del segnale successivo, oppure per la durata di un avviso isolato. Non modifica il volume globale. Rilascia su pausa/mute/termine/distruzione e alla fine del campione. Se negato o perso, omette l’avviso e continua il timer e l’eventuale vibrazione. [Dettagli e limiti](android-background.md).
 
-- `CountdownCues` emette una sola nota per secondo della visita corrente. Pausa e ripresa non ripetono la nota già suonata.
-- Per fasi più brevi di tre secondi vengono suonate solo le note disponibili. Un ritardo non produce una raffica di note arretrate.
-- Pausa, salto, precedente, termine e disattivazione dei suoni interrompono subito la nota. Il cambio automatico di fase interrompe quella precedente per evitare sovrapposizioni. Android continua i segnali tramite il servizio anche in background.
-- Preparazione, lavoro svolto, durate e statistiche rimangono separati come prima. JSON e Room restano alla versione 1.
-- Web Audio carica i nove file locali; il service worker li conserva per l’uso offline. SoundPool Android usa un solo flusso alla volta; i nove file sono disponibili anche offline.
+Sul web non viene richiesta una priorità sulla musica delle altre app: browser sospesi e schermo bloccato possono impedire gli avvisi. Service worker e cache includono tutti i WAV e i nuovi moduli. Nessuna API esterna o nuova dipendenza.
 
 ## Verifica
 
-I test controllano i PCM effettivi: un’unica nota per file, durata di 120 ms e attacco immediato, frequenza alta/bassa attesa, assenza di saturazione e identità dei dati tra le due piattaforme. I test di riproduzione controllano arresto e assenza di voci sovrapposte.
-
-Il test browser offline riconosce la frequenza dell’audio realmente decodificato e registra istante di partenza, durata e guadagno di ogni sorgente: ogni bip dura 120 ms e le tre note partono a distanza di un secondo, non ci sono ripetizioni a metà secondo e i segnali di cambio fase sono riconosciuti e riprodotti una sola volta. Fischietto e sospiro durano 500 ms; il primo usa PCM × 1,2 e guadagno 1, il secondo guadagno 0,85; gli altri suoni usano 0,65. Verifica anche pausa, preparazione e conteggi delle sessioni. Il test SoundPool carica tutti i nove campioni e verifica la riproduzione sia delle note sia dei tre segnali.
-
-```powershell
-node --test web/tests/*.test.js
-# Con Playwright configurato come in testing.md:
-node scripts/browser-countdown.mjs
-cd android
-.\gradlew.bat testDebugUnitTest assembleDebug lintDebug
-.\gradlew.bat connectedDebugAndroidTest
-```
-
-Report browser: `output/browser-countdown.json`. Rimangono da verificare timbro e volume sugli altoparlanti fisici. Browser sospesi e schermo bloccato possono impedire gli avvisi; Android continua in background e a schermo spento. SoundPool usa il flusso multimediale senza richiedere focus audio, così musica e video continuano.
-
-I test dei cambi di fase controllano fischietto, sospiro, defaticamento facoltativo, completamento senza defaticamento, annullamento manuale, ritorno alla fase precedente, pause e ritardi. I test PCM verificano 500 ms per fischietto e sospiro, l’identità con l’estratto di riferimento e i tre colpi della campanella. Il browser verifica anche intervalli di un secondo, precedenza del fischietto e riproduzione completa della campanella a timer terminato.
+Test Node/JVM confrontano sequenza, metadati, salti, visite, finali idempotenti, ritardi e statistiche. I controlli PCM verificano frequenze, durata, picchi, guadagni, copie identiche e il silenzio del doppio sospiro. Il browser offline decodifica 13 WAV e misura eventi e coda finale completa. SoundPool è verificato su emulatore con tutti i campioni e rilascio del focus. [Risultati e comandi](testing.md).

@@ -5,6 +5,10 @@ private val preparation = Phase("PREPARE", null, null, PREPARATION_MS, "Preparaz
 
 class TimerEngine(val workout: Workout, private val now: () -> Long, private val wall: () -> String = ::isoNow) {
     val phases = compileTimeline(workout)
+    val lastWorkIndex = phases.indexOfLast { it.type == "WORK" }
+    val naturalEndings = mutableMapOf<String, Long>()
+    var finalOverrunMs = 0L; private set
+    var manualStop = false; private set
     var index = -1; private set
     var remainingMs = PREPARATION_MS; private set
     var phaseRun = 0; private set
@@ -30,7 +34,8 @@ class TimerEngine(val workout: Workout, private val now: () -> Long, private val
                 completedPhases.add(index)
                 if (currentPhase?.type == "WORK") completed.add(index)
             }
-            advance()
+            advance(true)
+            if (state == "finished") finalOverrunMs = delta
         }
         if (state == "running") { consume(delta); remainingMs -= delta }
     }
@@ -38,7 +43,9 @@ class TimerEngine(val workout: Workout, private val now: () -> Long, private val
         if (index < 0) return // Preparation is outside the planned workout and its statistics.
         elapsedMs += ms; if (currentPhase?.type == "WORK") workMs += ms
     }
-    private fun advance() {
+    private fun advance(natural: Boolean = false) {
+        if (natural && index == lastWorkIndex) naturalEndings.putIfAbsent("work", elapsedMs)
+        if (natural && currentPhase?.type == "COOLDOWN") naturalEndings.putIfAbsent("cooldown", elapsedMs)
         index++; phaseRun++
         if (index >= phases.size) finish(if (completed.size == phases.count { it.type == "WORK" }) "COMPLETED" else "INTERRUPTED") else remainingMs = phases[index].durationMs
     }
@@ -52,7 +59,7 @@ class TimerEngine(val workout: Workout, private val now: () -> Long, private val
             phaseRun++; remainingMs = currentPhase!!.durationMs; last = now()
         }
     }
-    fun stop() { tick(); if (state in listOf("running", "paused")) finish("INTERRUPTED") }
+    fun stop() { tick(); if (state in listOf("running", "paused")) { manualStop = true; finish("INTERRUPTED") } }
     fun snapshot(): Session = result ?: Session(sessionId, workout.id, workout.title, startedAt, wall(), plannedMs(phases), elapsedMs, workMs, completed.size, phases.count { it.type == "WORK" }, pauses, "INTERRUPTED", completedPhases.size, phases.size, workout.mode)
     private fun finish(status: String) { if (result != null) return; result = snapshot().copy(status = status); state = "finished"; remainingMs = 0 }
 }

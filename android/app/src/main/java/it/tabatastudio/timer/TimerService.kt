@@ -42,7 +42,7 @@ class TimerService : Service() {
                     runtime.tickAndSave(); updateResources()
                     val engine = runtime.timer
                     if (!runtime.active && !runtime.starting) {
-                        if (engine !== finishedEngine) { finishedEngine = engine; finishDeadline = SystemClock.elapsedRealtime() + 1200 }
+                        if (engine !== finishedEngine) { finishedEngine = engine; finishDeadline = SystemClock.elapsedRealtime() + maxOf(250L, runtime.audioRemainingMs + 100L) }
                         if (engine == null || (!runtime.hasUnsavedResult && SystemClock.elapsedRealtime() >= finishDeadline)) { stopForeground(STOP_FOREGROUND_REMOVE); stopSelf(); break }
                     }
                     delay(if (engine?.state == "paused") 500 else 100)
@@ -66,7 +66,7 @@ class TimerService : Service() {
     internal fun updateResources() {
         val engine = runtime.timer
         if (engine?.state != "finished") { finishedEngine = null; finishDeadline = 0 }
-        else if (finishedEngine !== engine) { finishedEngine = engine; finishDeadline = SystemClock.elapsedRealtime() + 1200 }
+        else if (finishedEngine !== engine) { finishedEngine = engine; finishDeadline = SystemClock.elapsedRealtime() + maxOf(250L, runtime.audioRemainingMs + 100L) }
         val awake = engine?.state == "running" || (engine?.state == "finished" && SystemClock.elapsedRealtime() < finishDeadline)
         if (awake && !wakeLock.isHeld) wakeLock.acquire(24 * 60 * 60 * 1000L + PREPARATION_MS + 5000)
         else if (!awake && wakeLock.isHeld) wakeLock.release()

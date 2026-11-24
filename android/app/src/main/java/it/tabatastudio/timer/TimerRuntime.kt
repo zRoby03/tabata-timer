@@ -34,7 +34,6 @@ class TimerRuntime(private val app: Application, private val repository: StudioR
     private val transitions = TransitionCues()
     private var soundTimer: TimerEngine? = null
     private var soundPhase = -1
-    private var soundState = "idle"
     val active: Boolean get() = version.let { starting || timer?.state in listOf("running", "paused") }
     val hasUnsavedResult: Boolean get() = version.let { timer?.result?.let { savedSession != it.id } == true }
 
@@ -57,6 +56,7 @@ class TimerRuntime(private val app: Application, private val repository: StudioR
         timer!!.start(); starting = false; lastCheckpoint = 0; lastAttempt = 0; checkpointRequested = true; version++
     }
     internal fun attachAudio() { if (horn == null) horn = HornSignals(app) }
+    internal val audioRemainingMs: Long get() = horn?.remainingPlaybackMs ?: 0L
     internal fun releaseAudio() { horn?.release(); horn = null }
     fun chooseSound(enabled: Boolean) { sound = enabled; if (!enabled) horn?.stop() }
     fun pause() = control { it.pause() }
@@ -116,15 +116,14 @@ class TimerRuntime(private val app: Application, private val repository: StudioR
     }
     private fun emitCues() {
         val engine = timer ?: return
-        if (soundTimer !== engine || soundPhase != engine.phaseRun || (soundState != engine.state && engine.state != "running")) {
-            horn?.stop(); soundTimer = engine; soundPhase = engine.phaseRun
-        }
-        soundState = engine.state
+        if (soundTimer !== engine || engine.manualStop || engine.state == "paused") horn?.stop()
+        else if (soundPhase != engine.phaseRun) horn?.stopPlayback()
+        soundTimer = engine; soundPhase = engine.phaseRun
         val marker = transitions.read(engine)
         val second = countdown.read(engine)
         val key = marker ?: second?.let { hornSample(it, engine.currentPhase?.type ?: "PREPARE") }
         if (key != null) {
-            if (sound) runCatching { horn?.playCue(key) }
+            if (sound) runCatching { horn?.playCue(key, cueFocusDuration(engine, key, if (marker == null) second else null)) }
             if (vibration) runCatching { app.getSystemService(Vibrator::class.java)?.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE)) }
         }
     }

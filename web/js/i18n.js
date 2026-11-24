@@ -38,6 +38,7 @@ export function translate(source, lang, ...values) {
   return source;
 }
 export const t = (source, ...values) => translate(source, language, ...values);
+export const phaseLabel = phase => t(phase.labelKey ?? phase.label, ...(phase.labelArgs ?? []));
 // Only marked, application-owned nodes/attributes are localized. Form values and saved names are never traversed.
 export function translateDocument(root = document) {
   root.documentElement.lang = language;

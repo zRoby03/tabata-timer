@@ -47,7 +47,7 @@ class BackgroundTimerTest {
         if (activityRule.scenario.state != Lifecycle.State.DESTROYED) activityRule.scenario.moveToState(Lifecycle.State.RESUMED)
     }
     private fun start(mode: String = "WORKOUT") {
-        val w = if (mode == "STUDIO") newQuickWorkout(mode) else Workout(title = "Background test", blocks = listOf(Block(exercises = listOf(Exercise(workSec = 4, repetitions = 2, restBetweenRepsSec = 4)))))
+        val w = if (mode == "STUDIO") newQuickWorkout(mode) else Workout(title = "Background test", blocks = listOf(Block(exercises = listOf(Exercise(workSec = 5, repetitions = 2, restBetweenRepsSec = 5)))))
         main { runtime.start(w) }; waitFor { runtime.timer?.state == "running" && !runtime.starting }
         main { runtime.skip() } // Keep production's 20-second preparation; advance it with the actual control.
     }
@@ -107,7 +107,7 @@ class BackgroundTimerTest {
         val sessions = runBlocking { app.repository.read() }.sessions
         for (id in ids) assertEquals(1, sessions.count { it.id == id })
     }
-    @Test fun externalMediaKeepsFocusWhileCuesPlayWithScreenOff() {
+    @Test fun externalMediaContinuesDuringDuckingCuesWithScreenOff() {
         // This API 37 emulator's public playback callback omits SoundPool. Observe AudioService's
         // real player registrations/start events, restricted to this UID and newly created pools.
         val before = soundPoolIds(shell("dumpsys audio").toString(Charsets.UTF_8))
@@ -120,7 +120,7 @@ class BackgroundTimerTest {
         assertFalse(app.getSystemService(PowerManager::class.java).isInteractive)
         waitFor { runtime.timer!!.result != null && !runtime.hasUnsavedResult }
         val after = probeStatus()
-        assertTrue(after.getBoolean("playing")); assertTrue(after.getIntArray("changes")!!.none { it < 0 })
+        assertTrue(after.getBoolean("playing")); assertTrue(after.getIntArray("changes")!!.none { it == AudioManager.AUDIOFOCUS_LOSS || it == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT })
         val audioDump = shell("dumpsys audio").toString(Charsets.UTF_8)
         val starts = (soundPoolIds(audioDump) - before).sumOf { id -> Regex("player piid:$id event:started").findAll(audioDump).count() }
         assertTrue("Avvisi non rilevati da AudioService: $starts", starts >= 3)

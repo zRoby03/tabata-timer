@@ -14,5 +14,5 @@ test('opzioni rapide riusano cicli e recuperi del modello condiviso', () => {
   const w = newQuickWorkout();
   w.blocks[0].cycles = 2;
   w.blocks[0].exercises[0].repetitions = 3;
-  assert.equal(plannedMs(compileTimeline(w)), 220000);
+  assert.equal(plannedMs(compileTimeline(w)), 170000);
 });

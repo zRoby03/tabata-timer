@@ -1,0 +1,53 @@
+import {pathToFileURL} from 'node:url';
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const {chromium}=await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE).href);
+const browser=await chromium.launch({channel:'msedge',headless:true});
+const fixture=JSON.parse(await readFile('fixtures/workout-recovery-v2.json','utf8')).find(c=>c.name==='tre-blocchi').workout;
+const errors=[],checks=[];
+await mkdir('output/screenshots',{recursive:true});
+try{
+  const context=await browser.newContext({locale:'it-IT',viewport:{width:1280,height:950}});
+  await context.addInitScript(w=>localStorage.setItem('tabata:v1:data',JSON.stringify({schemaVersion:1,exportedAt:'2026-11-24T12:00:00.000Z',workouts:[w],sessions:[]})),fixture);
+  const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
+  await page.goto(process.env.TABATA_URL||'http://127.0.0.1:5500');
+  await page.getByRole('button',{name:'Allenamenti',exact:true}).click();await page.locator('.workout-menu summary').click();await page.getByRole('button',{name:'Modifica',exact:true}).click();
+  const before=await page.evaluate(()=>localStorage.getItem('tabata:v1:data'));
+  assert.equal(await page.locator('[data-path$=".restAfterBlockSec"]').count(),2);
+  assert.equal(await page.locator('[data-path$=".restBetweenCyclesSec"],[data-path$=".restBetweenExercisesSec"],[data-path$=".restAfterExerciseSec"]').count(),0);
+  assert.equal(await page.locator('[data-path$=".restBetweenRepsSec"]').count(),3);
+  await page.locator('[data-action="block-up"][data-bi="2"]').click();
+  assert.equal(await page.locator('[data-path="blocks.1.restAfterBlockSec"]').inputValue(),'5');
+  // Restore ordering: the old final block has retained its value while hidden.
+  await page.locator('[data-action="block-down"][data-bi="1"]').click();
+  assert.equal(await page.locator('[data-path="blocks.1.restAfterBlockSec"]').inputValue(),'10');
+  await page.locator('[data-path="blocks.0.restAfterBlockSec"]').fill('0');assert.match(await page.locator('#preview').innerText(),/minimo 5/);
+  await page.locator('[data-path="blocks.0.restAfterBlockSec"]').fill('6');
+  await page.locator('[data-path="blocks.0.exercises.0.workSec"]').fill('4');assert.match(await page.locator('#preview').innerText(),/minimo 5/);
+  await page.locator('[data-path="blocks.0.exercises.0.workSec"]').fill('7');
+  await page.locator('[data-path="blocks.0.cycles"]').fill('2');
+  assert.ok((await page.locator('#preview').innerText()).includes('Ciclo 2/2'));
+  assert.ok((await page.locator('#preview').innerText()).includes('Recupero Squat'));
+  assert.ok((await page.locator('#preview').innerText()).includes('Recupero Blocco 1 → 2'));
+  await page.locator('[data-action="block-copy"][data-bi="0"]').click();assert.equal(await page.locator('[data-path$=".restAfterBlockSec"]').count(),3);
+  await page.locator('[data-action="block-delete"][data-bi="1"]').click();assert.equal(await page.locator('[data-path$=".restAfterBlockSec"]').count(),2);
+  assert.equal(await page.evaluate(()=>localStorage.getItem('tabata:v1:data')),before);
+  for(const width of [320,390,768,1280]){await page.setViewportSize({width,height:950});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));}
+  await page.setViewportSize({width:1280,height:950});
+  await page.locator('#preview').screenshot({path:'output/screenshots/workout-preview-v2.png'});
+  await page.getByRole('button',{name:'Salva sul dispositivo',exact:true}).click();
+  const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('tabata:v1:data')));
+  assert.equal(saved.workouts[0].timingVersion,2);assert.equal(saved.workouts[0].blocks[0].restAfterBlockSec,6);assert.equal(saved.workouts[0].blocks[2].restAfterBlockSec,5);assert.deepEqual(saved.sessions,[]);
+  checks.push('visibilità dinamica, riordino, copia/eliminazione, nomi e recupero personale; minimi senza arrotondamento; archivio non riscritto prima di Salva');
+  await context.close();
+  const legacyContext=await browser.newContext({locale:'it-IT'});
+  const legacy=structuredClone(fixture);delete legacy.timingVersion;legacy.cooldownSec=1;legacy.blocks[0].restAfterBlockSec=0;legacy.blocks[0].exercises[0].workSec=1;legacy.blocks[0].exercises[0].restBetweenRepsSec=2;
+  await legacyContext.addInitScript(w=>localStorage.setItem('tabata:v1:data',JSON.stringify({schemaVersion:1,exportedAt:'2026-11-24T12:00:00.000Z',workouts:[w],sessions:[]})),legacy);
+  const p=await legacyContext.newPage();p.on('pageerror',e=>errors.push(e.message));await p.goto(process.env.TABATA_URL||'http://127.0.0.1:5500');
+  await p.getByRole('button',{name:'Allenamenti',exact:true}).click();assert.match(await p.locator('main').innerText(),/Allenamento precedente/);
+  const raw=await p.evaluate(()=>localStorage.getItem('tabata:v1:data'));await p.locator('.workout-menu summary').click();await p.getByRole('button',{name:'Modifica',exact:true}).click();
+  assert.equal(await p.locator('[data-path="cooldownSec"]').inputValue(),'10');assert.equal(await p.locator('[data-path="blocks.0.restAfterBlockSec"]').inputValue(),'5');assert.equal(await p.locator('[data-path="blocks.0.exercises.0.workSec"]').inputValue(),'5');assert.equal(await p.evaluate(()=>localStorage.getItem('tabata:v1:data')),raw);
+  checks.push('legacy: minimi adattati su copia con avviso, originale conservato');await legacyContext.close();
+  assert.deepEqual(errors,[]);await writeFile('output/browser-workout-recuperi.json',JSON.stringify({checks,responsive:[320,390,768,1280],errors},null,2));
+  console.log('Workout: recuperi personali, campi dinamici, anteprima raggruppata e compatibilità legacy verificati.');
+}finally{await browser.close();}

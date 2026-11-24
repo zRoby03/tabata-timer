@@ -15,7 +15,7 @@ try {
   await page.getByRole('button', { name: 'Timer', exact: true }).click();
   assert.equal(await page.locator('#quick-start-button').isDisabled(), true);
   checks.push('Valori invalidi bloccano avvio e salvataggio anche tornando al timer');
-  await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').fill('1');
+  await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').fill('5');
   await page.locator('[data-quick-path="blocks.0.exercises.0.restBetweenRepsSec"]').fill('0');
   await page.locator('[data-quick-path="blocks.0.exercises.0.repetitions"]').fill('2');
   await page.getByRole('button', { name: 'Avvia', exact: true }).click();

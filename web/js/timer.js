@@ -13,6 +13,8 @@ export class TimerEngine {
     this.workout = structuredClone(workout); this.phases = compileTimeline(workout); this.now = now; this.wall = wall;
     this.index = -1; this.remainingMs = PREPARATION_MS; this.state = 'idle'; this.phaseRun = 0;
     this.elapsedMs = 0; this.workMs = 0; this.pauses = 0; this.completed = new Set(); this.completedPhases = new Set(); this.result = null;
+    this.lastWorkIndex = this.phases.findLastIndex(p => p.type === 'WORK');
+    this.naturalEndings = {}; this.finalOverrunMs = 0; this.manualStop = false;
   }
   get currentPhase() { return this.index < 0 ? PREPARATION : this.phases[this.index]; }
   get nextPhase() { return this.phases[this.index + 1]; }
@@ -29,7 +31,8 @@ export class TimerEngine {
         this.completedPhases.add(this.index);
         if (this.currentPhase.type === 'WORK') this.completed.add(this.index);
       }
-      this.advance();
+      this.advance(true);
+      if (this.state === 'finished') this.finalOverrunMs = delta;
     }
     if (this.state === 'running') { this.consume(delta); this.remainingMs -= delta; }
   }
@@ -37,7 +40,9 @@ export class TimerEngine {
     if (this.index < 0) return; // The lead-in is outside the planned workout and its statistics.
     this.elapsedMs += ms; if (this.currentPhase.type === 'WORK') this.workMs += ms;
   }
-  advance() {
+  advance(natural = false) {
+    if (natural && this.index === this.lastWorkIndex) this.naturalEndings.work ??= this.elapsedMs;
+    if (natural && this.currentPhase?.type === 'COOLDOWN') this.naturalEndings.cooldown ??= this.elapsedMs;
     this.index++; this.phaseRun++;
     if (this.index >= this.phases.length) this.finish(this.completed.size === this.phases.filter(p => p.type === 'WORK').length ? 'COMPLETED' : 'INTERRUPTED');
     else this.remainingMs = this.phases[this.index].durationMs;
@@ -51,7 +56,7 @@ export class TimerEngine {
     if (this.index >= 0) this.index = Math.max(0, this.index - 1);
     this.phaseRun++; this.remainingMs = this.currentPhase.durationMs; this.last = this.now();
   }
-  stop() { this.tick(); if (['running', 'paused'].includes(this.state)) this.finish('INTERRUPTED'); return this.result; }
+  stop() { this.tick(); if (['running', 'paused'].includes(this.state)) { this.manualStop = true; this.finish('INTERRUPTED'); } return this.result; }
   finish(status) {
     if (this.result) return this.result;
     this.state = 'finished'; this.remainingMs = 0;

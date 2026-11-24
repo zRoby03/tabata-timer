@@ -1140,7 +1140,7 @@
     "Pausas"
   ],
   "Per conservare un allenamento": [
-    "Save a workout",
+    "Saving a workout",
     "Guardar un entrenamiento"
   ],
   "Periodo": [
@@ -1800,7 +1800,7 @@
     "Workout"
   ],
   "Workout e Studio": [
-    "Workout and Studio",
+    "Workout and Study",
     "Workout y Studio"
   ],
   "Workout in secondi, Studio in minuti. Termina la sessione per cambiare modalità.": [
@@ -2075,5 +2075,129 @@
   "Tabata Timer: Workout in secondi e Studio in minuti. Timer gratuito, senza account.": [
     "Tabata Timer: Workout in seconds and Studio in minutes. Free timer, no account needed.",
     "Tabata Timer: Workout en segundos y Studio en minutos. Temporizador gratuito, sin cuenta."
+  ],
+  "Usa lo switch accanto a Tabata Timer: Workout ha tempi in secondi, Studio in minuti. L'ultima modalità utilizzata viene ricordata. Programmi, attività e statistiche sono separati; tema e palette sono comuni. Termina il timer per cambiare modalità.": [
+    "Use the switch beside Tabata Timer: Workout uses seconds and Study uses minutes. Your last mode is remembered. Programs, activity history and statistics are separate; theme and palette are shared. End the timer before switching modes.",
+    "Usa el selector junto a Tabata Timer: Workout utiliza segundos y Studio utiliza minutos. Se recuerda el último modo utilizado. Los programas, el historial de actividad y las estadísticas están separados; el tema y la paleta son comunes. Finaliza el temporizador antes de cambiar de modo."
+  ],
+  "In Workout ogni esercizio ha il proprio recupero. Passando al blocco successivo viene usato il recupero tra blocchi: non si somma al recupero dell'ultimo esercizio.\nNon c'è un recupero dopo l'ultimo lavoro. Lavori e recuperi attivi durano almeno 5 secondi; il recupero tra blocchi è obbligatorio. Il defaticamento è facoltativo e dura almeno 10 secondi quando attivo.": [
+    "In Workout, each exercise has its own recovery. When moving to the next block, recovery between blocks is used: it is not added to the last exercise's recovery.\nThere is no recovery after the final work interval. Active work and recovery phases last at least 5 seconds; recovery between blocks is required. Cooldown is optional and lasts at least 10 seconds when enabled.",
+    "En Workout cada ejercicio tiene su propia recuperación. Al pasar al bloque siguiente se utiliza la recuperación entre bloques: no se suma a la del último ejercicio.\nNo hay recuperación después del último intervalo de trabajo. Las fases activas de trabajo y recuperación duran al menos 5 segundos; la recuperación entre bloques es obligatoria. La vuelta a la calma es opcional y dura al menos 10 segundos cuando está activada."
+  ],
+  "Suoni Workout:": [
+    "Workout sounds:",
+    "Sonidos de Workout:"
+  ],
+  "Un ding: inizio del lavoro ordinario.": [
+    "One ding: ordinary work begins.",
+    "Un ding: empieza el trabajo normal."
+  ],
+  "Un sospiro: inizio del recupero nello stesso blocco.": [
+    "One sigh: recovery within the same block begins.",
+    "Un suspiro: empieza la recuperación dentro del mismo bloque."
+  ],
+  "Due sospiri: inizio del recupero tra blocchi differenti.": [
+    "Two sighs: recovery between different blocks begins.",
+    "Dos suspiros: empieza la recuperación entre bloques diferentes."
+  ],
+  "Due ding: inizio di un nuovo ciclo oppure del blocco successivo; sostituiscono il ding singolo.": [
+    "Two dings: a new cycle or the next block begins; they replace the single ding.",
+    "Dos dings: empieza un nuevo ciclo o el bloque siguiente; sustituyen al ding individual."
+  ],
+  "Tre ding: fine dell'ultimo lavoro.": [
+    "Three dings: the final work interval ends.",
+    "Tres dings: termina el último intervalo de trabajo."
+  ],
+  "Durante il defaticamento: solo timer visivo, senza altri segnali iniziali e senza bip. Alla sua fine suonano nuovamente gli stessi tre ding. Se il defaticamento è disattivato, rimangono soltanto i tre ding di fine lavoro.": [
+    "During cooldown: visual timer only, with no additional starting signal or countdown beeps. The same three dings sound again at its end. Without cooldown, only the three end-of-work dings are played.",
+    "Durante la vuelta a la calma: solo temporizador visual, sin otra señal inicial ni pitidos de cuenta atrás. Al terminar vuelven a sonar los mismos tres dings. Si está desactivada, solo suenan los tres dings del final del trabajo."
+  ],
+  "Il conto alla rovescia suona una nota breve sul 3, una sul 2 e una sull'1.\nLa preparazione iniziale dura 20 secondi ed è separata dalla durata dell'allenamento.": [
+    "The countdown plays one short note on 3, one on 2 and one on 1.\nThe initial 20-second preparation is separate from the workout duration.",
+    "La cuenta atrás emite una nota breve en el 3, otra en el 2 y otra en el 1.\nLa preparación inicial dura 20 segundos y está separada de la duración del entrenamiento."
+  ],
+  "In Studio aggiungi le attività e imposta Concentrazione, Sessioni e Pausa. La pausa personale vale solo tra sessioni della stessa attività; Pausa tra attività vale solo tra attività consecutive. Nessuna pausa finale. Nell'anteprima ogni pausa indica l'attività o il passaggio corrispondente. I segnali Studio rimangono quelli attuali: fischio all'inizio della concentrazione, sospiro all'inizio delle pause e campanella finale, con preparazione e 3-2-1.": [
+    "In Study, add activities and set Focus, Sessions and Break. Each activity's break applies only between its sessions; Break between activities applies only between consecutive activities. There is no final break. The preview names the activity or transition for each break. Study keeps its current sounds: a whistle when focus starts, a sigh when a break starts and a final bell, with preparation and the 3-2-1 countdown.",
+    "En Studio añade actividades y configura Concentración, Sesiones y Pausa. La pausa de cada actividad se aplica solo entre sus sesiones; Pausa entre actividades se aplica solo entre actividades consecutivas. No hay pausa final. La vista previa identifica la actividad o el cambio correspondiente a cada pausa. Studio conserva los sonidos actuales: silbido al empezar la concentración, suspiro al empezar las pausas y campanilla final, con preparación y cuenta atrás 3-2-1."
+  ],
+  "In Workout premi Salva allenamento; in Studio premi Salva programma di studio. Scegli il nome e conferma Salva sul dispositivo. Ritrovi il programma nella raccolta della stessa modalità.": [
+    "In Workout choose Save workout; in Study choose Save study program. Enter a name and confirm Save on device. Find the program in the collection for the same mode.",
+    "En Workout pulsa Guardar entrenamiento; en Studio pulsa Guardar programa de estudio. Escribe un nombre y confirma Guardar en el dispositivo. Encontrarás el programa en la colección del mismo modo."
+  ],
+  "Sul web usa lo stesso browser, profilo e indirizzo. Android salva nell'app. Per trasferire o conservare una copia indipendente usa Impostazioni → Esporta copia JSON e importala sull'altro dispositivo. Prima di sostituire un archivio, esportalo se vuoi conservarlo.": [
+    "On the web, use the same browser, profile and address. Android saves inside the app. To transfer data or keep an independent copy, use Settings → Export JSON backup and import it on the other device. Before replacing an archive, export it if you want to keep it.",
+    "En la web utiliza el mismo navegador, perfil y dirección. Android guarda dentro de la aplicación. Para transferir datos o conservar una copia independiente usa Ajustes → Exportar copia JSON e impórtala en el otro dispositivo. Antes de sustituir un archivo, expórtalo si quieres conservarlo."
+  ],
+  "In Impostazioni scegli Chiaro o Scuro e una palette: Viola, Blu, Verde chiaro, Verde scuro, Azzurro, Arancione, Giallo, Rosso, Rosa. Tema, palette e lingua sono comuni alle modalità e vengono ricordati localmente.": [
+    "In Settings choose Light or Dark and a palette: Purple, Blue, Light green, Dark green, Sky blue, Orange, Yellow, Red, Pink. Theme, palette and language are shared across modes and remembered locally.",
+    "En Ajustes elige Claro u Oscuro y una paleta: Violeta, Azul, Verde claro, Verde oscuro, Celeste, Naranja, Amarillo, Rojo, Rosa. Tema, paleta e idioma son comunes a los modos y se recuerdan localmente."
+  ],
+  "Versione tempi non supportata": [
+    "Unsupported timing version",
+    "Versión de tiempos no compatible"
+  ],
+  "{0}: minimo {1}": [
+    "{0}: minimum {1}",
+    "{0}: mínimo {1}"
+  ],
+  "Zero oppure almeno {0}": [
+    "Zero or at least {0}",
+    "Cero o al menos {0}"
+  ],
+  "Pausa {0} — tra sessioni": [
+    "Break for {0} — between sessions",
+    "Pausa de {0} — entre sesiones"
+  ],
+  "Pausa {0} → {1} — tra attività": [
+    "Break {0} → {1} — between activities",
+    "Pausa {0} → {1} — entre actividades"
+  ],
+  "Recupero {0}": [
+    "Recovery after {0}",
+    "Recuperación de {0}"
+  ],
+  "Recupero Blocco {0} → {1}": [
+    "Recovery Block {0} → {1}",
+    "Recuperación Bloque {0} → {1}"
+  ],
+  "Blocco {0} — {1}": [
+    "Block {0} — {1}",
+    "Bloque {0} — {1}"
+  ],
+  "Ciclo {0}/{1}": [
+    "Cycle {0}/{1}",
+    "Ciclo {0}/{1}"
+  ],
+  "{0} · ripetizione {1}/{2}": [
+    "{0} · repetition {1}/{2}",
+    "{0} · repetición {1}/{2}"
+  ],
+  "Due ding — inizio ciclo {0}": [
+    "Two dings — cycle {0} starts",
+    "Dos dings — empieza el ciclo {0}"
+  ],
+  "Due ding — inizio Blocco {0}": [
+    "Two dings — Block {0} starts",
+    "Dos dings — empieza el Bloque {0}"
+  ],
+  "Due sospiri — cambio blocco": [
+    "Two sighs — changing blocks",
+    "Dos suspiros — cambio de bloque"
+  ],
+  "Tre ding — fine lavoro": [
+    "Three dings — work finished",
+    "Tres dings — fin del trabajo"
+  ],
+  "Tre ding — fine defaticamento": [
+    "Three dings — cooldown finished",
+    "Tres dings — fin de la vuelta a la calma"
+  ],
+  "Un ding avvia il lavoro; due ding un nuovo ciclo o blocco. Due sospiri annunciano il recupero tra blocchi. Tre ding concludono lavoro e defaticamento; durante il defaticamento il timer resta silenzioso.": [
+    "One ding starts work; two dings start a new cycle or block. Two sighs announce recovery between blocks. Three dings end work and cooldown; the timer stays silent during cooldown.",
+    "Un ding inicia el trabajo; dos dings, un nuevo ciclo o bloque. Dos suspiros anuncian la recuperación entre bloques. Tres dings finalizan el trabajo y la vuelta a la calma; durante esta última el temporizador permanece en silencio."
+  ],
+  "Allenamento precedente: uso il recupero personale anche tra esercizi e cicli; tra blocchi lo sostituisce il recupero del blocco. Applico i nuovi minimi alla sola copia di esecuzione. Controlla la durata in anteprima. L’originale resta nell’archivio fino al salvataggio.": [
+    "Previous workout: personal recovery also applies between exercises and cycles; block recovery replaces it between blocks. New minimum durations apply only to the execution copy. Check the preview duration. The original stays in the archive until you save.",
+    "Entrenamiento anterior: la recuperación personal también se aplica entre ejercicios y ciclos; entre bloques se sustituye por la recuperación del bloque. Los nuevos mínimos solo se aplican a la copia de ejecución. Revisa la duración en la vista previa. El original permanece en el archivo hasta que guardes."
   ]
 }

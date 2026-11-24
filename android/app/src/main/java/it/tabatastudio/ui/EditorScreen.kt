@@ -11,7 +11,14 @@ import androidx.compose.ui.unit.sp
 import it.tabatastudio.domain.*
 
 @Composable private fun Field(label: String, value: String, max: Int = 120, onChange: (String) -> Unit) { OutlinedTextField(value = value, onValueChange = { if (it.length <= max) onChange(it) }, label = { Text(tr(label)) }, modifier = Modifier.fillMaxWidth(), minLines = if (max > 120) 2 else 1, singleLine = max <= 120) }
-@Composable private fun NumberField(label: String, value: Int, min: Int = 0, max: Int = 3600, factor: Int = 1, onChange: (Int) -> Unit) { OutlinedTextField(value = if (value < 0) "" else (value / factor).toString(), onValueChange = { if (it.length <= 6) onChange(it.toIntOrNull()?.let { n -> n * factor } ?: -1) }, label = { Text(tr(label)) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), isError = value !in min..max, supportingText = if (value !in min..max) ({ Text(tr("Inserisci un intero {0}–{1}", min / factor, max / factor)) }) else null, modifier = Modifier.fillMaxWidth(), singleLine = true) }
+@Composable private fun NumberField(label: String, value: Int, min: Int = 0, max: Int = 3600, factor: Int = 1, activeMin: Int = 0, onChange: (Int) -> Unit) {
+    val invalid = value !in min..max || (value > 0 && value < activeMin)
+    OutlinedTextField(value = if (value < 0) "" else (value / factor).toString(),
+        onValueChange = { if (it.length <= 6) onChange(it.toIntOrNull()?.let { n -> n * factor } ?: -1) },
+        label = { Text(tr(label)) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), isError = invalid,
+        supportingText = if (invalid) ({ Text(if (activeMin > 0) tr("Zero oppure almeno {0}", activeMin) else tr("Inserisci un intero {0}–{1}", min / factor, max / factor)) }) else null,
+        modifier = Modifier.fillMaxWidth(), singleLine = true)
+}
 private fun <T> move(items: List<T>, index: Int, delta: Int): List<T> { val to = index + delta; if (to !in items.indices) return items; return items.toMutableList().also { val temp = it[index]; it[index] = it[to]; it[to] = temp } }
 @Composable internal fun Editor(vm: StudioViewModel) {
     val w = vm.draft ?: return
@@ -35,7 +42,7 @@ private fun <T> move(items: List<T>, index: Int, delta: Int): List<T> { val to =
                     FilterChip(selected = w.color.equals(hex, ignoreCase = true), onClick = { vm.update(w.copy(color = hex)) }, label = { Text(tr(name)) })
                 }
             }
-            NumberField("${labels.final}", w.cooldownSec, factor = factor) { vm.update(w.copy(cooldownSec = it)) }
+            NumberField("${labels.final}", w.cooldownSec, factor = factor, activeMin = 10) { vm.update(w.copy(cooldownSec = it)) }
         }
         w.blocks.forEachIndexed { bi, b -> key(b.id) { Panel {
             Text(tr("Blocco {0}", bi + 1), style = MaterialTheme.typography.titleLarge)
@@ -47,9 +54,7 @@ private fun <T> move(items: List<T>, index: Int, delta: Int): List<T> { val to =
             }
             Field("Nome blocco", b.title) { value -> vm.block(bi) { it.copy(title = value) } }
             NumberField("Cicli", b.cycles, 1, 100) { value -> vm.block(bi) { it.copy(cycles = value) } }
-            NumberField("${if (w.studio) "Pausa" else "Recupero"} tra cicli", b.restBetweenCyclesSec, factor = factor) { value -> vm.block(bi) { it.copy(restBetweenCyclesSec = value) } }
-            NumberField("Recupero tra blocchi", b.restAfterBlockSec) { value -> vm.block(bi) { it.copy(restAfterBlockSec = value) } }
-            NumberField("Recupero tra esercizi", b.restBetweenExercisesSec!!) { value -> vm.block(bi) { it.copy(restBetweenExercisesSec = value) } }
+            if (bi < w.blocks.lastIndex) NumberField("Recupero tra blocchi", b.restAfterBlockSec, 5) { value -> vm.block(bi) { it.copy(restAfterBlockSec = value) } }
             b.exercises.forEachIndexed { ei, e -> key(e.id) {
                 HorizontalDivider(); Text(tr("{0} {1}", if (w.studio) tr("Attività") else tr("Esercizio"), ei + 1), color = MaterialTheme.colorScheme.primary)
                 Buttons {
@@ -59,9 +64,9 @@ private fun <T> move(items: List<T>, index: Int, delta: Int): List<T> { val to =
                     TextButton(enabled = b.exercises.size > 1, onClick = { vm.confirm("Eliminare l’esercizio?") { vm.block(bi) { it.copy(exercises = it.exercises.filterIndexed { i, _ -> i != ei }) } } }) { Text(tr("Elimina")) }
                 }
                 Field(if (w.studio) "Materia o attività" else "Nome esercizio", e.title) { value -> vm.exercise(bi, ei) { it.copy(title = value) } }
-                NumberField("${labels.focus}", e.workSec, factor, factor = factor) { value -> vm.exercise(bi, ei) { it.copy(workSec = value) } }
+                NumberField("${labels.focus}", e.workSec, 5, factor = factor) { value -> vm.exercise(bi, ei) { it.copy(workSec = value) } }
                 NumberField(labels.rounds, e.repetitions, 1, 100) { value -> vm.exercise(bi, ei) { it.copy(repetitions = value) } }
-                NumberField("${if (w.studio) "Pausa tra sessioni" else "Recupero tra ripetizioni"}", e.restBetweenRepsSec, factor = factor) { value -> vm.exercise(bi, ei) { it.copy(restBetweenRepsSec = value) } }
+                NumberField("Recupero", e.restBetweenRepsSec, factor = factor, activeMin = 5) { value -> vm.exercise(bi, ei) { it.copy(restBetweenRepsSec = value) } }
             } }
             OutlinedButton(onClick = { vm.block(bi) { it.copy(exercises = it.exercises + localizedNewExercise(newExercise(vm.mode))) } }, enabled = b.exercises.size < 100) { Text(tr("+ Esercizio")) }
         } } }
@@ -74,7 +79,7 @@ private fun <T> move(items: List<T>, index: Int, delta: Int): List<T> { val to =
                 Text(formatTime(plannedMs(phases)), fontSize = 42.sp, color = MaterialTheme.colorScheme.primary)
                 Text(tr("+ 0:20 di preparazione prima di iniziare"), fontSize = 12.sp)
                 Text(tr("{0} fasi · {1} {2}", phases.size, phases.count { it.type == "WORK" }, if (w.studio) tr("sessioni di concentrazione") else tr("intervalli di lavoro")))
-                phases.take(150).forEachIndexed { i, p -> Text(tr("{0}. {1} · {2}", i + 1, p.label, formatTime(p.durationMs)), fontSize = 12.sp) }
+                TimelinePreview(w, phases)
                 if (phases.size > 150) Text(tr("Mostrate le prime 150 fasi. Il timer le esegue tutte."))
             }, onFailure = { Text(tr(it.message ?: tr("Controlla i campi")), color = MaterialTheme.colorScheme.error) })
         }

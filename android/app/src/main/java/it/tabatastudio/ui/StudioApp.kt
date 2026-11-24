@@ -136,20 +136,20 @@ internal fun date(value: String): String = DateTimeFormatter.ofLocalizedDateTime
         BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             Text(formatTime(timer.remainingMs), fontSize = if (maxWidth < 350.dp) 88.sp else 108.sp, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold, modifier = Modifier.semantics { contentDescription = tr("Tempo rimanente ${formatTime(timer.remainingMs)}") })
         }
-        Text(if (done) tr("Sessione registrata") else if (timer.index < 0) tr("Mettiti in posizione. Si parte tra poco.") else tr(p?.label ?: "Sessione registrata"), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+        Text(if (done) tr("Sessione registrata") else if (timer.index < 0) tr("Mettiti in posizione. Si parte tra poco.") else p?.let(::phaseLabel).orEmpty(), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
         LinearProgressIndicator(progress = { timer.index.coerceAtLeast(0).toFloat() / timer.phases.size }, modifier = Modifier.fillMaxWidth())
         Text(if (done) tr("{0}/{1} intervalli completati", timer.result!!.completedWorkIntervals, timer.result!!.plannedWorkIntervals) else if (timer.index < 0) tr("20 secondi per prepararti") else tr("Fase {0}/{1} · Tempo attivo {2}", (timer.index + 1).coerceAtMost(timer.phases.size), timer.phases.size, formatTime(timer.elapsedMs)), fontSize = 13.sp)
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             AccentButton(enabled = !done, onClick = vm::pauseResume, modifier = Modifier.weight(1.5f).heightIn(min = 54.dp)) { Text(if (timer.state == "paused") tr("Riprendi") else tr("Pausa (timer)"), fontSize = 17.sp) }
             OutlinedButton(enabled = !done, onClick = vm::skip, modifier = Modifier.weight(1f).heightIn(min = 54.dp)) { Text(tr("Salta →")) }
         }
-        Panel { val next = timer.nextPhase; Text(if (next != null) tr("Poi: {0} · {1}", tr(next.label), formatTime(next.durationMs)) else tr("Ultima fase"), fontSize = 13.sp) }
+        Panel { val next = timer.nextPhase; Text(if (next != null) tr("Poi: {0} · {1}", phaseLabel(next), formatTime(next.durationMs)) else tr("Ultima fase"), fontSize = 13.sp) }
         TextButton(onClick = { controls = !controls }, modifier = Modifier.fillMaxWidth()) { Text(if (controls) tr("Meno controlli −") else tr("Altri controlli +"), color = MaterialTheme.colorScheme.onSurfaceVariant) }
         if (controls) {
             OutlinedButton(enabled = !done, onClick = vm::previous) { Text(tr("← Precedente")) }
             OutlinedButton(onClick = { vm.fullscreen = !vm.fullscreen }) { Text(if (vm.fullscreen) tr("Esci da schermo intero") else tr("Schermo intero")) }
             Toggle("Suoni", vm.sound, vm::chooseSound)
-            Text(tr("Bip brevi sul 3, 2, 1. Fischietto all’inizio del lavoro, sospiro all’inizio del recupero e tre ding alla fine dell’allenamento, prima dell’eventuale defaticamento."), fontSize = 12.sp)
+            Text(tr(if (timer.workout.studio) "Bip brevi sul 3, 2, 1. Fischietto all’inizio del lavoro, sospiro all’inizio del recupero e tre ding alla fine dell’allenamento, prima dell’eventuale defaticamento." else "Un ding avvia il lavoro; due ding un nuovo ciclo o blocco. Due sospiri annunciano il recupero tra blocchi. Tre ding concludono lavoro e defaticamento; durante il defaticamento il timer resta silenzioso."), fontSize = 12.sp)
             Toggle("Vibrazione", vm.vibration) { vm.vibration = it }
             Toggle("Schermo acceso", vm.keepAwake) { vm.keepAwake = it }
             Text(tr("Se il sistema chiude l’app, alla riapertura l’attività viene salvata come interrotta fino all’ultimo punto registrato. Ruotare lo schermo conserva il timer. I suoni dipendono dal volume del dispositivo."), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)

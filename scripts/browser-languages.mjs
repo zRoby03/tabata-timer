@@ -42,7 +42,7 @@ try {
   await page.getByRole('button',{name:tr('Salva {0}',tr('programma di studio')),exact:true}).click();
   await page.locator('#save-name').fill('Matemática · My study');await page.getByRole('button',{name:tr('Salva sul dispositivo'),exact:true}).click();
   await page.locator('.workout-menu summary').click();await page.getByRole('button',{name:tr('Modifica'),exact:true}).click();
-  assert.match(await page.locator('#preview').innerText(), new RegExp(tr('Pausa tra sessioni')));
+  assert.ok((await page.locator('#preview').innerText()).includes(tr('Pausa {0} — tra sessioni',custom)));
   assert.ok((await page.locator('#preview').innerText()).includes(custom));
   for (const width of [320,390,768,1440]) {
    await page.setViewportSize({width,height:900});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${lang} ${width}`);
@@ -54,7 +54,7 @@ try {
   const digits=await page.locator('#timer-digits').innerText();assert.match(digits,/^0:(?:1\d|20)$/);
   await page.locator('[data-action=skip]').click();await page.getByRole('heading',{name:tr('Concentrazione'),exact:true}).waitFor();
   assert.ok((await page.locator('#timer-phase').innerText()).includes(custom));
-  assert.ok((await page.locator('#timer-next').innerText()).includes(tr('Pausa tra sessioni')));
+  assert.ok((await page.locator('#timer-next').innerText()).includes(tr('Pausa {0} — tra sessioni',custom)));
   await page.locator('[data-action=stop]').click();await page.getByRole('heading',{name:tr('Sessione interrotta.'),exact:true}).waitFor();
   await page.locator('[data-action=history]').click();await page.locator('[data-action=stats]').click();await page.getByRole('heading',{name:tr('Statistiche di studio'),exact:true}).waitFor();
   assert.ok((await page.locator('main').innerText()).includes('Matemática · My study'));

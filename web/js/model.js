@@ -24,6 +24,7 @@ export function validateWorkout(w) {
   object(w, 'workout');
   if (w.schemaVersion !== 1) throw new Error('Versione allenamento non supportata');
   if (w.mode !== undefined && !Object.hasOwn(MODES, w.mode)) throw new Error('Modalità non valida');
+  if (w.timingVersion !== undefined && w.timingVersion !== 2) throw new Error('Versione tempi non supportata');
   if (w.longBreakSec !== undefined) integer(w.longBreakSec, 'Pausa lunga');
   if (w.longBreakEvery !== undefined) integer(w.longBreakEvery, 'Frequenza pausa lunga', 2, 100);
   id(w.id, 'workout.id'); text(w.title, 'Titolo'); text(w.description, 'Descrizione', 2000, true);
@@ -56,18 +57,37 @@ export function validateWorkout(w) {
       integer(e.repetitions, 'Ripetizioni', 1, LIMITS.repeats); seconds(e.workSec, 'Lavoro', 1); seconds(e.restBetweenRepsSec, 'Recupero ripetizioni'); seconds(e.restAfterExerciseSec, 'Recupero esercizi');
     }
   }
+  if (!isStudio(w) && w.timingVersion === 2) {
+    const minimum = (value, min, label, optional = false) => {
+      if ((optional && value === 0) || value >= min) return;
+      throw new Error(t('{0}: minimo {1}', label, min));
+    };
+    minimum(w.cooldownSec, 10, t('Defaticamento'), true);
+    w.blocks.forEach((b, bi) => {
+      if (bi < w.blocks.length - 1) minimum(b.restAfterBlockSec, 5, t('Recupero tra blocchi'));
+      b.exercises.forEach(e => { minimum(e.workSec, 5, t('Lavoro')); minimum(e.restBetweenRepsSec, 5, t('Recupero'), true); });
+    });
+  }
   return w;
 }
 export const newExercise = (mode = 'WORKOUT') => ({ id: uid(), title: mode === 'STUDIO' ? t("Concentrazione") : t("Nuovo esercizio"), repetitions: 1, workSec: mode === 'STUDIO' ? 1500 : 30, restBetweenRepsSec: mode === 'STUDIO' ? 300 : 10, restAfterExerciseSec: mode === 'STUDIO' ? 300 : 15 });
 export const newStudyActivity = () => ({ id: uid(), title: t("Concentrazione"), concentrationSec: 1500, sessions: 4, pauseSec: 300 });
 export const newBlock = () => ({ id: uid(), title: t("Nuovo blocco"), cycles: 1, restBetweenCyclesSec: 60, restAfterBlockSec: 60, restBetweenExercisesSec: 15, exercises: [newExercise()] });
-export const newWorkout = (mode = 'WORKOUT') => ({ schemaVersion: 1, mode, id: uid(), title: mode === 'STUDIO' ? t("Il mio studio") : t("Il mio allenamento"), description: '', color: '#9153b7', warmupSec: 0, cooldownSec: 0, blocks: mode === 'STUDIO' ? [] : [newBlock()], ...(mode === 'STUDIO' ? { activities: [newStudyActivity()], restBetweenActivitiesSec: 300 } : {}) });
+export const newWorkout = (mode = 'WORKOUT') => ({ schemaVersion: 1, mode, id: uid(), title: mode === 'STUDIO' ? t("Il mio studio") : t("Il mio allenamento"), description: '', color: '#9153b7', warmupSec: 0, cooldownSec: 0, blocks: mode === 'STUDIO' ? [] : [newBlock()], ...(mode === 'STUDIO' ? { activities: [newStudyActivity()], restBetweenActivitiesSec: 300 } : { timingVersion: 2 }) });
 
 // Reading/previewing old records never rewrites the archive. Saving the edited copy adopts the new form.
 export function normalizeWorkout(w) {
   const copy = clone(w);
   if (!isStudio(copy)) {
-    copy.blocks.forEach(b => { b.restBetweenExercisesSec ??= b.exercises[0]?.restAfterExerciseSec ?? 15; });
+    if (copy.timingVersion !== 2) {
+      const active = (value, min) => value > 0 ? Math.max(min, value) : value;
+      copy.cooldownSec = active(copy.cooldownSec, 10);
+      copy.blocks.forEach((b, bi) => {
+        if (bi < copy.blocks.length - 1) b.restAfterBlockSec = Math.max(5, b.restAfterBlockSec);
+        b.exercises.forEach(e => { e.workSec = Math.max(5, e.workSec); e.restBetweenRepsSec = active(e.restBetweenRepsSec, 5); });
+      });
+      copy.timingVersion = 2;
+    }
     return copy;
   }
   if (copy.activities === undefined) {
@@ -93,7 +113,7 @@ export function normalizeWorkout(w) {
 }
 export function normalizationNotice(w) {
   if (isStudio(w) && w.activities === undefined) return 'Programma precedente: le serie diventano attività; pause lunghe e finali sono escluse. La pausa tra attività usa il primo valore precedente. L’originale resta nell’archivio fino al salvataggio.';
-  if (!isStudio(w) && w.blocks.some(b => b.restBetweenExercisesSec === undefined && new Set(b.exercises.slice(0, -1).map(e => e.restAfterExerciseSec)).size > 1)) return 'Allenamento precedente: il recupero tra esercizi è ora unico per blocco e usa il primo valore precedente. L’originale resta nell’archivio fino al salvataggio.';
+  if (!isStudio(w) && w.timingVersion !== 2 && (JSON.stringify(normalizeWorkout(w), (key, value) => key === 'timingVersion' ? undefined : value) !== JSON.stringify(w) || w.blocks.some(b => b.cycles > 1 || b.exercises.length > 1))) return 'Allenamento precedente: uso il recupero personale anche tra esercizi e cicli; tra blocchi lo sostituisce il recupero del blocco. Applico i nuovi minimi alla sola copia di esecuzione. Controlla la durata in anteprima. L’originale resta nell’archivio fino al salvataggio.';
   return '';
 }
 export function duplicateWorkout(w) {

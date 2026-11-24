@@ -4,7 +4,7 @@ import os
 import zipfile
 
 ROOT = Path(__file__).resolve().parent.parent
-VERSION = '1.8.2'
+VERSION = '1.9.0'
 DESTINATION = ROOT / 'output' / f'Tabata-Timer-{VERSION}-sorgenti.zip'
 EXCLUDED_DIRS = {'.git', '.gradle', '.kotlin', '.idea', 'build', 'node_modules', '__pycache__'}
 EXCLUDED_FILES = {'local.properties', '.DS_Store'}

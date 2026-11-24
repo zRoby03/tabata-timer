@@ -14,22 +14,21 @@ class ModesTest {
         val phases = compileTimeline(simple)
         assertEquals(listOf("WORK", "REST_REP", "WORK", "REST_ACTIVITY", "WORK"), phases.map { it.type })
         assertEquals(listOf(60000L, 120000L, 60000L, 240000L, 180000L), phases.map { it.durationMs })
-        assertEquals("Pausa tra sessioni", phases[1].label)
+        assertEquals("Pausa Concentrazione — tra sessioni", phases[1].label)
         var clock = 0L; val timer = TimerEngine(simple, { clock }); timer.start(); clock = PREPARATION_MS + plannedMs(phases); timer.tick()
         assertEquals(300000L, timer.result!!.workMs); assertEquals(660000L, timer.result!!.plannedMs); assertEquals(3, timer.result!!.plannedWorkIntervals)
         assertThrows(Exception::class.java) { compileTimeline(w.copy(activities = emptyList())) }
         assertThrows(Exception::class.java) { compileTimeline(w.copy(activities = listOf(StudyActivity(concentrationSec = 61)))) }
         assertThrows(Exception::class.java) { compileTimeline(w.copy(restBetweenActivitiesSec = 61)) }
     }
-    @Test fun workoutRestIsSharedPerBlock() {
-        val exercises = (1..3).map { Exercise(title = "E$it", repetitions = 2, workSec = 10, restBetweenRepsSec = 3, restAfterExerciseSec = it * 20) }
-        val w = Workout(blocks = listOf(Block(exercises = exercises, restBetweenExercisesSec = 7)))
+    @Test fun workoutRestBelongsToEachExercise() {
+        val exercises = (1..3).map { Exercise(title = "E$it", repetitions = 2, workSec = 10, restBetweenRepsSec = 5 + it, restAfterExerciseSec = it * 20) }
+        val w = Workout(blocks = listOf(Block(exercises = exercises, restBetweenExercisesSec = 99)))
         val phases = compileTimeline(w)
-        assertEquals(listOf(7000L, 7000L), phases.filter { it.type == "REST_EXERCISE" }.map { it.durationMs })
+        assertEquals(listOf(6000L, 7000L), phases.filter { it.type == "REST_EXERCISE" }.map { it.durationMs })
         assertEquals(3, phases.count { it.type == "REST_REP" }); assertEquals("WORK", phases.last().type)
-        val legacy = w.copy(blocks = listOf(w.blocks[0].copy(restBetweenExercisesSec = null)))
-        assertTrue(normalizationNotice(legacy).isNotEmpty()); assertEquals(20, normalizeWorkout(legacy).blocks[0].restBetweenExercisesSec)
-        assertNull(legacy.blocks[0].restBetweenExercisesSec)
+        assertTrue(normalizationNotice(w).isNotEmpty()); assertEquals(99, normalizeWorkout(w).blocks[0].restBetweenExercisesSec)
+        assertNull(w.timingVersion)
     }
     @Test fun studioPreparationAndSessionMode() {
         var clock = 0L; val timer = TimerEngine(newQuickWorkout("STUDIO"), { clock })

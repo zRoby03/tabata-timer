@@ -3,6 +3,7 @@ package it.tabatastudio.ui
 import it.tabatastudio.i18n.AppText
 
 internal fun tr(source: String?, vararg values: Any?): String = AppText.text(source, *values)
+internal fun phaseLabel(phase: it.tabatastudio.domain.Phase): String = tr(phase.labelKey, *phase.labelArgs.toTypedArray())
 
 internal fun localizedNewWorkout(w: it.tabatastudio.domain.Workout): it.tabatastudio.domain.Workout = w.copy(
     title = tr(w.title), description = tr(w.description),

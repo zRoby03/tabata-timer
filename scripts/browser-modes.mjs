@@ -21,7 +21,7 @@ try {
     AudioContext.prototype.decodeAudioData = async function (...args) {
       const file = window.__assetInputs.get(args[0]);
       const buffer = await decode.apply(this, args), data = buffer.getChannelData(0);
-      const marker = { 'work-start.wav': 'whistle', 'rest-start.wav': 'sigh', 'workout-finish.wav': 'finish' }[file];
+      const marker = { 'work-start.wav': 'whistle', 'rest-start.wav': 'sigh', 'workout-finish.wav': 'finish', 'workout-ding-1.wav': 'ding1', 'workout-ding-2.wav': 'ding2', 'workout-ding-3.wav': 'ding3', 'rest-double.wav': 'double-sigh' }[file];
       if (marker) { window.__clipNames.set(buffer, marker); window.__hornDecoded++; return buffer; }
       const expected = { 'work-3': 330, 'work-2': 370, 'work-1': 440, 'rest-3': 660, 'rest-2': 740, 'rest-1': 880 };
       const start = Math.round(buffer.sampleRate * .005), end = Math.round(buffer.sampleRate * (buffer.duration - .015));
@@ -86,13 +86,13 @@ try {
   await page.locator('.workout-menu summary').click(); await page.getByRole('button', { name: 'Modifica', exact: true }).click();
   assert.equal(await page.locator('[data-path="activities.0.concentrationSec"]').inputValue(), '1');
   assert.equal(await page.locator('[data-path="restBetweenActivitiesSec"]').inputValue(), '4');
-  assert.match(await page.locator('#preview').innerText(), /Pausa tra sessioni/);
-  assert.match(await page.locator('#preview').innerText(), /Pausa tra attività/);
+  assert.match(await page.locator('#preview').innerText(), /Pausa .* — tra sessioni/);
+  assert.match(await page.locator('#preview').innerText(), /Pausa .* — tra attività/);
   assert.doesNotMatch(await page.locator('#preview').innerText(), /Pausa tra serie|Pausa tra cicli|\b(min|sec)\b/);
   await page.getByRole('button', { name: 'Torna ai programmi', exact: true }).click();
   await page.getByRole('button', { name: 'Avvia', exact: true }).click();
   await page.getByRole('heading', { name: 'Preparazione', exact: true }).waitFor();
-  await page.waitForFunction(() => __hornDecoded === 9);
+  await page.waitForFunction(() => __hornDecoded === 13);
   assert.equal(await page.getByRole('switch').isDisabled(), true);
   const at = async (time, text) => {
     await page.evaluate(value => { window.__timerClock = value; }, time);
@@ -131,13 +131,10 @@ try {
   await page.getByRole('switch').click();
   await page.getByRole('button', { name: 'Guida', exact: true }).click();
   assert.deepEqual(await page.locator('main h2').allTextContents(), ['Workout e Studio', 'Per conservare un allenamento', 'Tema e Colori']);
-  assert.deepEqual(await page.locator('main section.card').first().locator('p').allTextContents(), [
-    'Usa lo switch accanto a Tabata Timer: Workout ha tempi in secondi, Studio in minuti. L’ultima modalità utilizzata viene ricordata.',
-    'Programmi, attività e statistiche sono separati; tema e palette sono comuni.',
-    'In Altre opzioni puoi impostare pause e serie personalizzate a tuo piacimento ed ad ogni tua necessità.',
-    'Termina il timer per cambiare modalità.'
-  ]);
-  checks.push('exact-guide-three-cards-four-paragraphs');
+  const guide=await page.locator('main section.card').first().innerText();
+  assert.ok(guide.includes('Un ding: inizio del lavoro ordinario.'));
+  assert.ok(guide.includes('Alla sua fine suonano nuovamente gli stessi tre ding.'));
+  checks.push('updated-guide-three-cards-audio-mapping');
   // Keep the current archive while checking an old one in a separate browser context.
   const legacyContext = await browser.newContext({ locale: 'it-IT' });
   const legacyPage = await legacyContext.newPage();
