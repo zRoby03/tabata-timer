@@ -246,14 +246,25 @@ document.querySelector('#import-file').addEventListener('change', async event =>
   const file = event.target.files[0]; event.target.value = ''; if (!file) return;
   try {
     if (file.size > MAX_BACKUP_BYTES) throw new Error(t("File troppo grande: massimo 5 MiB"));
-    pendingImport = parseBackup(await file.text());
+    const bytes = await file.arrayBuffer();
+    let raw;
+    try { raw = new TextDecoder("utf-8", { fatal: true }).decode(bytes); }
+    catch { throw new Error("Il file non è un JSON UTF-8 valido."); }
+    if (active() || document.querySelector("#import-dialog").open) return;
+    pendingImport = parseBackup(raw);
     document.querySelector('#import-preview').textContent = t("{0} allenamenti · {1} sessioni · esportato il {2}", pendingImport.workouts.length, pendingImport.sessions.length, dateLabel(pendingImport.exportedAt));
     document.querySelector('#import-dialog').showModal();
-  } catch (e) { announce(t("Importazione rifiutata: {0}", e.message)); }
+  } catch (e) { announce(t("Importazione rifiutata: {0}", t(e.message))); }
 });
 document.querySelector('#confirm-import').addEventListener('click', () => {
   if (!pendingImport || active()) return;
-  repo.data = { workouts: pendingImport.workouts, sessions: pendingImport.sessions }; const saved = repo.save(); pendingImport = null; dirty = false; draft = null; timer = null; document.querySelector('#import-dialog').close(); navigate('workouts'); if (saved) announce(repo.persistent ? t("Importazione completata e salvata sul dispositivo.") : t("Importazione completata per questa visita. Attiva il salvataggio per conservarla."));
+  const saved = repo.replace({ workouts: pendingImport.workouts, sessions: pendingImport.sessions });
+  pendingImport = null;
+  document.querySelector('#import-dialog').close();
+  if (!saved) { announce(t("Importazione non salvata. L’archivio precedente è rimasto invariato.")); return; }
+  dirty = false; draft = null; timer = null;
+  navigate('workouts');
+  announce(repo.persistent ? t("Importazione completata e salvata sul dispositivo.") : t("Importazione completata per questa visita. Attiva il salvataggio per conservarla."));
 });
 document.querySelector('#cancel-import').addEventListener('click', () => { pendingImport = null; document.querySelector('#import-dialog').close(); });
 document.querySelector('#import-dialog').addEventListener('cancel', () => { pendingImport = null; });

@@ -129,15 +129,14 @@ class StudioViewModel(application: Application) : AndroidViewModel(application) 
         if (active) { message = "Termina prima la sessione in corso."; route = "Timer"; return }
         try { runtime.start(w); route = "Timer"; normalizationNotice(w).takeIf { it.isNotEmpty() }?.let { message = it } } catch (e: Exception) { message = e.message ?: "Timer non disponibile" }
     }
-    fun demo() { if (mode == "STUDIO") { start(newWorkout(mode).copy(title = "Demo studio", activities = listOf(StudyActivity(concentrationSec = 60, sessions = 2, pauseSec = 60)))); return }; val w = Workout(title = "Demo · il tuo primo ritmo", blocks = listOf(Block(exercises = listOf(Exercise(title = "Muoviti al tuo ritmo", repetitions = 2, workSec = 5, restBetweenRepsSec = 2))))); start(w) }
     fun chooseSound(enabled: Boolean) { runtime.chooseSound(enabled) }
     fun pauseResume() { runtime.pauseResume() }
     fun skip() { runtime.skip() }
     fun previous() { runtime.previous() }
     fun stop() = confirm("Terminare la sessione e registrarla come interrotta?") { runtime.stop() }
-    fun loadImport(raw: String) {
+    fun loadImport(backup: Backup) {
         if (active || runtime.hasUnsavedResult) { message = "Termina la sessione e attendi il salvataggio prima di importare o cancellare dati."; return }
-        try { importPreview = parseBackup(raw) } catch (e: Exception) { message = "Importazione rifiutata: ${e.message}" }
+        importPreview = backup
     }
     fun applyImport() { val backup = importPreview ?: return; if (active || runtime.hasUnsavedResult) return; write { repository.replace(backup); importPreview = null; draft = null; dirty = false; runtime.clearFinished(); route = "Home"; message = "Archivio importato." } }
     fun backupForExport(): Backup { val session = timer?.result; return if (session != null && data.sessions.none { it.id == session.id }) data.copy(sessions = data.sessions + session) else data }

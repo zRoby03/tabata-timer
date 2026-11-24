@@ -1,6 +1,6 @@
 export const MODES = {
   WORKOUT: { title: 'Tabata Workout', subtitle: 'Allenamento a intervalli', collection: 'Allenamenti', noun: 'allenamento', focus: 'Lavoro', rest: 'Recupero', rounds: 'Giri', final: 'Defaticamento' },
-  STUDIO: { title: 'Tabata Studio', subtitle: 'Timer Pomodoro per studio e lavoro', collection: 'Programmi di studio', noun: 'programma di studio', focus: 'Concentrazione', rest: 'Pausa', rounds: 'Sessioni', final: 'Pausa finale' }
+  STUDIO: { title: 'Tabata Studio', subtitle: 'Timer Pomodoro. Imposta i tempi e premi Avvia.', collection: 'Programmi di studio', noun: 'programma di studio', focus: 'Concentrazione', rest: 'Pausa', rounds: 'Sessioni', final: 'Pausa finale' }
 };
 export const modeOf = value => value?.mode ?? 'WORKOUT';
 export const isStudio = value => modeOf(value) === 'STUDIO';

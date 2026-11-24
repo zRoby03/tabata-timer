@@ -168,6 +168,19 @@ class UiTest {
         compose.onNodeWithText("Allenamenti").performClick()
         compose.onNodeWithText("Studio locale di matematica").assertDoesNotExist()
     }
+    @Test fun studioSubtitleIsExactInAllLanguages() {
+        homeReady()
+        compose.onNodeWithContentDescription("Modalità Studio").performClick()
+        compose.onNodeWithText("Timer Pomodoro. Imposta i tempi e premi Avvia.").assertExists()
+        compose.activityRule.scenario.onActivity { activity ->
+            androidx.lifecycle.ViewModelProvider(activity)[it.tabatastudio.ui.StudioViewModel::class.java].chooseLanguage("en")
+        }
+        compose.onNodeWithText("Pomodoro timer. Set your times and press Start.").assertExists()
+        compose.activityRule.scenario.onActivity { activity ->
+            androidx.lifecycle.ViewModelProvider(activity)[it.tabatastudio.ui.StudioViewModel::class.java].chooseLanguage("es")
+        }
+        compose.onNodeWithText("Temporizador Pomodoro. Configura los tiempos y pulsa Iniciar.").assertExists()
+    }
     @Test fun languagesPreserveArchiveTimerAndNotification() {
         homeReady()
         lateinit var vm: it.tabatastudio.ui.StudioViewModel

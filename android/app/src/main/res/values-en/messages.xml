@@ -551,4 +551,9 @@
     <string name="msg_bbab7b3d8e7a" formatted="false">Three dings — cooldown finished</string>
     <string name="msg_029c57d39ec1" formatted="false">One ding starts work; two dings start a new cycle or block. Two sighs announce recovery between blocks. Three dings end work and cooldown; the timer stays silent during cooldown.</string>
     <string name="msg_8823c4bee7da" formatted="false">Previous workout: personal recovery also applies between exercises and cycles; block recovery replaces it between blocks. New minimum durations apply only to the execution copy. Check the preview duration. The original stays in the archive until you save.</string>
+    <string name="msg_296a6ecbf254" formatted="false">Pomodoro timer. Set your times and press Start.</string>
+    <string name="msg_42659673abd4" formatted="false">JSON is nested too deeply (maximum 64 levels)</string>
+    <string name="msg_1b3a7e274975" formatted="false">The file is not valid UTF-8 JSON.</string>
+    <string name="msg_e22de24f160e" formatted="false">Import could not be saved. Your previous data is unchanged.</string>
+    <string name="msg_883abb676756" formatted="false">Deleting removes programs and activity from both modes. Preferences and exported files are kept.</string>
 </resources>

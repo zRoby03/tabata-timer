@@ -32,7 +32,7 @@ export function quickView(w, persistent) {
   let total = 0, error = '';
   try { total = plannedMs(compileTimeline(w)); } catch (e) { error = e.message; }
   return `<section class="quick-start">
-    <div class="quick-heading"><p class="eyebrow">${t("IL TUO TEMPO, IL TUO RITMO")}</p><h1>Tabata Timer</h1><p class="muted">${t("{0}. Scegli i tempi e premi Avvia.", t(labels.subtitle))}</p></div>
+    <div class="quick-heading"><p class="eyebrow">${t("IL TUO TEMPO, IL TUO RITMO")}</p><h1>Tabata Timer</h1><p class="muted">${studio ? t(labels.subtitle) : t("{0}. Scegli i tempi e premi Avvia.", t(labels.subtitle))}</p></div>
     <div class="quick-presets" aria-label="${t("Impostazioni rapide")}">${quickPresets(mode).map((p, i) => `<button data-action="quick-preset" data-preset="${i}" aria-pressed="${e.workSec === p.workSec && e.restBetweenRepsSec === p.restSec}"><strong>${p.name}</strong><span>${p.workSec / factor} / ${p.restSec / factor}</span></button>`).join('')}</div>
     ${studio ? `<p class="muted small">${t("Le scelte rapide impostano i tempi della prima attività.")}</p>` : ''}
     <form id="quick-form" class="card quick-card">

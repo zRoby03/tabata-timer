@@ -551,4 +551,9 @@
     <string name="msg_bbab7b3d8e7a" formatted="false">Tre ding — fine defaticamento</string>
     <string name="msg_029c57d39ec1" formatted="false">Un ding avvia il lavoro; due ding un nuovo ciclo o blocco. Due sospiri annunciano il recupero tra blocchi. Tre ding concludono lavoro e defaticamento; durante il defaticamento il timer resta silenzioso.</string>
     <string name="msg_8823c4bee7da" formatted="false">Allenamento precedente: uso il recupero personale anche tra esercizi e cicli; tra blocchi lo sostituisce il recupero del blocco. Applico i nuovi minimi alla sola copia di esecuzione. Controlla la durata in anteprima. L’originale resta nell’archivio fino al salvataggio.</string>
+    <string name="msg_296a6ecbf254" formatted="false">Timer Pomodoro. Imposta i tempi e premi Avvia.</string>
+    <string name="msg_42659673abd4" formatted="false">JSON troppo annidato (massimo 64 livelli)</string>
+    <string name="msg_1b3a7e274975" formatted="false">Il file non è un JSON UTF-8 valido.</string>
+    <string name="msg_e22de24f160e" formatted="false">Importazione non salvata. L’archivio precedente è rimasto invariato.</string>
+    <string name="msg_883abb676756" formatted="false">La cancellazione elimina programmi e attività di entrambe le modalità. Le preferenze e le copie esportate restano disponibili.</string>
 </resources>

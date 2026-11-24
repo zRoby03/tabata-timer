@@ -34,7 +34,7 @@ import it.tabatastudio.domain.*
     Page {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             Text("Tabata Timer", style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.SemiBold)
-            Text(tr("{0}. Scegli i tempi e premi Avvia.", tr(labels.subtitle)), color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 14.sp)
+            Text(if (w.studio) tr(labels.subtitle) else tr("{0}. Scegli i tempi e premi Avvia.", tr(labels.subtitle)), color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 14.sp)
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             quickPresets(vm.mode).forEach { preset ->

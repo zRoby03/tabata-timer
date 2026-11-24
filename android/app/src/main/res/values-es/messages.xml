@@ -551,4 +551,9 @@
     <string name="msg_bbab7b3d8e7a" formatted="false">Tres dings — fin de la vuelta a la calma</string>
     <string name="msg_029c57d39ec1" formatted="false">Un ding inicia el trabajo; dos dings, un nuevo ciclo o bloque. Dos suspiros anuncian la recuperación entre bloques. Tres dings finalizan el trabajo y la vuelta a la calma; durante esta última el temporizador permanece en silencio.</string>
     <string name="msg_8823c4bee7da" formatted="false">Entrenamiento anterior: la recuperación personal también se aplica entre ejercicios y ciclos; entre bloques se sustituye por la recuperación del bloque. Los nuevos mínimos solo se aplican a la copia de ejecución. Revisa la duración en la vista previa. El original permanece en el archivo hasta que guardes.</string>
+    <string name="msg_296a6ecbf254" formatted="false">Temporizador Pomodoro. Configura los tiempos y pulsa Iniciar.</string>
+    <string name="msg_42659673abd4" formatted="false">JSON demasiado anidado (máximo 64 niveles)</string>
+    <string name="msg_1b3a7e274975" formatted="false">El archivo no es un JSON UTF-8 válido.</string>
+    <string name="msg_e22de24f160e" formatted="false">No se pudo guardar la importación. Los datos anteriores se conservaron.</string>
+    <string name="msg_883abb676756" formatted="false">Al borrar se eliminan los programas y la actividad de ambos modos. Se conservan las preferencias y los archivos exportados.</string>
 </resources>

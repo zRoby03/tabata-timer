@@ -551,5 +551,10 @@ internal val messageIds = mapOf(
     "Tre ding — fine lavoro" to R.string.msg_67e1fca9626e,
     "Tre ding — fine defaticamento" to R.string.msg_bbab7b3d8e7a,
     "Un ding avvia il lavoro; due ding un nuovo ciclo o blocco. Due sospiri annunciano il recupero tra blocchi. Tre ding concludono lavoro e defaticamento; durante il defaticamento il timer resta silenzioso." to R.string.msg_029c57d39ec1,
-    "Allenamento precedente: uso il recupero personale anche tra esercizi e cicli; tra blocchi lo sostituisce il recupero del blocco. Applico i nuovi minimi alla sola copia di esecuzione. Controlla la durata in anteprima. L’originale resta nell’archivio fino al salvataggio." to R.string.msg_8823c4bee7da
+    "Allenamento precedente: uso il recupero personale anche tra esercizi e cicli; tra blocchi lo sostituisce il recupero del blocco. Applico i nuovi minimi alla sola copia di esecuzione. Controlla la durata in anteprima. L’originale resta nell’archivio fino al salvataggio." to R.string.msg_8823c4bee7da,
+    "Timer Pomodoro. Imposta i tempi e premi Avvia." to R.string.msg_296a6ecbf254,
+    "JSON troppo annidato (massimo 64 livelli)" to R.string.msg_42659673abd4,
+    "Il file non è un JSON UTF-8 valido." to R.string.msg_1b3a7e274975,
+    "Importazione non salvata. L’archivio precedente è rimasto invariato." to R.string.msg_e22de24f160e,
+    "La cancellazione elimina programmi e attività di entrambe le modalità. Le preferenze e le copie esportate restano disponibili." to R.string.msg_883abb676756
 )

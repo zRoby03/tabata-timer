@@ -2199,5 +2199,25 @@
   "Allenamento precedente: uso il recupero personale anche tra esercizi e cicli; tra blocchi lo sostituisce il recupero del blocco. Applico i nuovi minimi alla sola copia di esecuzione. Controlla la durata in anteprima. L’originale resta nell’archivio fino al salvataggio.": [
     "Previous workout: personal recovery also applies between exercises and cycles; block recovery replaces it between blocks. New minimum durations apply only to the execution copy. Check the preview duration. The original stays in the archive until you save.",
     "Entrenamiento anterior: la recuperación personal también se aplica entre ejercicios y ciclos; entre bloques se sustituye por la recuperación del bloque. Los nuevos mínimos solo se aplican a la copia de ejecución. Revisa la duración en la vista previa. El original permanece en el archivo hasta que guardes."
+  ],
+  "Timer Pomodoro. Imposta i tempi e premi Avvia.": [
+    "Pomodoro timer. Set your times and press Start.",
+    "Temporizador Pomodoro. Configura los tiempos y pulsa Iniciar."
+  ],
+  "JSON troppo annidato (massimo 64 livelli)": [
+    "JSON is nested too deeply (maximum 64 levels)",
+    "JSON demasiado anidado (máximo 64 niveles)"
+  ],
+  "Il file non è un JSON UTF-8 valido.": [
+    "The file is not valid UTF-8 JSON.",
+    "El archivo no es un JSON UTF-8 válido."
+  ],
+  "Importazione non salvata. L’archivio precedente è rimasto invariato.": [
+    "Import could not be saved. Your previous data is unchanged.",
+    "No se pudo guardar la importación. Los datos anteriores se conservaron."
+  ],
+  "La cancellazione elimina programmi e attività di entrambe le modalità. Le preferenze e le copie esportate restano disponibili.": [
+    "Deleting removes programs and activity from both modes. Preferences and exported files are kept.",
+    "Al borrar se eliminan los programas y la actividad de ambos modos. Se conservan las preferencias y los archivos exportados."
   ]
 }

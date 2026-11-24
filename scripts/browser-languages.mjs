@@ -35,6 +35,11 @@ try {
   assert.deepEqual(await page.locator('main h2').allTextContents(),['Workout e Studio','Per conservare un allenamento','Tema e Colori'].map(x=>tr(x)));
   await page.locator('#mode-switch').click();await page.getByRole('heading',{name:'Tabata Timer',exact:true}).waitFor();
   assert.equal(await page.locator('[data-action=demo]').count(),0);
+  assert.equal(await page.locator('.quick-heading .muted').innerText(), {
+   it: 'Timer Pomodoro. Imposta i tempi e premi Avvia.',
+   en: 'Pomodoro timer. Set your times and press Start.',
+   es: 'Temporizador Pomodoro. Configura los tiempos y pulsa Iniciar.'
+  }[lang]);
   assert.equal(await page.locator('[data-quick-path="activities.0.concentrationSec"]').inputValue(),'25');
   await page.locator('[data-quick-path="activities.0.title"]').fill(custom);
   await page.locator('[data-action=activity-add]').click();await page.locator('[data-action=activity-delete][data-index="1"]').click();
@@ -63,6 +68,6 @@ try {
   checks.push({language:lang,deviceDetection:true,preferencePersisted:true,savedNamesPreserved:true,editorTimerStatistics:true,responsive:[320,390,768,1440],offline:true,demosFooterAndStorageLineRemoved:true});
   await context.close();
  }
- assert.deepEqual(errors,[]);await writeFile('output/browser-languages.json',JSON.stringify({version:'1.8.0',checks,errors},null,2));
+ assert.deepEqual(errors,[]);await writeFile('output/browser-languages.json',JSON.stringify({version:'1.9.1',checks,errors},null,2));
  console.log('Italiano, English, Español: flussi completi, nomi intatti, tre guide, nove palette, quattro larghezze e offline verificati.');
 } finally {await browser.close();}

@@ -29,6 +29,15 @@ class RepositoryTest {
     @Test fun workoutRoundtrip() = runBlocking {
         repo.initialize(); val w = Workout(title = "Persistenza"); repo.save(w); assertEquals(w, repo.read().workouts.find { it.id == w.id })
     }
+    @Test fun sqlAndHtmlPunctuationRemainPlainText() = runBlocking {
+        repo.initialize()
+        val title = "Studio 'mattina'; select pausa <b>testo</b>"
+        val w = newWorkout("WORKOUT").copy(title = title)
+        repo.save(w)
+        assertEquals(3, repo.read().workouts.size)
+        assertEquals(title, repo.read().workouts.single { it.id == w.id }.title)
+        repo.finish(session()); assertEquals(1, repo.read().sessions.size)
+    }
     @Test fun studioPersistenceAndCheckpointKeepMode() = runBlocking {
         repo.initialize(); val w = newQuickWorkout("STUDIO").copy(activities = listOf(StudyActivity(title = "Matematica", sessions = 2), StudyActivity(title = "Storia", sessions = 1)), restBetweenActivitiesSec = 120)
         repo.save(w); repo.checkpoint(session().copy(mode = "STUDIO", workoutId = w.id))

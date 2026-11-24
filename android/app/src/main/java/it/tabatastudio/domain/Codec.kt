@@ -63,7 +63,23 @@ fun sessionFromJson(o: JSONObject): Session {
     return s
 }
 fun parseBackup(raw: String): Backup {
-    require(raw.toByteArray(Charsets.UTF_8).size <= MAX_BACKUP_BYTES) { "Backup massimo 5 MiB" }
+    require(raw.length <= MAX_BACKUP_BYTES && raw.toByteArray(Charsets.UTF_8).size <= MAX_BACKUP_BYTES) { "Backup massimo 5 MiB" }
+    var depth = 0
+    var inString = false
+    var escape = false
+    for (char in raw) {
+        if (inString) {
+            when {
+                escape -> escape = false
+                char == '\\' -> escape = true
+                char == '"' -> inString = false
+            }
+        } else when (char) {
+            '"' -> inString = true
+            '{', '[' -> require(++depth <= 64) { "JSON troppo annidato (massimo 64 livelli)" }
+            '}', ']' -> require(--depth >= 0) { "JSON non valido" }
+        }
+    }
     Json.parseToJsonElement(raw) // Reject lenient org.json extensions (single quotes, trailing tokens).
     val o = JSONObject(raw); require(o.int("schemaVersion", 1, 1) == 1); instant(o.string("exportedAt"))
     val wa = o.getJSONArray("workouts"); val sa = o.getJSONArray("sessions")
@@ -75,6 +91,11 @@ fun parseBackup(raw: String): Backup {
 fun backupJson(backup: Backup): String = JSONObject().put("schemaVersion", 1).put("exportedAt", isoNow()).put("workouts", JSONArray(backup.workouts.map(::workoutJson))).put("sessions", JSONArray(backup.sessions.map(::sessionJson))).toString(2)
 fun sessionsCsv(sessions: List<Session>): String {
     val fields = listOf("id", "mode", "workoutId", "workoutTitle", "startedAt", "endedAt", "status", "plannedMs", "elapsedMs", "workMs", "completedWorkIntervals", "plannedWorkIntervals", "completedPhases", "plannedPhases", "pauses")
-    fun cell(value: String): String { val safe = if (value.firstOrNull() in listOf('=', '+', '-', '@', '\t', '\r')) "'$value" else value; return "\"${safe.replace("\"", "\"\"")}\"" }
+    fun cell(value: String): String {
+        val prefix = value.takeWhile { it in '\t'..'\r' || Character.isSpaceChar(it) || it == '\uFEFF' }
+        val operator = value.getOrNull(prefix.length)
+        val safe = if (prefix.any { it in "\t\r\n" } || (operator != null && operator in "=+-@＝＋－＠")) "'$value" else value
+        return "\"${safe.replace("\"", "\"\"")}\""
+    }
     return "\uFEFF" + (listOf(fields.map(::cell).joinToString(",")) + sessions.map { s -> val json = sessionJson(s); fields.joinToString(",") { cell(if (it == "mode") s.mode else json.optString(it)) } }).joinToString("\r\n")
 }

@@ -11,6 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import java.nio.ByteBuffer
+import java.nio.charset.CharacterCodingException
+import kotlinx.coroutines.CancellationException
 
 @Composable internal fun DataScreen(vm: StudioViewModel) {
     val context = LocalContext.current
@@ -26,9 +29,17 @@ import java.io.ByteArrayOutputStream
             context.contentResolver.openInputStream(uri)?.use { stream ->
                 val out = ByteArrayOutputStream(); val buffer = ByteArray(8192)
                 while (true) { val count = stream.read(buffer); if (count < 0) break; require(out.size() + count <= MAX_BACKUP_BYTES) { "File troppo grande: massimo 5 MiB" }; out.write(buffer, 0, count) }
-                out.toByteArray().toString(Charsets.UTF_8)
+                val raw = try {
+                    Charsets.UTF_8.newDecoder().decode(ByteBuffer.wrap(out.toByteArray())).toString().removePrefix("\uFEFF")
+                } catch (_: CharacterCodingException) {
+                    error("Il file non è un JSON UTF-8 valido.")
+                }
+                parseBackup(raw)
             } ?: error("File non disponibile")
-        } }.onSuccess(vm::loadImport).onFailure { vm.message = "Importazione rifiutata: ${it.message}" }
+        } }.onSuccess(vm::loadImport).onFailure {
+            if (it is CancellationException) throw it
+            vm.message = tr("Importazione rifiutata: {0}", tr(it.message ?: "JSON non valido"))
+        }
     } }
     Page {
         Text(tr("Impostazioni"), style = MaterialTheme.typography.headlineMedium)
@@ -61,7 +72,7 @@ import java.io.ByteArrayOutputStream
         }
         Panel {
             Text(tr("Gestione dati"), style = MaterialTheme.typography.titleLarge)
-            Text(tr("La cancellazione elimina i dati di entrambe le modalità e richiede conferma."), fontSize = 13.sp)
+            Text(tr("La cancellazione elimina programmi e attività di entrambe le modalità. Le preferenze e le copie esportate restano disponibili."), fontSize = 13.sp)
             TextButton(onClick = vm::clear) { Text(tr("Cancella tutti i dati"), color = MaterialTheme.colorScheme.error) }
         }
         OutlinedButton(onClick = { vm.navigate("Guida") }) { Text(tr("Apri la guida")) }

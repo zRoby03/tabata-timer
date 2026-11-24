@@ -8,10 +8,15 @@ export class LocalRepository {
     } catch (e) { this.onWarning(`Archivio non disponibile: ${e.message}. Uso la memoria temporanea; l’archivio precedente è stato conservato.`); }
     return this.data;
   }
-  save() {
+  save(data = this.data) {
     if (!this.persistent) return true;
-    try { this.storage.setItem(STORAGE_KEY, JSON.stringify({ schemaVersion: 1, exportedAt: new Date().toISOString(), ...this.data })); return true; }
+    try { this.storage.setItem(STORAGE_KEY, JSON.stringify({ schemaVersion: 1, exportedAt: new Date().toISOString(), ...data })); return true; }
     catch { this.onWarning('Salvataggio non riuscito. I dati restano in memoria: esporta una copia JSON prima di chiudere.'); return false; }
+  }
+  replace(data) {
+    if (!this.save(data)) return false;
+    this.data = data;
+    return true;
   }
   enable() { const previous = this.persistent; this.persistent = true; if (!this.save()) { this.persistent = previous; return false; } return true; }
   disable() {

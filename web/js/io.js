@@ -2,6 +2,21 @@ import { object, text, id, integer } from './model.js';
 import { compileTimeline } from './timeline.js';
 import { MODES, modeOf } from './modes.js';
 export const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
+const MAX_BACKUP_DEPTH = 64;
+
+function checkBackupDepth(raw) {
+  let depth = 0, inString = false, escape = false;
+  for (const char of raw) {
+    if (inString) {
+      if (escape) escape = false;
+      else if (char === '\\') escape = true;
+      else if (char === '"') inString = false;
+    } else if (char === '"') inString = true;
+    else if (char === '{' || char === '[') {
+      if (++depth > MAX_BACKUP_DEPTH) throw new Error('JSON troppo annidato (massimo 64 livelli)');
+    } else if ((char === '}' || char === ']') && --depth < 0) throw new Error('JSON non valido');
+  }
+}
 function timestamp(value, path) {
   if (typeof value !== 'string' || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,3})?Z$/.test(value) || !Number.isFinite(Date.parse(value)) || new Date(value).toISOString().slice(0, 19) !== value.slice(0, 19)) throw new Error(`${path}: data UTC non valida`);
 }
@@ -18,7 +33,8 @@ export function validateSession(s) {
   return s;
 }
 export function parseBackup(raw) {
-  if (typeof raw !== 'string' || new TextEncoder().encode(raw).length > MAX_BACKUP_BYTES) throw new Error('Backup troppo grande: massimo 5 MiB');
+  if (typeof raw !== 'string' || raw.length > MAX_BACKUP_BYTES || new TextEncoder().encode(raw).length > MAX_BACKUP_BYTES) throw new Error('Backup troppo grande: massimo 5 MiB');
+  checkBackupDepth(raw);
   let value; try { value = JSON.parse(raw); } catch { throw new Error('JSON non valido'); }
   object(value, 'Backup'); if (value.schemaVersion !== 1) throw new Error('Versione backup non supportata'); timestamp(value.exportedAt, 'Esportazione');
   if (!Array.isArray(value.workouts) || value.workouts.length > 500 || !Array.isArray(value.sessions) || value.sessions.length > 10000) throw new Error('Collezioni backup non valide o troppo grandi');
@@ -31,7 +47,11 @@ export const makeBackup = data => JSON.stringify({ schemaVersion: 1, exportedAt:
 export function sessionsCsv(sessions) {
   const fields = ['id', 'mode', 'workoutId', 'workoutTitle', 'startedAt', 'endedAt', 'status', 'plannedMs', 'elapsedMs', 'workMs', 'completedWorkIntervals', 'plannedWorkIntervals', 'completedPhases', 'plannedPhases', 'pauses'];
   // Apostrophe guards spreadsheet formula injection when users choose to open CSV in a spreadsheet.
-  const cell = value => `"${String(value ?? '').replace(/^[=+@\-\t\r]/, "'$&").replaceAll('"', '""')}"`;
+  const cell = value => {
+    const text = String(value ?? '');
+    const safe = typeof value === 'string' && /^[\p{Zs}\t\n\v\f\r\u2028\u2029\uFEFF]*[=+@\-＝＋＠－\t\r\n]/u.test(text) ? "'" + text : text;
+    return `"${safe.replaceAll('"', '""')}"`;
+  };
   return '\uFEFF' + [fields.map(cell).join(','), ...sessions.map(s => fields.map(f => cell(f === 'mode' ? modeOf(s) : s[f])).join(','))].join('\r\n');
 }
 export function download(content, filename, type) {
