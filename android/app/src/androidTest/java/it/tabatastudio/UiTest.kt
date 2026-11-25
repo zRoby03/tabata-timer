@@ -109,23 +109,37 @@ class UiTest {
         homeReady()
         compose.onNodeWithContentDescription("Modalità Studio").performClick().assertIsOn()
         val captures = File(compose.activity.filesDir, "style-verification").apply { mkdirs() }
+        val shownPalettes = listOf("purple", "lime", "yellow")
+        fun select(style: StudioStyle, dark: Boolean, palette: String) {
+            compose.activityRule.scenario.onActivity { activity ->
+                val vm = androidx.lifecycle.ViewModelProvider(activity)[StudioViewModel::class.java]
+                vm.chooseStyle(style)
+                vm.chooseDarkTheme(dark)
+                vm.choosePalette(palette)
+            }
+        }
+        fun capture(mode: String, style: StudioStyle, dark: Boolean, palette: String) {
+            val theme = if (dark) "dark" else "light"
+            val folder = File(captures, "$mode/$theme").apply { mkdirs() }
+            val bitmap = compose.onRoot().captureToImage().asAndroidBitmap()
+            File(folder, "${style.id}-$palette.png").outputStream().use {
+                assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG, 100, it))
+            }
+        }
         try {
             for (style in StudioStyle.entries) for (dark in listOf(false, true)) for (palette in studioPalettes) {
-                compose.activityRule.scenario.onActivity { activity ->
-                    val vm = androidx.lifecycle.ViewModelProvider(activity)[StudioViewModel::class.java]
-                    vm.chooseStyle(style)
-                    vm.chooseDarkTheme(dark)
-                    vm.choosePalette(palette.id)
-                }
+                select(style, dark, palette.id)
                 val layouts = mutableListOf<TextLayoutResult>()
                 compose.onNodeWithText("1:55:00").assertIsDisplayed()
                     .performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
                 assertTrue(layouts.isNotEmpty() && layouts.all { !it.hasVisualOverflow && it.lineCount == 1 })
-                if (!dark && palette.id in listOf("purple", "lime", "yellow")) {
-                    val name = style.id + "-" + palette.id + ".png"
-                    val bitmap = compose.onRoot().captureToImage().asAndroidBitmap()
-                    File(captures, name).outputStream().use { assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)) }
-                }
+                if (palette.id in shownPalettes) capture("studio", style, dark, palette.id)
+            }
+            compose.onNodeWithContentDescription("Modalità Studio").performClick().assertIsOff()
+            for (style in StudioStyle.entries) for (dark in listOf(false, true)) for (palette in shownPalettes) {
+                select(style, dark, palette)
+                compose.onNodeWithText("3:50").assertIsDisplayed()
+                capture("workout", style, dark, palette)
             }
         } finally {
             compose.activityRule.scenario.onActivity { activity ->
@@ -139,12 +153,13 @@ class UiTest {
     }
     @Test fun saveNamedWorkoutAndOpenGuide() {
         homeReady()
+        val name = "Il mio circuito locale ${java.util.UUID.randomUUID().toString().take(8)}"
         compose.onNodeWithText("Salva allenamento").performScrollTo().performClick()
-        compose.onNodeWithText("Nome dell’allenamento").performTextReplacement("Il mio circuito locale")
+        compose.onNodeWithText("Nome dell’allenamento").performTextReplacement(name)
         compose.onNodeWithText("Salva sul dispositivo").performClick()
-        compose.waitUntil(10000) { compose.onAllNodesWithText("Il mio circuito locale").fetchSemanticsNodes().isNotEmpty() }
+        compose.waitUntil(10000) { compose.onAllNodesWithText(name).fetchSemanticsNodes().isNotEmpty() }
         compose.activityRule.scenario.recreate()
-        compose.onNodeWithText("Il mio circuito locale").assertExists()
+        compose.onNodeWithText(name).assertExists()
         compose.onNodeWithText("Guida").performClick()
         compose.onNodeWithText("Guida all’uso").assertExists()
         compose.onNodeWithText("Per conservare un allenamento").assertExists()
@@ -194,6 +209,45 @@ class UiTest {
         compose.onNodeWithContentDescription(presetOptions).performScrollTo().performClick()
         compose.onNodeWithText("Modifica").performClick()
         compose.onNodeWithText("Modifica allenamento").assertExists()
+    }
+    @Test fun quickTimerRejectsDurationsBelowTheVisibleMinimums() {
+        homeReady()
+        val start = compose.onNodeWithText("Avvia")
+        val work = compose.onNodeWithContentDescription("Lavoro")
+        val rest = compose.onNodeWithContentDescription("Recupero")
+        work.performTextReplacement("1")
+        start.assertIsNotEnabled()
+        work.performTextReplacement("5")
+        rest.performTextReplacement("0")
+        start.assertIsNotEnabled()
+        rest.performTextReplacement("5")
+        compose.onNodeWithContentDescription("Giri").performTextReplacement("1")
+        start.assertIsEnabled()
+
+        compose.onNodeWithText("Altre opzioni +").performScrollTo().performClick()
+        val enableCooldown = compose.onNodeWithContentDescription("Defaticamento")
+        enableCooldown.performScrollTo().assertIsOff().performClick()
+        val cooldown = compose.onNode(hasSetTextAction() and hasText("Durata defaticamento"))
+        cooldown.performScrollTo().performTextReplacement("9")
+        start.assertIsNotEnabled()
+        cooldown.performTextReplacement("0")
+        start.assertIsNotEnabled()
+        enableCooldown.assertIsOn()
+        cooldown.performTextReplacement("10")
+        start.assertIsEnabled()
+        enableCooldown.performClick().assertIsOff()
+        cooldown.assertDoesNotExist()
+
+        compose.onNodeWithContentDescription("Modalità Studio").performClick().assertIsOn()
+        for (description in listOf("Concentrazione · Attività 1", "Pausa · Attività 1", "Pausa tra attività")) {
+            val field = compose.onNodeWithContentDescription(description)
+            field.performScrollTo().performTextReplacement("0")
+            start.assertIsNotEnabled()
+            field.performTextReplacement("1.5")
+            start.assertIsNotEnabled()
+            field.performTextReplacement("1")
+            start.assertIsEnabled()
+        }
     }
     @Test fun personalRecoveriesAndBlockPreview() {
         homeReady()

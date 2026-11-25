@@ -2,6 +2,10 @@ package it.tabatastudio.domain
 
 import java.util.UUID
 
+internal const val WORKOUT_MIN_SECONDS = 5
+internal const val COOLDOWN_MIN_SECONDS = 10
+internal const val STUDIO_MIN_SECONDS = 60
+
 fun uid(): String = UUID.randomUUID().toString()
 data class Exercise(val id: String = uid(), val title: String = "Nuovo esercizio", val repetitions: Int = 1, val workSec: Int = 30, val restBetweenRepsSec: Int = 10, val restAfterExerciseSec: Int = 15)
 data class StudyActivity(val id: String = uid(), val title: String = "Concentrazione", val concentrationSec: Int = 1500, val sessions: Int = 4, val pauseSec: Int = 300)
@@ -44,6 +48,34 @@ fun validateWorkout(w: Workout) {
         w.blocks.forEachIndexed { bi, b ->
             if (bi < w.blocks.lastIndex) minimum(b.restAfterBlockSec, 5, "Recupero tra blocchi")
             b.exercises.forEach { e -> minimum(e.workSec, 5, "Lavoro"); minimum(e.restBetweenRepsSec, 5, "Recupero", true) }
+        }
+    }
+}
+
+// Saved records may represent a skipped pause with zero. Edited durations have explicit minimums.
+internal fun validateDurationInputs(w: Workout) {
+    fun duration(value: Int, label: String, min: Int) {
+        require(value in min..3600) { "$label: intero tra $min e 3600" }
+    }
+    if (w.studio) {
+        fun minutes(value: Int, label: String) {
+            require(value in STUDIO_MIN_SECONDS..3600 && value % STUDIO_MIN_SECONDS == 0) {
+                "$label: intero tra 1 e 60"
+            }
+        }
+        w.activities!!.forEach { activity ->
+            minutes(activity.concentrationSec, "Concentrazione")
+            minutes(activity.pauseSec, "Pausa")
+        }
+        minutes(w.restBetweenActivitiesSec, "Pausa tra attività")
+        return
+    }
+    if (w.cooldownSec != 0) duration(w.cooldownSec, "Durata defaticamento", COOLDOWN_MIN_SECONDS)
+    w.blocks.forEachIndexed { index, block ->
+        if (index < w.blocks.lastIndex) duration(block.restAfterBlockSec, "Recupero tra blocchi", WORKOUT_MIN_SECONDS)
+        block.exercises.forEach { exercise ->
+            duration(exercise.workSec, "Lavoro", WORKOUT_MIN_SECONDS)
+            duration(exercise.restBetweenRepsSec, "Recupero", WORKOUT_MIN_SECONDS)
         }
     }
 }

@@ -13,6 +13,7 @@ import it.tabatastudio.i18n.AppText
 import it.tabatastudio.R
 import it.tabatastudio.TabataApplication
 import it.tabatastudio.domain.*
+import it.tabatastudio.widget.TimerWidget
 import kotlinx.coroutines.*
 
 /** User-started interval timer; the silent notification never competes with other media. */
@@ -65,6 +66,7 @@ class TimerService : Service() {
     }
     internal fun updateResources() {
         val engine = runtime.timer
+        TimerWidget.refresh(application as TabataApplication)
         if (engine?.state != "finished") { finishedEngine = null; finishDeadline = 0 }
         else if (finishedEngine !== engine) { finishedEngine = engine; finishDeadline = SystemClock.elapsedRealtime() + maxOf(250L, runtime.audioRemainingMs + 100L) }
         val awake = engine?.state == "running" || (engine?.state == "finished" && SystemClock.elapsedRealtime() < finishDeadline)
@@ -110,7 +112,7 @@ class TimerService : Service() {
     override fun onDestroy() {
         if (current === this) current = null
         scope.cancel(); if (::wakeLock.isInitialized && wakeLock.isHeld) wakeLock.release()
-        runtime.serviceStopped(); super.onDestroy()
+        runtime.serviceStopped(); TimerWidget.refresh(application as TabataApplication); super.onDestroy()
     }
     companion object {
         const val CHANNEL = "tabata-running-timer"

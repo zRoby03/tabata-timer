@@ -12,6 +12,27 @@ class WorkoutRecoveryTest {
         val rows = cases()
         return (0 until rows.length()).map { rows.getJSONObject(it) }.first { it.getString("name") == "demo-completa" }.getJSONObject("workout").let(::workoutFromJson)
     }
+    @Test fun standaloneBreakUsesExistingRecoveryAndFinishCues() {
+        for ((mode, seconds, end) in listOf(Triple("WORKOUT", 5, "ding3"), Triple("STUDIO", 60, "finish"))) {
+            var now = 0L
+            val workout = newWorkout(mode)
+            val cues = TransitionCues()
+            assertThrows(IllegalArgumentException::class.java) { TimerEngine(workout, { now }, breakSeconds = seconds - 1) }
+            val timer = TimerEngine(workout, { now }, breakSeconds = seconds)
+            timer.start()
+            assertEquals("REST_REP", timer.currentPhase?.type)
+            assertEquals("sigh", cues.read(timer))
+            now += seconds * 1000L
+            timer.tick()
+            assertEquals(end, cues.read(timer))
+            assertNull(cues.read(timer))
+            assertEquals(0L, timer.result?.workMs)
+            val stopped = TimerEngine(workout, { now }, breakSeconds = seconds)
+            stopped.start()
+            stopped.stop()
+            assertNull(cues.read(stopped))
+        }
+    }
     @Test fun sharedRecoveryFixturesAndMetadata() {
         val rows = cases()
         repeat(rows.length()) { i ->
@@ -39,6 +60,40 @@ class WorkoutRecoveryTest {
             assertEquals(2, normalizeWorkout(legacy).timingVersion)
         }
         assertTrue(compileTimeline(base.copy(blocks = listOf(base.blocks[0].copy(exercises = listOf(Exercise(workSec = 6, restBetweenRepsSec = 7)))))).isNotEmpty())
+    }
+    @Test fun editedWorkoutDurationsRespectMinimums() {
+        val base = newWorkout("WORKOUT")
+        val block = base.blocks.first()
+        val exercise = block.exercises.first()
+        fun workout(e: Exercise) = base.copy(blocks = listOf(block.copy(exercises = listOf(e))))
+        for (value in listOf(0, 1, 4)) {
+            assertThrows(IllegalArgumentException::class.java) { compileEditedTimeline(workout(exercise.copy(workSec = value))) }
+            assertThrows(IllegalArgumentException::class.java) { compileEditedTimeline(workout(exercise.copy(restBetweenRepsSec = value))) }
+            assertThrows(IllegalArgumentException::class.java) { compileEditedTimeline(base.copy(blocks = listOf(block.copy(restAfterBlockSec = value), newBlock()))) }
+        }
+        for (value in listOf(-1, 1, 9)) {
+            assertThrows(IllegalArgumentException::class.java) { compileEditedTimeline(base.copy(cooldownSec = value)) }
+        }
+        val valid = workout(exercise.copy(workSec = 5, restBetweenRepsSec = 5, repetitions = 1))
+        assertEquals(listOf(5000L), compileEditedTimeline(valid).map { it.durationMs })
+        assertEquals(10000L, compileEditedTimeline(valid.copy(cooldownSec = 10)).last().durationMs)
+    }
+
+    @Test fun editedStudioDurationsUseWholeMinutesAndLegacyPausesAreCopied() {
+        val studio = newWorkout("STUDIO")
+        val activity = studio.activities!!.first().copy(sessions = 1)
+        for (value in listOf(0, 1, 59, 90)) {
+            assertThrows(IllegalArgumentException::class.java) { compileEditedTimeline(studio.copy(activities = listOf(activity.copy(concentrationSec = value)))) }
+            assertThrows(IllegalArgumentException::class.java) { compileEditedTimeline(studio.copy(activities = listOf(activity.copy(pauseSec = value)))) }
+            assertThrows(IllegalArgumentException::class.java) { compileEditedTimeline(studio.copy(restBetweenActivitiesSec = value)) }
+        }
+        val legacy = studio.copy(activities = listOf(activity.copy(pauseSec = 0)), restBetweenActivitiesSec = 0)
+        val (draft, notice) = prepareWorkoutEdit(legacy)
+        assertEquals(0, legacy.activities!!.first().pauseSec)
+        assertEquals(60, draft.activities!!.first().pauseSec)
+        assertEquals(60, draft.restBetweenActivitiesSec)
+        assertTrue(notice.contains("pause a zero"))
+        assertEquals(compileTimeline(legacy), compileEditedTimeline(draft))
     }
     @Test fun completeDemoEventsAndStatistics() {
         var clock = 0L; val engine = TimerEngine(demo(), { clock }); val cues = TransitionCues(); val countdown = CountdownCues(); engine.start()

@@ -48,12 +48,26 @@ internal fun studioColors(dark: Boolean, paletteId: String, style: StudioStyle =
     )
 }
 
+internal fun retroPanelColors(colors: ColorScheme): ColorScheme {
+    val ink = Color(0xFFFFF4DE)
+    val muted = Color(0xFFDFD3C2)
+    val line = Color(0xFF918579)
+    val accent = colors.tertiary.copy(alpha = .35f).compositeOver(ink)
+    return colors.copy(
+        primary = accent,
+        surface = if (colors.darkAppearance) Color(0xFF25221F) else Color(0xFF2E2B28),
+        onSurface = ink, surfaceVariant = Color(0xFF3A3530), onSurfaceVariant = muted,
+        outline = line, outlineVariant = line, error = Color(0xFFFFB0BA)
+    )
+}
+
 // Vivid fills have their own readable foreground, including yellow and light green.
 @Composable internal fun AccentButton(onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true, content: @Composable RowScope.() -> Unit) {
     val style = LocalStudioStyle.current
     val colors = MaterialTheme.colorScheme
     val outlined = style == StudioStyle.NEO_BRUTALISM && enabled
-    val frame = if (outlined) modifier.offsetShadow(style.controlCorner, Color(0xFF1C1820)) else modifier
+    val shadow = if (colors.darkAppearance) Color(0xFF0A090D) else Color(0xFF27212A)
+    val frame = if (outlined) modifier.offsetShadow(style.controlCorner, shadow) else modifier
     Button(
         onClick = onClick, modifier = frame, enabled = enabled,
         shape = if (style == StudioStyle.CLASSIC) ButtonDefaults.shape else RoundedCornerShape(style.controlCorner),

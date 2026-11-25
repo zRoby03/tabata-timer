@@ -13,6 +13,11 @@ export class TransitionCues {
   read(engine) {
     if (!engine) return null;
     if (engine !== this.engine) { this.engine = engine; this.visit = -1; this.finished = false; this.announced.clear(); }
+    if (engine.standaloneBreak && engine.state === 'finished') {
+      if (this.finished || engine.naturalEndings.break === undefined || engine.finalOverrunMs > 500) return null;
+      this.finished = true;
+      return isStudio(engine.workout) ? 'finish' : 'ding3';
+    }
     if (isStudio(engine.workout)) {
       if (engine.state === 'finished') {
         if (engine.index >= engine.phases.length && !this.finished) { this.finished = true; return 'finish'; }

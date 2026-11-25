@@ -7,11 +7,16 @@ import androidx.lifecycle.viewModelScope
 import it.tabatastudio.TabataApplication
 import it.tabatastudio.data.*
 import it.tabatastudio.domain.*
+import it.tabatastudio.widget.TimerWidget
 import kotlinx.coroutines.*
 
 class StudioViewModel(application: Application) : AndroidViewModel(application) {
     val language: String get() = it.tabatastudio.i18n.AppText.language
-    fun chooseLanguage(value: String) { it.tabatastudio.i18n.AppText.choose(value); it.tabatastudio.timer.TimerService.refreshResources() }
+    fun chooseLanguage(value: String) {
+        it.tabatastudio.i18n.AppText.choose(value)
+        it.tabatastudio.timer.TimerService.refreshResources()
+        TimerWidget.refresh(getApplication(), force = true)
+    }
     private val runtime = (application as TabataApplication).timerRuntime
     private val appearance = application.getSharedPreferences("tabata-appearance", android.content.Context.MODE_PRIVATE)
     var darkTheme by mutableStateOf(runCatching { appearance.getBoolean("dark", false) }.getOrDefault(false)); private set
@@ -23,7 +28,11 @@ class StudioViewModel(application: Application) : AndroidViewModel(application) 
         appearance.edit().putString("style", value.id).apply()
     }
     fun chooseDarkTheme(value: Boolean) { darkTheme = value; appearance.edit().putBoolean("dark", value).apply() }
-    fun choosePalette(value: String) { if (studioPalettes.none { it.id == value }) return; palette = value; appearance.edit().putString("palette", value).apply() }
+    fun choosePalette(value: String) {
+        if (studioPalettes.none { it.id == value }) return
+        palette = value; appearance.edit().putString("palette", value).apply()
+        TimerWidget.refresh(getApplication(), force = true)
+    }
     var mode by mutableStateOf(runCatching { appearance.getString("mode", "WORKOUT") }.getOrNull()?.takeIf { it in listOf("WORKOUT", "STUDIO") } ?: "WORKOUT"); private set
     val labels: ModeLabels get() = modeLabels(mode)
     val visibleData: Backup get() = data.forMode(mode)
@@ -83,10 +92,19 @@ class StudioViewModel(application: Application) : AndroidViewModel(application) 
     fun dismissConfirm() { confirmTitle = ""; confirmAction = null }
     fun acceptConfirm() { val action = confirmAction; dismissConfirm(); action?.invoke() }
     fun navigate(destination: String) {
-        val go = { if (destination == "Editor" && draft == null) draft = localizedNewWorkout(newWorkout(mode)); if (destination != "Timer") fullscreen = false; route = destination }
+        val go = {
+            if (destination == "Editor" && draft == null) draft = localizedNewWorkout(newWorkout(mode))
+            if (destination == "Timer") runtime.timer?.workout?.mode?.let { current ->
+                mode = current; quickWorkout = quickByMode.getValue(current)
+            } else fullscreen = false
+            route = destination
+        }
         if (route == "Editor" && dirty && destination != "Editor") confirm("Scartare le modifiche non salvate?") { dirty = false; draft = null; go() } else go()
     }
-    fun edit(workout: Workout = localizedNewWorkout(newWorkout(mode))) { draftNotice = normalizationNotice(workout); draft = normalizeWorkout(workout); dirty = false; route = "Editor" }
+    fun edit(workout: Workout = localizedNewWorkout(newWorkout(mode))) {
+        val (edited, notice) = prepareWorkoutEdit(workout)
+        draft = edited; draftNotice = notice; dirty = false; route = "Editor"
+    }
     fun update(workout: Workout) { draft = workout; dirty = true }
     fun updateQuick(workout: Workout) { quickByMode[mode] = workout; quickWorkout = workout }
     fun quickPreset(preset: QuickPreset) {
@@ -99,7 +117,7 @@ class StudioViewModel(application: Application) : AndroidViewModel(application) 
         updateQuick(quickWorkout.copy(title = preset.name, blocks = listOf(b.copy(exercises = listOf(e)))))
     }
     fun openQuickSave() {
-        try { compileTimeline(quickWorkout) } catch (e: Exception) { message = e.message ?: "Controlla i campi"; return }
+        try { compileEditedTimeline(quickWorkout) } catch (e: Exception) { message = e.message ?: "Controlla i campi"; return }
         pendingQuickSave = duplicateWorkout(quickWorkout)
         quickSaveName = quickWorkout.title; quickSaveError = ""; quickSaveDialog = true
     }
@@ -108,7 +126,7 @@ class StudioViewModel(application: Application) : AndroidViewModel(application) 
         if (quickSaveBusy) return
         val pending = pendingQuickSave ?: return
         val candidate = pending.copy(title = quickSaveName.trim())
-        try { compileTimeline(candidate) } catch (e: Exception) { quickSaveError = e.message ?: "Inserisci un nome valido"; return }
+        try { compileEditedTimeline(candidate) } catch (e: Exception) { quickSaveError = e.message ?: "Inserisci un nome valido"; return }
         quickSaveBusy = true
         viewModelScope.launch {
             try {
@@ -124,13 +142,17 @@ class StudioViewModel(application: Application) : AndroidViewModel(application) 
     fun exercise(bi: Int, ei: Int, transform: (Exercise) -> Exercise) { block(bi) { b -> b.copy(exercises = b.exercises.mapIndexed { i, e -> if (i == ei) transform(e) else e }) } }
     fun save() {
         val w = draft ?: return
-        try { compileTimeline(w) } catch (e: Exception) { message = e.message ?: "Controlla i campi"; return }
+        try { compileEditedTimeline(w) } catch (e: Exception) { message = e.message ?: "Controlla i campi"; return }
         write { repository.save(w); dirty = false; draft = null; route = "Allenamenti"; message = "Allenamento salvato." }
     }
     fun duplicate(w: Workout) = write { repository.save(duplicateWorkout(w).copy(title = tr("{0} (copia)", w.title.take(110)))) }
     fun remove(w: Workout) = confirm("Eliminare ${w.title}? La cronologia rimane.") { write { repository.removeWorkout(w.id) } }
     fun removeSession(s: Session) = confirm("Eliminare questa sessione?") { write { repository.removeSession(s.id) } }
     fun addPresets() = write { presets(mode).forEach { repository.save(localizedNewWorkout(it)) } }
+    fun startQuick() {
+        try { validateDurationInputs(quickWorkout) } catch (e: Exception) { message = e.message ?: "Controlla i campi"; return }
+        start(quickWorkout)
+    }
     fun start(w: Workout) {
         if (active) { message = "Termina prima la sessione in corso."; route = "Timer"; return }
         try { runtime.start(w); route = "Timer"; normalizationNotice(w).takeIf { it.isNotEmpty() }?.let { message = it } } catch (e: Exception) { message = e.message ?: "Timer non disponibile" }
@@ -139,7 +161,7 @@ class StudioViewModel(application: Application) : AndroidViewModel(application) 
     fun pauseResume() { runtime.pauseResume() }
     fun skip() { runtime.skip() }
     fun previous() { runtime.previous() }
-    fun stop() = confirm("Terminare la sessione e registrarla come interrotta?") { runtime.stop() }
+    fun stop() = confirm(if (runtime.timer?.standaloneBreak == true) "Terminare la pausa?" else "Terminare la sessione e registrarla come interrotta?") { runtime.stop() }
     fun loadImport(backup: Backup) {
         if (active || runtime.hasUnsavedResult) { message = "Termina la sessione e attendi il salvataggio prima di importare o cancellare dati."; return }
         importPreview = backup

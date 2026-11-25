@@ -2,6 +2,9 @@ import { t } from './i18n.js';
 import { MODES, isStudio } from './modes.js';
 export const SCHEMA_VERSION = 1;
 export const LIMITS = Object.freeze({ blocks: 50, exercises: 100, repeats: 100, seconds: 3600, phases: 10000, totalMs: 86400000 });
+export const WORKOUT_MIN_SECONDS = 5;
+export const COOLDOWN_MIN_SECONDS = 10;
+export const STUDIO_MIN_SECONDS = 60;
 export const uid = () => globalThis.crypto.randomUUID();
 export const clone = value => structuredClone(value);
 export const formatTime = ms => {
@@ -74,6 +77,49 @@ export const newExercise = (mode = 'WORKOUT') => ({ id: uid(), title: mode === '
 export const newStudyActivity = () => ({ id: uid(), title: t("Concentrazione"), concentrationSec: 1500, sessions: 4, pauseSec: 300 });
 export const newBlock = () => ({ id: uid(), title: t("Nuovo blocco"), cycles: 1, restBetweenCyclesSec: 60, restAfterBlockSec: 60, restBetweenExercisesSec: 15, exercises: [newExercise()] });
 export const newWorkout = (mode = 'WORKOUT') => ({ schemaVersion: 1, mode, id: uid(), title: mode === 'STUDIO' ? t("Il mio studio") : t("Il mio allenamento"), description: '', color: '#9153b7', warmupSec: 0, cooldownSec: 0, blocks: mode === 'STUDIO' ? [] : [newBlock()], ...(mode === 'STUDIO' ? { activities: [newStudyActivity()], restBetweenActivitiesSec: 300 } : { timingVersion: 2 }) });
+
+// Editing rules are stricter than archive validation, where zero can mean an omitted phase.
+export function validateDurationInputs(w) {
+  if (isStudio(w)) {
+    const minutes = (value, label) => integer(value / STUDIO_MIN_SECONDS, label, 1, LIMITS.seconds / STUDIO_MIN_SECONDS);
+    for (const activity of w.activities) {
+      minutes(activity.concentrationSec, 'Concentrazione');
+      minutes(activity.pauseSec, 'Pausa');
+    }
+    minutes(w.restBetweenActivitiesSec, 'Pausa tra attività');
+    return;
+  }
+  if (w.cooldownSec !== 0) integer(w.cooldownSec, 'Durata defaticamento', COOLDOWN_MIN_SECONDS);
+  w.blocks.forEach((block, index) => {
+    if (index < w.blocks.length - 1) integer(block.restAfterBlockSec, 'Recupero tra blocchi', WORKOUT_MIN_SECONDS);
+    for (const exercise of block.exercises) {
+      integer(exercise.workSec, 'Lavoro', WORKOUT_MIN_SECONDS);
+      integer(exercise.restBetweenRepsSec, 'Recupero', WORKOUT_MIN_SECONDS);
+    }
+  });
+}
+
+export function prepareWorkoutEdit(w) {
+  const draft = normalizeWorkout(w);
+  let adjusted = false;
+  const minimum = (value, min) => {
+    if (value >= min) return value;
+    adjusted = true;
+    return min;
+  };
+  if (isStudio(draft)) {
+    draft.restBetweenActivitiesSec = minimum(draft.restBetweenActivitiesSec, STUDIO_MIN_SECONDS);
+    for (const activity of draft.activities) activity.pauseSec = minimum(activity.pauseSec, STUDIO_MIN_SECONDS);
+  } else {
+    for (const block of draft.blocks) {
+      for (const exercise of block.exercises) exercise.restBetweenRepsSec = minimum(exercise.restBetweenRepsSec, WORKOUT_MIN_SECONDS);
+    }
+  }
+  const notice = adjusted
+    ? 'Le pause a zero sono impostate al minimo nella copia da modificare. Il programma salvato si aggiorna quando salvi.'
+    : normalizationNotice(w);
+  return { draft, notice };
+}
 
 // Reading/previewing old records never rewrites the archive. Saving the edited copy adopts the new form.
 export function normalizeWorkout(w) {

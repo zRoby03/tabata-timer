@@ -30,6 +30,11 @@ class TransitionCues {
     private val announced = mutableSetOf<String>()
     fun read(current: TimerEngine): String? {
         if (engine !== current) { engine = current; visit = -1; finished = false; announced.clear() }
+        if (current.standaloneBreak && current.state == "finished") {
+            if (finished || "break" !in current.naturalEndings || current.finalOverrunMs > 500) return null
+            finished = true
+            return if (current.workout.studio) "finish" else "ding3"
+        }
         if (current.workout.studio) {
             if (current.state == "finished") {
                 if (current.index >= current.phases.size && !finished) { finished = true; return "finish" }

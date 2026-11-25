@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tabata Timer</title>
+  <link rel="icon" href="./icon.svg">
+  <link rel="stylesheet" href="./mini.css">
+  <script type="module" src="./js/mini.js"></script>
+</head>
+<body>
+  <main class="mini">
+    <header class="mini-header">
+      <a class="mini-brand" href="./" target="tabata-main" data-i18n-aria-label="Apri Tabata Timer"><span aria-hidden="true">t.</span><strong>Tabata Timer</strong></a>
+      <button class="mini-stop" data-action="stop" data-i18n="Termina" hidden>Termina</button>
+      <div class="mini-switch mini-mode" role="group" data-i18n-aria-label="Modalità del timer">
+        <button data-mode="WORKOUT" aria-pressed="true">Workout</button>
+        <button data-mode="STUDIO" aria-pressed="false">Studio</button>
+      </div>
+    </header>
+    <div class="mini-body">
+      <div class="mini-rail">
+        <button class="mini-play" data-action="play" aria-label="Avvia"><span aria-hidden="true"></span></button>
+        <div class="mini-counter">
+          <button data-action="round-less" data-i18n-aria-label="Riduci ripetizioni">−</button>
+          <strong aria-live="polite" id="mini-rounds">8</strong>
+          <button data-action="round-more" data-i18n-aria-label="Aumenta ripetizioni">+</button>
+        </div>
+      </div>
+      <div class="mini-timer">
+        <div class="mini-readout">
+          <button class="mini-adjust" data-action="less" data-i18n-aria-label="Riduci durata">−</button>
+          <div class="mini-timebox">
+            <div class="mini-time" role="timer" aria-live="off"><span id="mini-before">0</span><span class="mini-colon">:</span><span id="mini-after">20</span></div>
+            <div class="mini-status" id="mini-status" aria-live="polite"></div>
+          </div>
+          <button class="mini-adjust" data-action="more" data-i18n-aria-label="Aumenta durata">+</button>
+        </div>
+        <div class="mini-switch mini-phase" role="group" aria-label="Focus / Break">
+          <button data-kind="focus" aria-pressed="true">Focus</button>
+          <button data-kind="break" aria-pressed="false">Break</button>
+        </div>
+      </div>
+    </div>
+    <p id="mini-message" role="status" hidden></p>
+  </main>
+</body>
+</html>

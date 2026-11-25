@@ -46,3 +46,8 @@ fun compileTimeline(original: Workout): List<Phase> {
     return phases
 }
 fun plannedMs(phases: List<Phase>): Long = phases.sumOf { it.durationMs }
+
+internal fun compileEditedTimeline(workout: Workout): List<Phase> {
+    validateDurationInputs(workout)
+    return compileTimeline(workout)
+}

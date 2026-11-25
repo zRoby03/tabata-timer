@@ -38,7 +38,7 @@ internal fun date(value: String): String = DateTimeFormatter.ofLocalizedDateTime
             }
         }) { padding ->
             Column(Modifier.fillMaxSize().padding(padding)) {
-                if (!vm.fullscreen) Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+                if (!vm.fullscreen) Row(Modifier.fillMaxWidth().padding(horizontal = pageInset(), vertical = 10.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                     Column(Modifier.weight(1f)) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text(tr("t."), fontSize = 24.sp, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
@@ -99,14 +99,25 @@ internal fun date(value: String): String = DateTimeFormatter.ofLocalizedDateTime
         MaterialTheme(colorScheme = colors, shapes = shapes, content = content)
     }
 }
-@Composable internal fun Page(content: @Composable ColumnScope.() -> Unit) { Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp), verticalArrangement = Arrangement.spacedBy(18.dp), content = content) }
-@Composable internal fun Panel(content: @Composable ColumnScope.() -> Unit) {
-    val borderWidth = if (LocalStudioStyle.current == StudioStyle.NEO_BRUTALISM) 2.dp else 1.dp
+@Composable internal fun Page(content: @Composable ColumnScope.() -> Unit) {
+    Column(
+        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(horizontal = pageInset(), vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp), content = content
+    )
+}
+@Composable internal fun Panel(timerPanel: Boolean = false, content: @Composable ColumnScope.() -> Unit) {
+    val style = LocalStudioStyle.current
+    val borderWidth = if (style == StudioStyle.NEO_BRUTALISM) 2.dp else 1.dp
+    val base = MaterialTheme.colorScheme
+    val colors = if (timerPanel && style == StudioStyle.RETRO) retroPanelColors(base) else base
+    val inset = if (timerPanel) pageInset().coerceAtLeast(16.dp) else 20.dp
     Card(
-        Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(borderWidth, MaterialTheme.colorScheme.outlineVariant)
+        Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = colors.surface, contentColor = colors.onSurface),
+        border = BorderStroke(borderWidth, colors.outlineVariant)
     ) {
-        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp), content = content)
+        MaterialTheme(colorScheme = colors) {
+            Column(Modifier.padding(inset), verticalArrangement = Arrangement.spacedBy(12.dp), content = content)
+        }
     }
 }
 @Composable internal fun Heading(kicker: String, title: String) { Text(kicker.uppercase(), color = MaterialTheme.colorScheme.primary, fontSize = 11.sp, letterSpacing = 1.5.sp); Text(tr(title), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.SemiBold) }
@@ -146,14 +157,21 @@ internal fun date(value: String): String = DateTimeFormatter.ofLocalizedDateTime
     if (timer == null) { QuickTimerScreen(vm); return }
     val done = timer.state == "finished"
     val p = timer.currentPhase
+    val labels = modeLabels(timer.workout.mode)
     var controls by rememberSaveable { mutableStateOf(false) }
     Page {
         Text(timer.workout.title, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 13.sp)
-        Text(if (done) { if (timer.result!!.status == "COMPLETED") (if (timer.workout.studio) tr("Studio completato.") else tr("Allenamento completato.")) else tr("Sessione interrotta.") } else if (timer.state == "paused") tr("In pausa") else when (p?.type) { "PREPARE" -> tr("Preparazione"); "WORK" -> tr(vm.labels.focus); "WARMUP" -> tr("Riscaldamento"); "COOLDOWN" -> tr(vm.labels.final); "REST_LONG" -> tr("Pausa lunga"); else -> tr(vm.labels.rest) }, style = MaterialTheme.typography.headlineMedium)
+        Text(tr(when {
+            done && timer.standaloneBreak -> if (timer.result?.status == "COMPLETED") "Pausa completata" else "Pausa interrotta"
+            done && timer.result?.status != "COMPLETED" -> "Sessione interrotta."
+            done -> if (timer.workout.studio) "Studio completato." else "Allenamento completato."
+            timer.state == "paused" -> "In pausa"
+            else -> when (p?.type) { "PREPARE" -> "Preparazione"; "WORK" -> labels.focus; "WARMUP" -> "Riscaldamento"; "COOLDOWN" -> labels.final; "REST_LONG" -> "Pausa lunga"; else -> labels.rest }
+        }), style = MaterialTheme.typography.headlineMedium)
         TimerReadout(formatTime(timer.remainingMs), running = true)
-        Text(if (done) tr("Sessione registrata") else if (timer.index < 0) tr("Mettiti in posizione. Si parte tra poco.") else p?.let(::phaseLabel).orEmpty(), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+        if (!done || !timer.standaloneBreak) Text(if (done) tr("Sessione registrata") else if (timer.index < 0) tr("Mettiti in posizione. Si parte tra poco.") else p?.let(::phaseLabel).orEmpty(), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
         LinearProgressIndicator(progress = { timer.index.coerceAtLeast(0).toFloat() / timer.phases.size }, modifier = Modifier.fillMaxWidth())
-        Text(if (done) tr("{0}/{1} intervalli completati", timer.result!!.completedWorkIntervals, timer.result!!.plannedWorkIntervals) else if (timer.index < 0) tr("20 secondi per prepararti") else tr("Fase {0}/{1} · Tempo attivo {2}", (timer.index + 1).coerceAtMost(timer.phases.size), timer.phases.size, formatTime(timer.elapsedMs)), fontSize = 13.sp)
+        if (!timer.standaloneBreak) Text(if (done) tr("{0}/{1} intervalli completati", timer.result!!.completedWorkIntervals, timer.result!!.plannedWorkIntervals) else if (timer.index < 0) tr("20 secondi per prepararti") else tr("Fase {0}/{1} · Tempo attivo {2}", (timer.index + 1).coerceAtMost(timer.phases.size), timer.phases.size, formatTime(timer.elapsedMs)), fontSize = 13.sp)
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             AccentButton(enabled = !done, onClick = vm::pauseResume, modifier = Modifier.weight(1.5f).heightIn(min = 54.dp)) { Text(if (timer.state == "paused") tr("Riprendi") else tr("Pausa (timer)"), fontSize = 17.sp) }
             OutlinedButton(enabled = !done, onClick = vm::skip, modifier = Modifier.weight(1f).heightIn(min = 54.dp)) { Text(tr("Salta →")) }
@@ -172,8 +190,10 @@ internal fun date(value: String): String = DateTimeFormatter.ofLocalizedDateTime
         TextButton(enabled = !done, onClick = vm::stop, modifier = Modifier.align(Alignment.CenterHorizontally)) { Text(tr("Termina"), color = MaterialTheme.colorScheme.error) }
         Text(tr("Il timer continua in background e a schermo spento. Puoi controllarlo dalla notifica e ascoltare musica o video."), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
         timer.result?.let { s ->
-            Text(tr("{0}% completato · {1} {2}", completion(s).toInt(), formatTime(s.workMs), if (vm.mode == "STUDIO") tr("di concentrazione") else tr("di lavoro")), fontSize = 14.sp)
-            AccentButton(onClick = { vm.navigate("Cronologia") }) { Text(tr("Vedi attività")) }
+            if (!timer.standaloneBreak) {
+                Text(tr("{0}% completato · {1} {2}", completion(s).toInt(), formatTime(s.workMs), if (timer.workout.studio) tr("di concentrazione") else tr("di lavoro")), fontSize = 14.sp)
+                AccentButton(onClick = { vm.navigate("Cronologia") }) { Text(tr("Vedi attività")) }
+            }
             TextButton(onClick = { vm.navigate("Home") }) { Text(tr("Nuovo timer")) }
         }
     }

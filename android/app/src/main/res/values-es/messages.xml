@@ -563,4 +563,21 @@
     <string name="msg_22d9f2d4cea6" formatted="false">Retro digital</string>
     <string name="msg_cb32c72e7372" formatted="false">Bauhaus contemporánea</string>
     <string name="msg_16a888f5da6c" formatted="false">Elige el estilo, el tema y el color de la app. Los cambios se aplican de inmediato y se guardan en este dispositivo.</string>
+    <string name="msg_7a18c1e1cb08" formatted="false">Duración de la vuelta a la calma</string>
+    <string name="msg_1e70e264246b" formatted="false">Las pausas de duración cero se ajustan al mínimo en la copia editable. El programa guardado se actualiza cuando guardas.</string>
+    <string name="msg_1d05f9f33c57" formatted="false">Abrir minitemporizador</string>
+    <string name="msg_de2946daf6ee" formatted="false">Abrir Tabata Timer</string>
+    <string name="msg_53e49cb49b75" formatted="false">Modo del temporizador</string>
+    <string name="msg_3f4f34738a2d" formatted="false">Temporizador rápido</string>
+    <string name="msg_c05422fb4a47" formatted="false">Pausa única</string>
+    <string name="msg_d10f60a5a4b1" formatted="false">Pausa completada</string>
+    <string name="msg_fe6cf8ebe757" formatted="false">Pausa interrumpida</string>
+    <string name="msg_5d7c0bb9cbee" formatted="false">¿Terminar la pausa?</string>
+    <string name="msg_8bcd3315ee9f" formatted="false">El temporizador está en marcha en otra ventana.</string>
+    <string name="msg_81ca2def2412" formatted="false">Termina la sesión en curso antes de abrir el minitemporizador.</string>
+    <string name="msg_a6b220d53baf" formatted="false">Abre Tabata Timer para iniciar la sesión.</string>
+    <string name="msg_312a530683d3" formatted="false">Reducir repeticiones</string>
+    <string name="msg_885480e8aa1f" formatted="false">Aumentar repeticiones</string>
+    <string name="msg_8236584725f8" formatted="false">Reducir duración</string>
+    <string name="msg_2dad8a1a92b3" formatted="false">Aumentar duración</string>
 </resources>

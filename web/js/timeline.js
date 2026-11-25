@@ -1,4 +1,4 @@
-import { validateWorkout, normalizeWorkout, LIMITS } from './model.js';
+import { validateWorkout, validateDurationInputs, normalizeWorkout, LIMITS } from './model.js';
 import { isStudio } from './modes.js';
 export function compileTimeline(original) {
   validateWorkout(original);
@@ -44,3 +44,8 @@ export function compileTimeline(original) {
   return phases;
 }
 export const plannedMs = phases => phases.reduce((sum, p) => sum + p.durationMs, 0);
+
+export function compileEditedTimeline(workout) {
+  validateDurationInputs(workout);
+  return compileTimeline(workout);
+}

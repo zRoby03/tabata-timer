@@ -1,7 +1,7 @@
-import { modeOf } from './modes.js';
-import { TRANSITION_SOUNDS, cueVolume } from './transitions.js';
-import { hornSample, COUNTDOWN_SOUNDS } from './countdown.js';
-import { uid } from './model.js';
+import { isStudio, modeOf, MODES } from './modes.js';
+import { TRANSITION_SOUNDS, TransitionCues, cueVolume } from './transitions.js';
+import { CountdownCues, hornSample, COUNTDOWN_SOUNDS } from './countdown.js';
+import { integer, LIMITS, STUDIO_MIN_SECONDS, uid, WORKOUT_MIN_SECONDS } from './model.js';
 import { compileTimeline, plannedMs } from './timeline.js';
 const AUDIO_SOUNDS = { ...COUNTDOWN_SOUNDS, ...TRANSITION_SOUNDS };
 export const PREPARATION_MS = 20000;
@@ -9,11 +9,16 @@ const PREPARATION = Object.freeze({ type: 'PREPARE', blockId: null, exerciseId: 
 
 // The clock supplies an absolute monotonic timestamp; polling never decrements a counter.
 export class TimerEngine {
-  constructor(workout, now = () => performance.now(), wall = () => new Date().toISOString()) {
-    this.workout = structuredClone(workout); this.phases = compileTimeline(workout); this.now = now; this.wall = wall;
-    this.index = -1; this.remainingMs = PREPARATION_MS; this.state = 'idle'; this.phaseRun = 0;
+  constructor(workout, now = () => performance.now(), wall = () => new Date().toISOString(), breakSeconds = null) {
+    this.workout = structuredClone(workout); this.standaloneBreak = breakSeconds !== null;
+    this.phases = this.standaloneBreak ? [standaloneBreakPhase(workout, breakSeconds)] : compileTimeline(workout);
+    this.now = now; this.wall = wall;
+    this.index = this.standaloneBreak ? 0 : -1;
+    this.remainingMs = this.standaloneBreak ? this.phases[0].durationMs : PREPARATION_MS;
+    this.state = 'idle'; this.phaseRun = 0;
     this.elapsedMs = 0; this.workMs = 0; this.pauses = 0; this.completed = new Set(); this.completedPhases = new Set(); this.result = null;
     this.lastWorkIndex = this.phases.findLastIndex(p => p.type === 'WORK');
+    this.workIntervals = this.phases.filter(p => p.type === 'WORK').length;
     this.naturalEndings = {}; this.finalOverrunMs = 0; this.manualStop = false;
   }
   get currentPhase() { return this.index < 0 ? PREPARATION : this.phases[this.index]; }
@@ -41,10 +46,14 @@ export class TimerEngine {
     this.elapsedMs += ms; if (this.currentPhase.type === 'WORK') this.workMs += ms;
   }
   advance(natural = false) {
+    if (natural && this.standaloneBreak) this.naturalEndings.break = this.elapsedMs;
     if (natural && this.index === this.lastWorkIndex) this.naturalEndings.work ??= this.elapsedMs;
     if (natural && this.currentPhase?.type === 'COOLDOWN') this.naturalEndings.cooldown ??= this.elapsedMs;
     this.index++; this.phaseRun++;
-    if (this.index >= this.phases.length) this.finish(this.completed.size === this.phases.filter(p => p.type === 'WORK').length ? 'COMPLETED' : 'INTERRUPTED');
+    if (this.index >= this.phases.length) {
+      const completed = this.standaloneBreak ? natural : this.completed.size === this.workIntervals;
+      this.finish(completed ? 'COMPLETED' : 'INTERRUPTED');
+    }
     else this.remainingMs = this.phases[this.index].durationMs;
   }
   pause() { this.tick(); if (this.state === 'running') { this.state = 'paused'; this.pauses++; } }
@@ -60,8 +69,38 @@ export class TimerEngine {
   finish(status) {
     if (this.result) return this.result;
     this.state = 'finished'; this.remainingMs = 0;
-    this.result = { id: this.id, mode: modeOf(this.workout), workoutId: this.workout.id, workoutTitle: this.workout.title, startedAt: this.startedAt, endedAt: this.wall(), plannedMs: plannedMs(this.phases), elapsedMs: Math.round(this.elapsedMs), workMs: Math.round(this.workMs), completedWorkIntervals: this.completed.size, plannedWorkIntervals: this.phases.filter(p => p.type === 'WORK').length, completedPhases: this.completedPhases.size, plannedPhases: this.phases.length, pauses: this.pauses, status };
+    this.result = { id: this.id, mode: modeOf(this.workout), workoutId: this.workout.id, workoutTitle: this.workout.title, startedAt: this.startedAt, endedAt: this.wall(), plannedMs: plannedMs(this.phases), elapsedMs: Math.round(this.elapsedMs), workMs: Math.round(this.workMs), completedWorkIntervals: this.completed.size, plannedWorkIntervals: this.workIntervals, completedPhases: this.completedPhases.size, plannedPhases: this.phases.length, pauses: this.pauses, status };
     return this.result;
+  }
+}
+
+function standaloneBreakPhase(workout, seconds) {
+  const studio = isStudio(workout), label = MODES[modeOf(workout)].rest;
+  if (studio) integer(seconds / STUDIO_MIN_SECONDS, label, 1, LIMITS.seconds / STUDIO_MIN_SECONDS);
+  else integer(seconds, label, WORKOUT_MIN_SECONDS);
+  return { type: 'REST_REP', blockId: null, exerciseId: null, durationMs: seconds * 1000, label };
+}
+
+export class TimerCuePlayback {
+  constructor(signals) {
+    this.signals = signals;
+    this.countdown = new CountdownCues();
+    this.transitions = new TransitionCues();
+    this.timer = null;
+    this.visit = -1;
+    this.state = 'idle';
+  }
+  update(timer) {
+    if (timer !== this.timer || timer?.phaseRun !== this.visit || (timer?.state !== this.state && timer?.state !== 'running')) {
+      this.signals.stop();
+      this.timer = timer;
+      this.visit = timer?.phaseRun;
+    }
+    this.state = timer?.state;
+    const marker = this.transitions.read(timer);
+    const second = this.countdown.read(timer);
+    if (marker) this.signals.play(marker);
+    else if (second !== null) this.signals.horn(second, timer.currentPhase?.type);
   }
 }
 

@@ -35,3 +35,19 @@ fun normalizationNotice(w: Workout): String = when {
     !w.studio && w.timingVersion != 2 && (normalizeWorkout(w).copy(timingVersion = w.timingVersion) != w || w.blocks.any { it.cycles > 1 || it.exercises.size > 1 }) -> "Allenamento precedente: uso il recupero personale anche tra esercizi e cicli; tra blocchi lo sostituisce il recupero del blocco. Applico i nuovi minimi alla sola copia di esecuzione. Controlla la durata in anteprima. L’originale resta nell’archivio fino al salvataggio."
     else -> ""
 }
+
+internal fun prepareWorkoutEdit(original: Workout): Pair<Workout, String> {
+    val normalized = normalizeWorkout(original)
+    val draft = if (normalized.studio) normalized.copy(
+        restBetweenActivitiesSec = normalized.restBetweenActivitiesSec.coerceAtLeast(STUDIO_MIN_SECONDS),
+        activities = normalized.activities!!.map { it.copy(pauseSec = it.pauseSec.coerceAtLeast(STUDIO_MIN_SECONDS)) }
+    ) else normalized.copy(blocks = normalized.blocks.map { block ->
+        block.copy(exercises = block.exercises.map { exercise ->
+            exercise.copy(restBetweenRepsSec = exercise.restBetweenRepsSec.coerceAtLeast(WORKOUT_MIN_SECONDS))
+        })
+    })
+    val notice = if (draft != normalized) {
+        "Le pause a zero sono impostate al minimo nella copia da modificare. Il programma salvato si aggiorna quando salvi."
+    } else normalizationNotice(original)
+    return draft to notice
+}

@@ -65,3 +65,9 @@ JSON e Room restano 1. `timingVersion: 2` è un campo opzionale Workout per dist
 Nuovi minimi: WORK 5, recupero personale 0 oppure almeno 5, recupero effettivo tra blocchi almeno 5, cooldown 0 oppure almeno 10. Su copie legacy si adattano i positivi sotto soglia e i confini 0–4; Studio escluso. Limiti massimi e strutturali sopra invariati. Il recupero ordinario è `restBetweenRepsSec`; `restBetweenCyclesSec`, `restBetweenExercisesSec` e `restAfterExerciseSec` rimangono dati legacy ignorati nell’esecuzione Workout.
 
 Metadati runtime non persistiti: indice/titolo blocco, indice/totale cicli, esercizio, ripetizione, chiave/argomenti etichetta e entryCue. JS conserva ripetizione anche in proprietà dedicate; Kotlin negli argomenti strutturati. phaseRun distingue le visite; naturalEndings identifica separatamente fine lavoro e cooldown. Nessuna decisione sonora analizza il testo tradotto. [Regole e avvisi](workout-studio.md#archivi-precedenti).
+
+## Minimi nei campi di Timer ed editor
+
+Workout richiede almeno 5 secondi per lavoro, recupero personale e recupero tra blocchi. Il defaticamento si attiva con un interruttore e accetta durate da 10 secondi. Quando è disattivato, il valore interno resta 0. In Studio concentrazione, pausa e pausa tra attività richiedono da 1 a 60 minuti interi. I conteggi di giri, serie e sessioni continuano a partire da 1.
+
+Gli archivi v1 conservano le pause che in precedenza erano state omesse. Aprendo uno di questi programmi nell’editor, la copia in modifica propone il minimo per i campi a zero. Il programma archiviato viene aggiornato dopo il salvataggio esplicito.

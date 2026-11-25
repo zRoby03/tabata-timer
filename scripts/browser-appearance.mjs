@@ -6,8 +6,9 @@ const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ? pathToFileURL(
 const browser = await chromium.launch({ channel: process.env.TABATA_BROWSER || 'msedge', headless: true });
 const checks = [], errors = [];
 const base = process.env.TABATA_URL || 'http://127.0.0.1:5500';
-const screenshots = 'output/screenshots/stili-1.10.0/web';
-await mkdir(screenshots, { recursive: true });
+const output = process.env.TABATA_QA_DIR || 'output';
+const screenshots = output + '/screenshots/appearance';
+for (const theme of ['light', 'dark']) await mkdir(screenshots + '/' + theme, { recursive: true });
 try {
   const context = await browser.newContext({ locale: 'it-IT', viewport: { width: 390, height: 900 } });
   const page = await context.newPage(); page.on('pageerror', e => errors.push(e.message));
@@ -18,6 +19,7 @@ try {
     assert.equal(await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').inputValue(), String(seconds));
   }
   checks.push('Tabata 1, 2 e 3 mantengono i tempi 20/10, 30/15 e 40/20');
+  await page.getByRole('button', { name: 'Tabata 1 20 / 10', exact: true }).click();
   for (const style of STYLES) {
     for (const theme of ['light', 'dark']) for (const p of PALETTES) {
       await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
@@ -49,7 +51,12 @@ try {
         }
         function contrast(selector, surface = selector) {
           const fg = pixel(getComputedStyle(document.querySelector(selector)).color);
-          const bg = pixel(getComputedStyle(document.querySelector(surface)).backgroundColor);
+          let background = document.querySelector(surface);
+          let bg = pixel(getComputedStyle(background).backgroundColor);
+          while (bg[3] === 0 && background.parentElement) {
+            background = background.parentElement;
+            bg = pixel(getComputedStyle(background).backgroundColor);
+          }
           const [low, high] = [luminance(fg), luminance(bg)].sort((a, b) => a - b);
           return (high + .05) / (low + .05);
         }
@@ -61,18 +68,19 @@ try {
           action: contrast('#quick-start-button'),
           timer: contrast('#quick-total', stageBackground),
           stageLabel: contrast('.quick-total > span:first-child', stageBackground),
-          input: contrast('.quick-value input')
+          input: contrast('.quick-value input'),
+          inputLabel: contrast('.quick-field > span:first-child', '.quick-field')
         };
       });
       const rgb = hex => 'rgb(' + hex.slice(1).match(/../g).map(x => parseInt(x, 16)).join(', ') + ')';
       assert.equal(appearance.fill, rgb(p[theme][1]));
       assert.equal(appearance.text, rgb(p[theme][2]));
-      for (const key of ['action', 'timer', 'stageLabel', 'input']) {
+      for (const key of ['action', 'timer', 'stageLabel', 'input', 'inputLabel']) {
         assert.ok(appearance[key] >= 4.5, [style.id, p.id, theme, key, appearance[key]].join(' '));
       }
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
-      if (theme === 'light' && ['purple', 'lime', 'yellow'].includes(p.id)) {
-        await page.screenshot({ path: screenshots + '/' + style.id + '-' + p.id + '.png', fullPage: true });
+      if (['purple', 'lime', 'yellow'].includes(p.id)) {
+        await page.screenshot({ path: screenshots + '/' + theme + '/' + style.id + '-' + p.id + '.png', fullPage: true });
       }
     }
   }
@@ -84,14 +92,32 @@ try {
   assert.equal(await page.getByRole('button', { name: 'Bauhaus contemporaneo', exact: true }).getAttribute('aria-pressed'), 'true');
   await page.getByRole('button', { name: 'Retro digitale', exact: true }).click();
   await page.locator('#mode-switch').click();
-  assert.equal(await page.locator('#quick-total').innerText(), '1:55:00');
   await page.setViewportSize({ width: 320, height: 800 });
-  await page.evaluate(() => document.fonts.ready);
-  assert.ok(await page.locator('#quick-total').evaluate(node => {
-    const range = document.createRange();
-    range.selectNodeContents(node);
-    return range.getBoundingClientRect().width <= node.parentElement.clientWidth;
-  }));
+  for (const style of STYLES) {
+    await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
+    await page.getByRole('button', { name: style.name, exact: true }).click();
+    await page.locator('nav [data-route=home]').click();
+    assert.equal(await page.locator('#quick-total').innerText(), '1:55:00');
+    await page.evaluate(() => document.fonts.ready);
+    const fit = await page.locator('#quick-total').evaluate(node => {
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      const display = node.parentElement;
+      const bounds = display.getBoundingClientRect(), text = range.getBoundingClientRect();
+      const heading = display.firstElementChild.getBoundingClientRect();
+      const hint = display.lastElementChild.getBoundingClientRect();
+      const computed = getComputedStyle(display), motif = getComputedStyle(display, '::after');
+      return text.x >= bounds.x && text.right <= bounds.right - (parseFloat(computed.paddingRight) || 0)
+        && text.top >= heading.bottom - 1 && text.bottom <= hint.top + 1
+        && (document.documentElement.dataset.style !== 'bauhaus'
+          || computed.textAlign === 'start' && parseFloat(motif.width) >= bounds.width * .20
+            && text.right < bounds.right - parseFloat(motif.width));
+    });
+    assert.ok(fit, style.id + ' timer lungo senza sovrapposizioni a 320 px');
+  }
+  await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
+  await page.getByRole('button', { name: 'Retro digitale', exact: true }).click();
+  await page.locator('nav [data-route=home]').click();
   await page.locator('[data-quick-path="activities.0.concentrationSec"]').fill('60');
   await page.getByRole('button', { name: 'Avvia', exact: true }).click();
   await page.getByRole('button', { name: 'Salta →', exact: true }).click();
@@ -111,11 +137,11 @@ try {
   await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
-  await page.screenshot({ path: 'output/screenshots/web-dark-settings-320.png', fullPage: true });
+  await page.screenshot({ path: screenshots + '/web-dark-settings-320.png', fullPage: true });
   await page.getByRole('button', { name: 'Allenamenti', exact: true }).click();
   await page.getByRole('button', { name: '+ Crea allenamento', exact: true }).click();
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
-  await page.screenshot({ path: 'output/screenshots/web-dark-editor-320.png', fullPage: true });
+  await page.screenshot({ path: screenshots + '/web-dark-editor-320.png', fullPage: true });
   await page.getByRole('button', { name: 'Torna agli allenamenti' }).click();
   await page.getByRole('button', { name: 'Attività', exact: true }).click();
   await page.getByRole('button', { name: 'Statistiche →', exact: true }).click();
@@ -143,6 +169,6 @@ try {
   await denied.close();
   checks.push('Storage negato: tema applicato alla visita e avviso, senza falso salvataggio');
   assert.deepEqual(errors, []);
-  await writeFile('output/browser-appearance.json', JSON.stringify({ checks, errors }, null, 2));
+  await writeFile(output + '/browser-appearance.json', JSON.stringify({ checks, errors }, null, 2));
   console.log(checks.join('\n'));
 } finally { await browser.close(); }

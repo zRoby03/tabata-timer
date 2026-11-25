@@ -563,4 +563,21 @@
     <string name="msg_22d9f2d4cea6" formatted="false">Retro digitale</string>
     <string name="msg_cb32c72e7372" formatted="false">Bauhaus contemporaneo</string>
     <string name="msg_16a888f5da6c" formatted="false">Scegli lo stile, il tema e il colore dell’app. Le modifiche si applicano subito e restano su questo dispositivo.</string>
+    <string name="msg_7a18c1e1cb08" formatted="false">Durata defaticamento</string>
+    <string name="msg_1e70e264246b" formatted="false">Le pause a zero sono impostate al minimo nella copia da modificare. Il programma salvato si aggiorna quando salvi.</string>
+    <string name="msg_1d05f9f33c57" formatted="false">Apri mini timer</string>
+    <string name="msg_de2946daf6ee" formatted="false">Apri Tabata Timer</string>
+    <string name="msg_53e49cb49b75" formatted="false">Modalità del timer</string>
+    <string name="msg_3f4f34738a2d" formatted="false">Timer rapido</string>
+    <string name="msg_c05422fb4a47" formatted="false">Pausa singola</string>
+    <string name="msg_d10f60a5a4b1" formatted="false">Pausa completata</string>
+    <string name="msg_fe6cf8ebe757" formatted="false">Pausa interrotta</string>
+    <string name="msg_5d7c0bb9cbee" formatted="false">Terminare la pausa?</string>
+    <string name="msg_8bcd3315ee9f" formatted="false">Timer aperto in un’altra finestra.</string>
+    <string name="msg_81ca2def2412" formatted="false">Termina la sessione in corso prima di aprire il mini timer.</string>
+    <string name="msg_a6b220d53baf" formatted="false">Apri Tabata Timer per avviare la sessione.</string>
+    <string name="msg_312a530683d3" formatted="false">Riduci ripetizioni</string>
+    <string name="msg_885480e8aa1f" formatted="false">Aumenta ripetizioni</string>
+    <string name="msg_8236584725f8" formatted="false">Riduci durata</string>
+    <string name="msg_2dad8a1a92b3" formatted="false">Aumenta durata</string>
 </resources>

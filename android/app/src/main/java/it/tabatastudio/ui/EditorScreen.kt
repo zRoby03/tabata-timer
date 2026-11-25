@@ -5,24 +5,36 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import it.tabatastudio.domain.*
 
 @Composable private fun Field(label: String, value: String, max: Int = 120, onChange: (String) -> Unit) { OutlinedTextField(value = value, onValueChange = { if (it.length <= max) onChange(it) }, label = { Text(tr(label)) }, modifier = Modifier.fillMaxWidth(), minLines = if (max > 120) 2 else 1, singleLine = max <= 120) }
-@Composable private fun NumberField(label: String, value: Int, min: Int = 0, max: Int = 3600, factor: Int = 1, activeMin: Int = 0, onChange: (Int) -> Unit) {
-    val invalid = value !in min..max || (value > 0 && value < activeMin)
-    OutlinedTextField(value = if (value < 0) "" else (value / factor).toString(),
-        onValueChange = { if (it.length <= 6) onChange(it.toIntOrNull()?.let { n -> n * factor } ?: -1) },
+@Composable private fun NumberField(label: String, value: Int, min: Int, max: Int = 3600, onChange: (Int) -> Unit) {
+    val invalid = value !in min..max
+    OutlinedTextField(value = if (value < 0) "" else value.toString(),
+        onValueChange = { if (it.length <= 6) onChange(it.toIntOrNull() ?: -1) },
         label = { Text(tr(label)) }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), isError = invalid,
-        supportingText = if (invalid) ({ Text(if (activeMin > 0) tr("Zero oppure almeno {0}", activeMin) else tr("Inserisci un intero {0}–{1}", min / factor, max / factor)) }) else null,
+        supportingText = if (invalid) ({ Text(tr("Inserisci un intero {0}–{1}", min, max)) }) else null,
         modifier = Modifier.fillMaxWidth(), singleLine = true)
+}
+@Composable internal fun CooldownField(value: Int, change: (Int) -> Unit) {
+    val enabled = value != 0
+    val label = tr("Defaticamento")
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+        Text(label)
+        Switch(checked = enabled, onCheckedChange = { change(if (it) COOLDOWN_MIN_SECONDS else 0) },
+            modifier = Modifier.semantics { contentDescription = label })
+    }
+    if (enabled) NumberField("Durata defaticamento", value, COOLDOWN_MIN_SECONDS) { change(if (it == 0) -1 else it) }
 }
 private fun <T> move(items: List<T>, index: Int, delta: Int): List<T> { val to = index + delta; if (to !in items.indices) return items; return items.toMutableList().also { val temp = it[index]; it[index] = it[to]; it[to] = temp } }
 @Composable internal fun Editor(vm: StudioViewModel) {
     val w = vm.draft ?: return
-    val factor = 1
     val labels = vm.labels
     Page {
         Text(if (vm.data.workouts.any { it.id == w.id }) tr("Modifica {0}", tr(labels.noun)) else tr("Crea {0}", tr(labels.noun)), style = MaterialTheme.typography.headlineMedium)
@@ -42,7 +54,7 @@ private fun <T> move(items: List<T>, index: Int, delta: Int): List<T> { val to =
                     FilterChip(selected = w.color.equals(hex, ignoreCase = true), onClick = { vm.update(w.copy(color = hex)) }, label = { Text(tr(name)) })
                 }
             }
-            NumberField("${labels.final}", w.cooldownSec, factor = factor, activeMin = 10) { vm.update(w.copy(cooldownSec = it)) }
+            CooldownField(w.cooldownSec) { vm.update(w.copy(cooldownSec = it)) }
         }
         w.blocks.forEachIndexed { bi, b -> key(b.id) { Panel {
             Text(tr("Blocco {0}", bi + 1), style = MaterialTheme.typography.titleLarge)
@@ -54,7 +66,7 @@ private fun <T> move(items: List<T>, index: Int, delta: Int): List<T> { val to =
             }
             Field("Nome blocco", b.title) { value -> vm.block(bi) { it.copy(title = value) } }
             NumberField("Cicli", b.cycles, 1, 100) { value -> vm.block(bi) { it.copy(cycles = value) } }
-            if (bi < w.blocks.lastIndex) NumberField("Recupero tra blocchi", b.restAfterBlockSec, 5) { value -> vm.block(bi) { it.copy(restAfterBlockSec = value) } }
+            if (bi < w.blocks.lastIndex) NumberField("Recupero tra blocchi", b.restAfterBlockSec, WORKOUT_MIN_SECONDS) { value -> vm.block(bi) { it.copy(restAfterBlockSec = value) } }
             b.exercises.forEachIndexed { ei, e -> key(e.id) {
                 HorizontalDivider(); Text(tr("{0} {1}", if (w.studio) tr("Attività") else tr("Esercizio"), ei + 1), color = MaterialTheme.colorScheme.primary)
                 Buttons {
@@ -64,15 +76,15 @@ private fun <T> move(items: List<T>, index: Int, delta: Int): List<T> { val to =
                     TextButton(enabled = b.exercises.size > 1, onClick = { vm.confirm("Eliminare l’esercizio?") { vm.block(bi) { it.copy(exercises = it.exercises.filterIndexed { i, _ -> i != ei }) } } }) { Text(tr("Elimina")) }
                 }
                 Field(if (w.studio) "Materia o attività" else "Nome esercizio", e.title) { value -> vm.exercise(bi, ei) { it.copy(title = value) } }
-                NumberField("${labels.focus}", e.workSec, 5, factor = factor) { value -> vm.exercise(bi, ei) { it.copy(workSec = value) } }
+                NumberField(labels.focus, e.workSec, WORKOUT_MIN_SECONDS) { value -> vm.exercise(bi, ei) { it.copy(workSec = value) } }
                 NumberField(labels.rounds, e.repetitions, 1, 100) { value -> vm.exercise(bi, ei) { it.copy(repetitions = value) } }
-                NumberField("Recupero", e.restBetweenRepsSec, factor = factor, activeMin = 5) { value -> vm.exercise(bi, ei) { it.copy(restBetweenRepsSec = value) } }
+                NumberField("Recupero", e.restBetweenRepsSec, WORKOUT_MIN_SECONDS) { value -> vm.exercise(bi, ei) { it.copy(restBetweenRepsSec = value) } }
             } }
             OutlinedButton(onClick = { vm.block(bi) { it.copy(exercises = it.exercises + localizedNewExercise(newExercise(vm.mode))) } }, enabled = b.exercises.size < 100) { Text(tr("+ Esercizio")) }
         } } }
         OutlinedButton(onClick = { vm.update(w.copy(blocks = w.blocks + localizedNewBlock(newBlock(vm.mode)))) }, enabled = w.blocks.size < 50) { Text(tr("+ Blocco")) }
         }
-        val compiled = runCatching { compileTimeline(w) }
+        val compiled = runCatching { compileEditedTimeline(w) }
         Panel {
             Text(tr("Anteprima"), style = MaterialTheme.typography.titleLarge)
             compiled.fold(onSuccess = { phases ->

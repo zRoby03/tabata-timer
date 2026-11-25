@@ -17,7 +17,25 @@ try {
   checks.push('Valori invalidi bloccano avvio e salvataggio anche tornando al timer');
   await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').fill('5');
   await page.locator('[data-quick-path="blocks.0.exercises.0.restBetweenRepsSec"]').fill('0');
+  assert.equal(await page.locator('#quick-start-button').isDisabled(), true);
+  assert.match(await page.locator('#quick-error').innerText(), /Recupero: intero tra 5 e 3600/);
+  await page.locator('[data-quick-path="blocks.0.exercises.0.restBetweenRepsSec"]').fill('5');
   await page.locator('[data-quick-path="blocks.0.exercises.0.repetitions"]').fill('2');
+  await page.getByText('Altre opzioni', { exact: true }).click();
+  const cooldownToggle = page.getByRole('checkbox', { name: 'Defaticamento', exact: true });
+  const cooldownDuration = page.locator('[data-quick-path="cooldownSec"]');
+  assert.equal(await cooldownDuration.isVisible(), false);
+  await cooldownToggle.check();
+  assert.equal(await cooldownDuration.inputValue(), '10');
+  for (const value of ['0', '1', '9']) {
+    await cooldownDuration.fill(value);
+    assert.equal(await page.locator('#quick-start-button').isDisabled(), true);
+    assert.equal(await page.locator('[data-action="quick-save"]').isDisabled(), true);
+    assert.match(await page.locator('#quick-error').innerText(), /Durata defaticamento: intero tra 10 e 3600/);
+  }
+  await cooldownToggle.uncheck();
+  assert.equal(await cooldownDuration.isVisible(), false);
+  checks.push('Workout: minimo 5, defaticamento attivo minimo 10 e spegnimento separato');
   await page.getByRole('button', { name: 'Avvia', exact: true }).click();
   await page.getByRole('heading', { name: 'Preparazione', exact: true }).waitFor();
   await page.getByRole('button', { name: 'Salta →', exact: true }).click();
@@ -62,6 +80,7 @@ try {
   await page.getByRole('button', { name: 'Salva allenamento', exact: true }).click();
   await page.locator('#save-name').fill('Resta in memoria');
   await page.getByRole('button', { name: 'Salva sul dispositivo', exact: true }).click();
+  await page.locator('#save-error').waitFor({ state: 'visible' });
   assert.match(await page.locator('#save-error').textContent(), /Salvataggio non riuscito/);
   await page.getByRole('button', { name: 'Salva sul dispositivo', exact: true }).click();
   assert.equal(await page.evaluate(() => localStorage.getItem('tabata:v1:data')), before);
@@ -87,5 +106,33 @@ try {
   await p.getByText('50%', { exact: true }).waitFor();
   checks.push('Importazione valida con anteprima; file errato rifiutato senza perdere i dati');
   await imported.close();
+  const studio = await browser.newContext({ locale: 'it-IT' });
+  const study = await studio.newPage();
+  await study.goto(new URL('?mode=studio', base).href);
+  const studyPaths = ['activities.0.concentrationSec', 'activities.0.pauseSec', 'restBetweenActivitiesSec'];
+  for (const path of studyPaths) {
+    const field = study.locator(`[data-quick-path="${path}"]`);
+    assert.equal(await field.getAttribute('min'), '1');
+    for (const invalid of ['0', '0.5', '1.5']) {
+      await field.fill(invalid);
+      assert.equal(await study.locator('#quick-start-button').isDisabled(), true);
+      assert.equal(await study.locator('[data-action="quick-save"]').isDisabled(), true);
+      assert.match(await study.locator('#quick-error').innerText(), /intero tra 1 e 60/);
+    }
+    await field.fill('1');
+    assert.equal(await study.locator('#quick-start-button').isEnabled(), true);
+  }
+  await study.locator('nav [data-route=workouts]').click();
+  await study.locator('[data-action=new]').first().click();
+  const saveStudy = study.getByRole('button', { name: 'Salva sul dispositivo', exact: true });
+  for (const path of studyPaths) {
+    const field = study.locator(`[data-path="${path}"]`);
+    await field.fill('0');
+    assert.equal(await saveStudy.isDisabled(), true);
+    await field.fill('1');
+    assert.equal(await saveStudy.isEnabled(), true);
+  }
+  checks.push('Studio: concentrazione e pause intere da 1 minuto anche nel timer rapido e nell’editor');
+  await studio.close();
   await writeFile('output/browser-edge-cases.json', JSON.stringify({ checks }, null, 2)); console.log(checks.join('\n'));
 } finally { await browser.close(); }

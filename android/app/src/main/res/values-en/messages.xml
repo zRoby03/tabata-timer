@@ -563,4 +563,21 @@
     <string name="msg_22d9f2d4cea6" formatted="false">Digital retro</string>
     <string name="msg_cb32c72e7372" formatted="false">Contemporary Bauhaus</string>
     <string name="msg_16a888f5da6c" formatted="false">Choose the app style, theme and color. Changes apply immediately and stay on this device.</string>
+    <string name="msg_7a18c1e1cb08" formatted="false">Cooldown duration</string>
+    <string name="msg_1e70e264246b" formatted="false">Zero-length breaks are set to the minimum in the editable copy. The saved program is updated when you save.</string>
+    <string name="msg_1d05f9f33c57" formatted="false">Open mini timer</string>
+    <string name="msg_de2946daf6ee" formatted="false">Open Tabata Timer</string>
+    <string name="msg_53e49cb49b75" formatted="false">Timer mode</string>
+    <string name="msg_3f4f34738a2d" formatted="false">Quick timer</string>
+    <string name="msg_c05422fb4a47" formatted="false">Single break</string>
+    <string name="msg_d10f60a5a4b1" formatted="false">Break complete</string>
+    <string name="msg_fe6cf8ebe757" formatted="false">Break stopped</string>
+    <string name="msg_5d7c0bb9cbee" formatted="false">End the break?</string>
+    <string name="msg_8bcd3315ee9f" formatted="false">The timer is running in another window.</string>
+    <string name="msg_81ca2def2412" formatted="false">End the current session before opening the mini timer.</string>
+    <string name="msg_a6b220d53baf" formatted="false">Open Tabata Timer to start the session.</string>
+    <string name="msg_312a530683d3" formatted="false">Decrease repetitions</string>
+    <string name="msg_885480e8aa1f" formatted="false">Increase repetitions</string>
+    <string name="msg_8236584725f8" formatted="false">Decrease duration</string>
+    <string name="msg_2dad8a1a92b3" formatted="false">Increase duration</string>
 </resources>

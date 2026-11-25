@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:id="@+id/widget_panel"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_gravity="center" android:orientation="vertical"
+        android:paddingStart="12dp" android:paddingEnd="12dp"
+        android:paddingTop="10dp" android:paddingBottom="10dp"
+        android:background="@drawable/timer_widget_panel">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="30dp"
+            android:gravity="center_vertical" android:orientation="horizontal">
+            <TextView android:id="@+id/widget_logo" style="@style/TabataWidgetText"
+                android:layout_width="26dp" android:layout_height="26dp" android:text="t."
+                android:textStyle="bold" android:textSize="17sp" android:textColor="#23122B"
+                android:background="@drawable/timer_widget_logo" />
+            <TextView android:id="@+id/widget_title" style="@style/TabataWidgetText"
+                android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+                android:gravity="start|center_vertical" android:ellipsize="end" android:paddingStart="6dp"
+                android:text="Tabata Timer" android:textStyle="bold" android:textSize="11sp" />
+            <TextView android:id="@+id/widget_stop" style="@style/TabataWidgetMode"
+                android:layout_width="55dp" android:layout_height="match_parent" android:visibility="gone"
+                android:layout_marginEnd="4dp" android:background="@drawable/timer_widget_track"
+                android:textColor="#FFBCC3" />
+            <LinearLayout android:layout_width="110dp" android:layout_height="match_parent"
+                android:orientation="horizontal" android:background="@drawable/timer_widget_track" android:padding="2dp">
+                <TextView android:id="@+id/widget_workout" style="@style/TabataWidgetMode"
+                    android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+                    android:text="Workout" android:background="@drawable/timer_widget_selected" />
+                <TextView android:id="@+id/widget_studio" style="@style/TabataWidgetMode"
+                    android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="Studio" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" android:gravity="center_vertical" android:orientation="horizontal">
+            <LinearLayout android:layout_width="78dp" android:layout_height="wrap_content"
+                android:orientation="vertical" android:gravity="center_horizontal">
+                <TextView android:id="@+id/widget_play" style="@style/TabataWidgetText"
+                    android:layout_width="49dp" android:layout_height="49dp"
+                    android:background="@drawable/timer_widget_play" android:text="▶"
+                    android:textColor="#BF8CE0" android:textSize="18sp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="34dp" android:orientation="horizontal" android:gravity="center">
+                    <TextView android:id="@+id/widget_count_less" style="@style/TabataWidgetText"
+                        android:layout_width="23dp" android:layout_height="match_parent" android:text="−" android:textSize="17sp" />
+                    <TextView android:id="@+id/widget_count" style="@style/TabataWidgetText"
+                        android:layout_width="29dp" android:layout_height="match_parent" android:text="8" android:textSize="12sp" android:textStyle="bold" />
+                    <TextView android:id="@+id/widget_count_more" style="@style/TabataWidgetText"
+                        android:layout_width="23dp" android:layout_height="match_parent" android:text="+" android:textSize="17sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="6dp">
+                <FrameLayout android:layout_width="match_parent" android:layout_height="39dp" android:layout_marginStart="20dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                        android:orientation="horizontal" android:gravity="center_vertical">
+                        <TextView android:id="@+id/widget_time_before" style="@style/TabataWidgetDigits"
+                            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+                            android:gravity="end|center_vertical" android:paddingStart="19dp" android:text="0" />
+                        <TextView android:id="@+id/widget_time_colon" style="@style/TabataWidgetDigits"
+                            android:layout_width="wrap_content" android:layout_height="match_parent" android:text=":" />
+                        <TextView android:id="@+id/widget_time_after" style="@style/TabataWidgetDigits"
+                            android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+                            android:gravity="start|center_vertical" android:paddingEnd="19dp" android:text="20" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                        android:orientation="horizontal">
+                        <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+                            <TextView android:id="@+id/widget_time_less" style="@style/TabataWidgetText"
+                                android:layout_width="26dp" android:layout_height="match_parent" android:layout_gravity="center"
+                                android:layout_marginEnd="12dp" android:text="−" android:textSize="17sp" />
+                        </FrameLayout>
+                        <FrameLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1">
+                            <TextView android:id="@+id/widget_time_more" style="@style/TabataWidgetText"
+                                android:layout_width="26dp" android:layout_height="match_parent" android:layout_gravity="center"
+                                android:layout_marginStart="12dp" android:text="+" android:textSize="17sp" />
+                        </FrameLayout>
+                    </LinearLayout>
+                </FrameLayout>
+                <TextView android:id="@+id/widget_status" style="@style/TabataWidgetText"
+                    android:layout_width="match_parent" android:layout_height="12dp" android:layout_marginStart="20dp"
+                    android:textSize="10sp" android:textColor="#C3CADA" />
+                <LinearLayout android:id="@+id/widget_phase"
+                    android:layout_width="match_parent" android:layout_height="45dp"
+                    android:layout_marginStart="20dp" android:orientation="horizontal"
+                    android:background="@drawable/timer_widget_track" android:padding="2dp">
+                    <TextView android:id="@+id/widget_focus" style="@style/TabataWidgetPhase"
+                        android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
+                        android:text="Focus" android:background="@drawable/timer_widget_selected" />
+                    <TextView android:id="@+id/widget_break" style="@style/TabataWidgetPhase"
+                        android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:text="Break" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

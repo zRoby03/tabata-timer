@@ -35,12 +35,12 @@ class TimerRuntime(private val app: Application, private val repository: StudioR
     private var soundTimer: TimerEngine? = null
     private var soundPhase = -1
     val active: Boolean get() = version.let { starting || timer?.state in listOf("running", "paused") }
-    val hasUnsavedResult: Boolean get() = version.let { timer?.result?.let { savedSession != it.id } == true }
+    val hasUnsavedResult: Boolean get() = version.let { timer?.takeUnless { it.standaloneBreak }?.result?.let { savedSession != it.id } == true }
 
-    fun start(workout: Workout) {
+    fun start(workout: Workout, breakSeconds: Int? = null) {
         check(!active) { "Termina prima la sessione in corso." }
         check(!hasUnsavedResult) { "La sessione precedente non è ancora salvata. Esporta una copia JSON prima di ripartire." }
-        val prepared = TimerEngine(workout, SystemClock::elapsedRealtime)
+        val prepared = TimerEngine(workout, SystemClock::elapsedRealtime, breakSeconds = breakSeconds)
         pending = prepared; starting = true
         try {
             ContextCompat.startForegroundService(app, Intent(app, TimerService::class.java).setAction(TimerService.START))
@@ -90,6 +90,7 @@ class TimerRuntime(private val app: Application, private val repository: StudioR
         val running = engine.state == "running"
         engine.tick(); if (running) version++
         emitCues()
+        if (engine.standaloneBreak) return
         val now = SystemClock.elapsedRealtime()
         if (now - lastAttempt < 1000 && !checkpointRequested) return
         if (!hasUnsavedResult && !checkpointRequested && (engine.state != "running" || now - lastCheckpoint < 1000)) return

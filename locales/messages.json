@@ -2247,5 +2247,28 @@
   "Scegli lo stile, il tema e il colore dell’app. Le modifiche si applicano subito e restano su questo dispositivo.": [
     "Choose the app style, theme and color. Changes apply immediately and stay on this device.",
     "Elige el estilo, el tema y el color de la app. Los cambios se aplican de inmediato y se guardan en este dispositivo."
-  ]
+  ],
+  "Durata defaticamento": [
+    "Cooldown duration",
+    "Duración de la vuelta a la calma"
+  ],
+  "Le pause a zero sono impostate al minimo nella copia da modificare. Il programma salvato si aggiorna quando salvi.": [
+    "Zero-length breaks are set to the minimum in the editable copy. The saved program is updated when you save.",
+    "Las pausas de duración cero se ajustan al mínimo en la copia editable. El programa guardado se actualiza cuando guardas."
+  ],
+  "Apri mini timer": ["Open mini timer", "Abrir minitemporizador"],
+  "Apri Tabata Timer": ["Open Tabata Timer", "Abrir Tabata Timer"],
+  "Modalità del timer": ["Timer mode", "Modo del temporizador"],
+  "Timer rapido": ["Quick timer", "Temporizador rápido"],
+  "Pausa singola": ["Single break", "Pausa única"],
+  "Pausa completata": ["Break complete", "Pausa completada"],
+  "Pausa interrotta": ["Break stopped", "Pausa interrumpida"],
+  "Terminare la pausa?": ["End the break?", "¿Terminar la pausa?"],
+  "Timer aperto in un’altra finestra.": ["The timer is running in another window.", "El temporizador está en marcha en otra ventana."],
+  "Termina la sessione in corso prima di aprire il mini timer.": ["End the current session before opening the mini timer.", "Termina la sesión en curso antes de abrir el minitemporizador."],
+  "Apri Tabata Timer per avviare la sessione.": ["Open Tabata Timer to start the session.", "Abre Tabata Timer para iniciar la sesión."],
+  "Riduci ripetizioni": ["Decrease repetitions", "Reducir repeticiones"],
+  "Aumenta ripetizioni": ["Increase repetitions", "Aumentar repeticiones"],
+  "Riduci durata": ["Decrease duration", "Reducir duración"],
+  "Aumenta durata": ["Increase duration", "Aumentar duración"]
 }

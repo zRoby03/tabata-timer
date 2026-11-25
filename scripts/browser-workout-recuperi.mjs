@@ -21,9 +21,9 @@ try{
   // Restore ordering: the old final block has retained its value while hidden.
   await page.locator('[data-action="block-down"][data-bi="1"]').click();
   assert.equal(await page.locator('[data-path="blocks.1.restAfterBlockSec"]').inputValue(),'10');
-  await page.locator('[data-path="blocks.0.restAfterBlockSec"]').fill('0');assert.match(await page.locator('#preview').innerText(),/minimo 5/);
+  await page.locator('[data-path="blocks.0.restAfterBlockSec"]').fill('0');assert.match(await page.locator('#preview').innerText(),/intero tra 5 e 3600/);
   await page.locator('[data-path="blocks.0.restAfterBlockSec"]').fill('6');
-  await page.locator('[data-path="blocks.0.exercises.0.workSec"]').fill('4');assert.match(await page.locator('#preview').innerText(),/minimo 5/);
+  await page.locator('[data-path="blocks.0.exercises.0.workSec"]').fill('4');assert.match(await page.locator('#preview').innerText(),/intero tra 5 e 3600/);
   await page.locator('[data-path="blocks.0.exercises.0.workSec"]').fill('7');
   await page.locator('[data-path="blocks.0.cycles"]').fill('2');
   assert.ok((await page.locator('#preview').innerText()).includes('Ciclo 2/2'));

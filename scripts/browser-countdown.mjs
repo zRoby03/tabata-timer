@@ -58,6 +58,7 @@ try {
   await page.locator('[data-quick-path="blocks.0.exercises.0.restBetweenRepsSec"]').fill('5');
   await page.locator('[data-quick-path="blocks.0.exercises.0.repetitions"]').fill('2');
   await page.getByText('Altre opzioni', { exact: true }).click();
+  await page.getByRole('checkbox', { name: 'Defaticamento', exact: true }).check();
   await page.locator('[data-quick-path="cooldownSec"]').fill('10');
   await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
   await page.getByRole('button', { name: 'Salva cronologia', exact: true }).click();
@@ -91,9 +92,9 @@ try {
   await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').fill('1');
   assert.equal(await page.getByRole('button',{name:'Avvia',exact:true}).isDisabled(),true);
   await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').fill('5');
-  await page.locator('[data-quick-path="blocks.0.exercises.0.restBetweenRepsSec"]').fill('0');
+  await page.locator('[data-quick-path="blocks.0.exercises.0.restBetweenRepsSec"]').fill('5');
   await page.locator('[data-quick-path="blocks.0.exercises.0.repetitions"]').fill('1');
-  await page.getByText('Altre opzioni',{exact:true}).click();await page.locator('[data-quick-path="cooldownSec"]').fill('0');
+  await page.getByText('Altre opzioni',{exact:true}).click();await page.getByRole('checkbox',{name:'Defaticamento',exact:true}).uncheck();
   const beforeShort=await page.evaluate(()=>__hornSamples.length);
   await page.getByRole('button',{name:'Avvia',exact:true}).click();await page.getByRole('button',{name:'Salta →',exact:true}).click();
   assert.deepEqual(await page.evaluate(n=>__hornSamples.slice(n),beforeShort),['ding1']);

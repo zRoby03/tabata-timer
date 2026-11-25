@@ -563,5 +563,22 @@ internal val messageIds = mapOf(
     "Neo-brutalismo soft" to R.string.msg_c25c28074e5a,
     "Retro digitale" to R.string.msg_22d9f2d4cea6,
     "Bauhaus contemporaneo" to R.string.msg_cb32c72e7372,
-    "Scegli lo stile, il tema e il colore dell’app. Le modifiche si applicano subito e restano su questo dispositivo." to R.string.msg_16a888f5da6c
+    "Scegli lo stile, il tema e il colore dell’app. Le modifiche si applicano subito e restano su questo dispositivo." to R.string.msg_16a888f5da6c,
+    "Durata defaticamento" to R.string.msg_7a18c1e1cb08,
+    "Le pause a zero sono impostate al minimo nella copia da modificare. Il programma salvato si aggiorna quando salvi." to R.string.msg_1e70e264246b,
+    "Apri mini timer" to R.string.msg_1d05f9f33c57,
+    "Apri Tabata Timer" to R.string.msg_de2946daf6ee,
+    "Modalità del timer" to R.string.msg_53e49cb49b75,
+    "Timer rapido" to R.string.msg_3f4f34738a2d,
+    "Pausa singola" to R.string.msg_c05422fb4a47,
+    "Pausa completata" to R.string.msg_d10f60a5a4b1,
+    "Pausa interrotta" to R.string.msg_fe6cf8ebe757,
+    "Terminare la pausa?" to R.string.msg_5d7c0bb9cbee,
+    "Timer aperto in un’altra finestra." to R.string.msg_8bcd3315ee9f,
+    "Termina la sessione in corso prima di aprire il mini timer." to R.string.msg_81ca2def2412,
+    "Apri Tabata Timer per avviare la sessione." to R.string.msg_a6b220d53baf,
+    "Riduci ripetizioni" to R.string.msg_312a530683d3,
+    "Aumenta ripetizioni" to R.string.msg_885480e8aa1f,
+    "Riduci durata" to R.string.msg_8236584725f8,
+    "Aumenta durata" to R.string.msg_2dad8a1a92b3
 )

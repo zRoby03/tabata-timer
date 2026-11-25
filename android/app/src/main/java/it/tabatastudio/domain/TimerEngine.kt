@@ -3,14 +3,15 @@ package it.tabatastudio.domain
 const val PREPARATION_MS = 20000L
 private val preparation = Phase("PREPARE", null, null, PREPARATION_MS, "Preparazione")
 
-class TimerEngine(val workout: Workout, private val now: () -> Long, private val wall: () -> String = ::isoNow) {
-    val phases = compileTimeline(workout)
+class TimerEngine(val workout: Workout, private val now: () -> Long, private val wall: () -> String = ::isoNow, breakSeconds: Int? = null) {
+    val standaloneBreak = breakSeconds != null
+    val phases = if (breakSeconds == null) compileTimeline(workout) else listOf(standaloneBreakPhase(workout, breakSeconds))
     val lastWorkIndex = phases.indexOfLast { it.type == "WORK" }
     val naturalEndings = mutableMapOf<String, Long>()
     var finalOverrunMs = 0L; private set
     var manualStop = false; private set
-    var index = -1; private set
-    var remainingMs = PREPARATION_MS; private set
+    var index = if (standaloneBreak) 0 else -1; private set
+    var remainingMs = if (standaloneBreak) phases.first().durationMs else PREPARATION_MS; private set
     var phaseRun = 0; private set
     val currentPhase: Phase? get() = if (index < 0) preparation else phases.getOrNull(index)
     val nextPhase: Phase? get() = phases.getOrNull(index + 1)
@@ -21,6 +22,8 @@ class TimerEngine(val workout: Workout, private val now: () -> Long, private val
     var result: Session? = null; private set
     private val completed = mutableSetOf<Int>()
     private val completedPhases = mutableSetOf<Int>()
+    val workIntervals = phases.count { it.type == "WORK" }
+    val completedWorkIntervals get() = completed.size
     private var last = 0L
     val sessionId = uid()
     private var startedAt = ""
@@ -44,10 +47,14 @@ class TimerEngine(val workout: Workout, private val now: () -> Long, private val
         elapsedMs += ms; if (currentPhase?.type == "WORK") workMs += ms
     }
     private fun advance(natural: Boolean = false) {
+        if (natural && standaloneBreak) naturalEndings["break"] = elapsedMs
         if (natural && index == lastWorkIndex) naturalEndings.putIfAbsent("work", elapsedMs)
         if (natural && currentPhase?.type == "COOLDOWN") naturalEndings.putIfAbsent("cooldown", elapsedMs)
         index++; phaseRun++
-        if (index >= phases.size) finish(if (completed.size == phases.count { it.type == "WORK" }) "COMPLETED" else "INTERRUPTED") else remainingMs = phases[index].durationMs
+        if (index >= phases.size) {
+            val complete = if (standaloneBreak) natural else completed.size == workIntervals
+            finish(if (complete) "COMPLETED" else "INTERRUPTED")
+        } else remainingMs = phases[index].durationMs
     }
     fun pause() { tick(); if (state == "running") { state = "paused"; pauses++ } }
     fun resume() { if (state == "paused") { last = now(); state = "running" } }
@@ -60,6 +67,12 @@ class TimerEngine(val workout: Workout, private val now: () -> Long, private val
         }
     }
     fun stop() { tick(); if (state in listOf("running", "paused")) { manualStop = true; finish("INTERRUPTED") } }
-    fun snapshot(): Session = result ?: Session(sessionId, workout.id, workout.title, startedAt, wall(), plannedMs(phases), elapsedMs, workMs, completed.size, phases.count { it.type == "WORK" }, pauses, "INTERRUPTED", completedPhases.size, phases.size, workout.mode)
+    fun snapshot(): Session = result ?: Session(sessionId, workout.id, workout.title, startedAt, wall(), plannedMs(phases), elapsedMs, workMs, completed.size, workIntervals, pauses, "INTERRUPTED", completedPhases.size, phases.size, workout.mode)
     private fun finish(status: String) { if (result != null) return; result = snapshot().copy(status = status); state = "finished"; remainingMs = 0 }
+}
+
+private fun standaloneBreakPhase(workout: Workout, seconds: Int): Phase {
+    val minimum = if (workout.studio) STUDIO_MIN_SECONDS else WORKOUT_MIN_SECONDS
+    require(seconds in minimum..3600 && (!workout.studio || seconds % STUDIO_MIN_SECONDS == 0)) { "Controlla i campi" }
+    return Phase("REST_REP", null, null, seconds * 1000L, modeLabels(workout.mode).rest)
 }

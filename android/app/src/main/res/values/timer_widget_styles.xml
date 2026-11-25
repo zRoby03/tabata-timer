@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TabataWidgetText">
+        <item name="android:gravity">center</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">#F2F4F8</item>
+    </style>
+    <style name="TabataWidgetMode" parent="TabataWidgetText">
+        <item name="android:textSize">11sp</item>
+        <item name="android:paddingStart">3dp</item>
+        <item name="android:paddingEnd">3dp</item>
+    </style>
+    <style name="TabataWidgetPhase" parent="TabataWidgetText">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TabataWidgetDigits" parent="TabataWidgetText">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+</resources>

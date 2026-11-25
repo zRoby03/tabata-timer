@@ -41,6 +41,26 @@ test('polling tardivo non recupera avvisi scaduti, compresi i finali',()=>{
   const late=setup();late.advance(55000);assert.equal(late.cues.read(late.timer),null);
   const other=setup();other.advance(20000);assert.equal(cues.read(other.timer),'ding1');
 });
+test('pausa singola: recupero immediato, finale per modalità e arresto silenzioso', () => {
+  for (const [mode, seconds, end] of [['WORKOUT', 5, 'ding3'], ['STUDIO', 60, 'finish']]) {
+    let now = 0;
+    const workout = newWorkout(mode), cues = new TransitionCues();
+    const timer = new TimerEngine(workout, () => now, undefined, seconds);
+    assert.throws(() => new TimerEngine(workout, () => now, undefined, seconds - 1));
+    timer.start();
+    assert.equal(timer.currentPhase.type, 'REST_REP');
+    assert.equal(cues.read(timer), 'sigh');
+    now += seconds * 1000;
+    timer.tick();
+    assert.equal(cues.read(timer), end);
+    assert.equal(cues.read(timer), null);
+    assert.equal(timer.result.workMs, 0);
+    const stopped = new TimerEngine(workout, () => now, undefined, seconds);
+    stopped.start();
+    stopped.stop();
+    assert.equal(cues.read(stopped), null);
+  }
+});
 for (const [key, duration, expectedNotes] of [['whistle', .5, 1], ['sigh', .5, null], ['finish', .9, 3]]) test(`campione ${key}: durata, pause, livelli e identità Android/web`, () => {
   const web = readFileSync(new URL(`../audio/${TRANSITION_SOUNDS[key]}`, import.meta.url));
   const android = readFileSync(new URL(`../../android/app/src/main/res/raw/${TRANSITION_SOUNDS[key].replaceAll('-', '_')}`, import.meta.url));

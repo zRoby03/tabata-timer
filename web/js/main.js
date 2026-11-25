@@ -1,13 +1,12 @@
 import { t, phaseLabel, setLanguage, translateDocument } from './i18n.js';
 import { MODES, isStudio, modeData, loadMode, saveMode } from './modes.js';
-import { TransitionCues } from './transitions.js';
 import { loadAppearance, saveAppearance, applyAppearance } from './appearance.js';
-import { normalizeWorkout, normalizationNotice, newStudyActivity, newWorkout, newBlock, newExercise, duplicateWorkout, presets, clone, uid, formatTime } from './model.js';
-import { compileTimeline, plannedMs } from './timeline.js';
-import { LocalRepository } from './storage.js';
+import { prepareWorkoutEdit, validateDurationInputs, normalizationNotice, newStudyActivity, newWorkout, newBlock, newExercise, duplicateWorkout, presets, clone, uid, formatTime } from './model.js';
+import { compileEditedTimeline, plannedMs } from './timeline.js';
+import { LocalRepository, STORAGE_KEY, updateArchive } from './storage.js';
 import { editorView, preview } from './editor.js';
-import { TimerEngine, TimerSignals } from './timer.js';
-import { CountdownCues } from './countdown.js';
+import { TimerEngine, TimerSignals, TimerCuePlayback } from './timer.js';
+import { acquireTimer, releaseTimer } from './timer-owner.js';
 import { completion } from './stats.js';
 import { workoutsView, historyView, statsView, settingsView } from './views.js';
 import { parseBackup, makeBackup, sessionsCsv, download, MAX_BACKUP_BYTES } from './io.js';
@@ -23,17 +22,10 @@ const repo = new LocalRepository(browserStorage, announce); repo.load(parseBacku
 if (!repo.data.workouts.length && !repo.persistent) repo.data.workouts = presets();
 let route = 'home', draft = null, draftNotice = '', dirty = false, timer = null, savedSession = null, pendingImport = null, filterDays = 30, filterWorkout = '', pendingSave = null;
 const signals = new TimerSignals();
-const countdown = new CountdownCues(), transitions = new TransitionCues();
-let soundTimer = null, soundPhase = -1, soundState = 'idle';
-function soundCountdown() {
-  if (timer !== soundTimer || timer?.phaseRun !== soundPhase || (timer?.state !== soundState && timer?.state !== 'running')) {
-    signals.stop(); soundTimer = timer; soundPhase = timer?.phaseRun;
-  }
-  soundState = timer?.state;
-  const marker = transitions.read(timer), second = countdown.read(timer);
-  if (marker) signals.play(marker);
-  else if (second !== null) signals.horn(second, timer.currentPhase?.type);
-}
+const playback = new TimerCuePlayback(signals);
+const soundCountdown = () => playback.update(timer);
+const writeArchive = update => updateArchive(repo, parseBackup, update);
+let starting = false;
 const cleanUrl = new URL(location.href);
 let mode = cleanUrl.searchParams.get('mode')?.toUpperCase();
 if (cleanUrl.searchParams.has('v') || cleanUrl.searchParams.has('mode')) {
@@ -72,7 +64,12 @@ function render() {
   document.querySelectorAll('[data-route]').forEach(b => b.setAttribute('aria-current', b.dataset.route === tab ? 'page' : 'false'));
   document.body.dataset.page = route;
   main.innerHTML = route === 'home' ? quickView(quick, repo.persistent) : route === 'workouts' ? workoutsView(archive, repo.persistent, mode) : route === 'editor' ? editorView(draft, repo.data.workouts.some(w => w.id === draft.id), draftNotice) : route === 'timer' ? timerView() : route === 'history' ? historyView(archive.sessions, repo.persistent, mode) : route === 'stats' ? statsView(archive, filterDays, filterWorkout, mode) : route === 'help' ? helpView(mode) : settingsView(repo.persistent, appearance);
+  if (route === 'editor') updateEditorSave();
   if (route === 'timer') paintTimer();
+}
+function updateEditorSave() {
+  const form = main.querySelector('#workout-form');
+  form.querySelector('[type="submit"]').disabled = form.matches(':invalid');
 }
 function timerView() {
   if (!timer) return quickView(quick, repo.persistent);
@@ -104,16 +101,29 @@ function paintTimer() {
 }
 async function start(workout) {
   if (active()) { announce(t("C’è già una sessione attiva. Termina prima quella corrente.")); navigate('timer'); return; }
+  if (starting) return;
   if (dirty && !confirm(t("Avviare scartando le modifiche non salvate?"))) return;
+  const prepared = new TimerEngine(workout);
+  starting = true;
+  try {
+    if (!await acquireTimer()) { announce(t("Timer aperto in un’altra finestra.")); return; }
+  } finally { starting = false; }
   const migration = normalizationNotice(workout); if (migration) announce(migration);
-  signals.stop(); timer = new TimerEngine(workout); savedSession = null; dirty = false; timer.start();
+  signals.stop(); timer = prepared; savedSession = null; dirty = false; timer.start();
   navigate('timer');
   if (!await signals.unlock()) announce(t("Suoni non disponibili in questo browser. Il timer continua senza audio."));
   try { await signals.wake(); } catch (e) { announce(e.message); }
 }
 function settle() {
   if (timer?.result && savedSession !== timer.result.id) {
-    const saved = repo.addSession(timer.result); savedSession = timer.result.id; signals.release().catch(() => {}); if (saved) announce(repo.persistent ? t("Sessione salvata in questo browser.") : t("Attività registrata per questa visita. Attiva il salvataggio o esporta una copia JSON per conservarla."));
+    const finished = timer;
+    savedSession = finished.result.id;
+    signals.release().catch(() => {});
+    writeArchive(() => repo.addSession(finished.result)).then(saved => {
+      if (saved) announce(repo.persistent ? t("Sessione salvata in questo browser.") : t("Attività registrata per questa visita. Attiva il salvataggio o esporta una copia JSON per conservarla."));
+    }).catch(error => announce(error.message)).finally(() => {
+      if (timer === finished) releaseTimer(finished.manualStop ? 0 : 2000);
+    });
   }
 }
 function mutateEditor(action, button) {
@@ -143,6 +153,15 @@ document.addEventListener('click', async event => {
     if (action.startsWith('block-') || action.startsWith('exercise-')) { mutateEditor(action, button); return; }
     if (['home', 'workouts', 'history', 'stats', 'settings', 'help'].includes(action)) { navigate(action); return; }
     switch (action) {
+      case 'mini': {
+        const url = new URL('./mini.html', location.href);
+        if (navigator.locks) {
+          const opened = window.open(url, 'tabata-mini-timer', 'popup,width=370,height=252');
+          if (opened) { opened.focus(); break; }
+        }
+        if (active()) { announce(t("Termina la sessione in corso prima di aprire il mini timer.")); break; }
+        location.assign(url); break;
+      }
       case 'language': { notice.hidden = true; notice.textContent = ''; const saved = setLanguage(button.dataset.value); render(); if (!saved) announce(t('Preferenza applicata per questa visita. Il browser non ha potuto salvarla.')); break; }
       case 'mode': {
         if (active()) { announce(t("Termina la sessione prima di cambiare modalità.")); return; }
@@ -168,7 +187,7 @@ document.addEventListener('click', async event => {
         render(); break;
       }
       case 'quick-save': {
-        compileTimeline(quick);
+        compileEditedTimeline(quick);
         pendingSave = duplicateWorkout(quick); pendingSave.title = quick.title;
         document.querySelector('#save-name').value = quick.title;
         document.querySelector('#save-error').hidden = true;
@@ -177,52 +196,87 @@ document.addEventListener('click', async event => {
         break;
       }
       case 'new': if (dirty && !confirm(t("Scartare le modifiche?"))) return; draft = newWorkout(mode); draftNotice = ''; dirty = false; navigate('editor'); break;
-      case 'edit': if (dirty && !confirm(t("Scartare le modifiche?"))) return; draftNotice = normalizationNotice(workout); draft = normalizeWorkout(workout); dirty = false; navigate('editor'); break;
-      case 'copy': { const saved = repo.upsertWorkout(duplicateWorkout(workout)); render(); if (saved) announce(t("Allenamento duplicato.")); break; }
-      case 'delete': if (!confirm(t("Eliminare “{0}”? Le sessioni restano in cronologia.", workout.title))) return; repo.data.workouts = repo.data.workouts.filter(w => w.id !== workout.id); repo.save(); render(); break;
-      case 'presets': presets(mode).forEach(w => repo.upsertWorkout(w)); render(); break;
+      case 'edit': {
+        if (dirty && !confirm(t("Scartare le modifiche?"))) return;
+        const edit = prepareWorkoutEdit(workout);
+        draft = edit.draft; draftNotice = edit.notice; dirty = false; navigate('editor'); break;
+      }
+      case 'copy': { const saved = await writeArchive(() => repo.upsertWorkout(duplicateWorkout(workout))); render(); if (saved) announce(t("Allenamento duplicato.")); break; }
+      case 'delete': if (!confirm(t("Eliminare “{0}”? Le sessioni restano in cronologia.", workout.title))) return; await writeArchive(() => { repo.data.workouts = repo.data.workouts.filter(w => w.id !== workout.id); repo.save(); }); render(); break;
+      case 'presets': await writeArchive(() => presets(mode).forEach(w => repo.upsertWorkout(w))); render(); break;
       case 'start': await start(workout); break;
       case 'pause': if (timer?.state === 'paused') { await signals.unlock(); timer.resume(); } else { timer?.pause(); signals.stop(); } soundCountdown(); settle(); paintTimer(); break;
       case 'skip': signals.stop(); timer?.skip(); soundCountdown(); settle(); paintTimer(); break;
       case 'previous': signals.stop(); timer?.previous(); soundCountdown(); settle(); paintTimer(); break;
       case 'stop': if (active() && confirm(t("Terminare e registrare la sessione come interrotta?"))) { signals.stop(); timer.stop(); soundCountdown(); settle(); paintTimer(); } break;
       case 'fullscreen': if (document.fullscreenElement) await document.exitFullscreen(); else if (main.querySelector('.timer-panel').requestFullscreen) await main.querySelector('.timer-panel').requestFullscreen(); else announce(t("Schermo intero non supportato: puoi usare il timer nella pagina.")); break;
-      case 'persist': if (repo.enable()) announce(t("Allenamenti e attività salvati in questo browser.")); render(); break;
-      case 'temporary': if (confirm(t("Rimuovere il salvataggio da questo browser e continuare solo per questa visita? Esporta prima una copia JSON per conservarlo."))) { repo.disable(); render(); } break;
+      case 'persist': if (await writeArchive(() => repo.enable())) announce(t("Allenamenti e attività salvati in questo browser.")); render(); break;
+      case 'temporary': if (confirm(t("Rimuovere il salvataggio da questo browser e continuare solo per questa visita? Esporta prima una copia JSON per conservarlo."))) { await writeArchive(() => repo.disable()); render(); } break;
       case 'export-json': download(makeBackup(repo.data), 'tabata-backup-v1.json', 'application/json'); break;
       case 'export-csv': download(sessionsCsv(modeData(repo.data, mode).sessions), 'tabata-sessioni.csv', 'text/csv;charset=utf-8'); break;
       case 'import': if (active()) { announce(t("Termina la sessione prima di importare.")); return; } document.querySelector('#import-file').click(); break;
-      case 'clear': if (active()) { announce(t("Termina la sessione prima di cancellare i dati.")); return; } if (confirm(t("Cancellare tutti gli allenamenti e tutte le attività? Questa operazione non può essere annullata."))) { if (!repo.disable()) return; repo.data = { workouts: [], sessions: [] }; draft = null; dirty = false; timer = null; render(); announce(t("Dati cancellati. Modalità temporanea attiva.")); } break;
-      case 'session-delete': if (confirm(t("Eliminare questa sessione?"))) { repo.data.sessions = repo.data.sessions.filter(s => s.id !== button.dataset.id); repo.save(); render(); } break;
+      case 'clear': if (active()) { announce(t("Termina la sessione prima di cancellare i dati.")); return; } if (confirm(t("Cancellare tutti gli allenamenti e tutte le attività? Questa operazione non può essere annullata."))) { if (!await writeArchive(() => repo.disable())) return; repo.data = { workouts: [], sessions: [] }; draft = null; dirty = false; timer = null; render(); announce(t("Dati cancellati. Modalità temporanea attiva.")); } break;
+      case 'session-delete': if (confirm(t("Eliminare questa sessione?"))) { await writeArchive(() => { repo.data.sessions = repo.data.sessions.filter(s => s.id !== button.dataset.id); repo.save(); }); render(); } break;
     }
   } catch (e) { announce(e.message); }
 });
+function formValue(input, key) {
+  if (input.type !== 'number') return input.value;
+  const value = input.valueAsNumber * Number(input.dataset.unitFactor || 1);
+  if (key === 'cooldownSec') {
+    if (input.disabled) return 0;
+    if (value === 0) return NaN;
+  }
+  return value;
+}
 main.addEventListener('input', event => {
-  const input = event.target;
+  let input = event.target;
+  if (input.hasAttribute('data-cooldown-toggle')) {
+    const enabled = input.checked;
+    const field = input.closest('.cooldown-fields').querySelector('[data-cooldown-duration]');
+    field.hidden = !enabled;
+    input = field.querySelector('input');
+    input.disabled = !enabled;
+    input.value = enabled ? input.min : '';
+  }
   if (input.dataset.quickPath) {
     const path = input.dataset.quickPath.split('.'), key = path.pop(); let target = quick;
     path.forEach(p => { target = target[p]; });
-    target[key] = input.type === 'number' ? (input.value === '' ? NaN : Number(input.value) * Number(input.dataset.unitFactor || 1)) : input.value;
+    target[key] = formValue(input, key);
     const error = document.querySelector('#quick-error');
+    const total = document.querySelector('#quick-total');
     try {
-      const total = document.querySelector('#quick-total');
-      const duration = formatTime(plannedMs(compileTimeline(quick)));
+      const duration = formatTime(plannedMs(compileEditedTimeline(quick)));
       total.textContent = duration;
       total.dataset.long = String(duration.length > 5);
       document.querySelector('#quick-start-button').disabled = false; document.querySelector('[data-action=quick-save]').disabled = false; error.hidden = true;
-    } catch (e) { error.textContent = t(e.message); error.hidden = false; document.querySelector('#quick-start-button').disabled = true; document.querySelector('[data-action=quick-save]').disabled = true; }
+    } catch (e) {
+      total.textContent = '—'; total.dataset.long = 'false';
+      error.textContent = t(e.message); error.hidden = false;
+      document.querySelector('#quick-start-button').disabled = true; document.querySelector('[data-action=quick-save]').disabled = true;
+    }
     document.querySelectorAll('[data-preset]').forEach(b => { const p = quickPresets(mode)[Number(b.dataset.preset)], e = mode === 'STUDIO' ? { workSec: quick.activities[0].concentrationSec, restBetweenRepsSec: quick.activities[0].pauseSec } : quick.blocks[0].exercises[0]; b.setAttribute('aria-pressed', String(e.workSec === p.workSec && e.restBetweenRepsSec === p.restSec)); });
     return;
   }
   if (!input.dataset.path) return;
   const path = input.dataset.path.split('.'), key = path.pop(); let target = draft;
-  path.forEach(p => { target = target[p]; }); target[key] = input.type === 'number' ? (input.value === '' ? NaN : Number(input.value) * Number(input.dataset.unitFactor || 1)) : input.value; dirty = true;
+  path.forEach(p => { target = target[p]; }); target[key] = formValue(input, key); dirty = true;
   document.querySelector('#preview').innerHTML = preview(draft);
+  updateEditorSave();
 });
-main.addEventListener('submit', event => {
+main.addEventListener('submit', async event => {
   event.preventDefault();
-  if (event.target.id === 'quick-form') { start(quick).catch(e => announce(e.message)); return; }
-  try { compileTimeline(draft); const saved = repo.saveWorkoutLocally(clone(draft)); if (saved) { dirty = false; announce(t("Allenamento salvato sul dispositivo.")); navigate('workouts'); } } catch (e) { announce(e.message); }
+  try {
+    if (event.target.id === 'quick-form') {
+      validateDurationInputs(quick);
+      start(quick).catch(e => announce(e.message));
+      return;
+    }
+    compileEditedTimeline(draft);
+    const candidate = clone(draft);
+    const saved = await writeArchive(() => repo.saveWorkoutLocally(candidate));
+    if (saved) { dirty = false; announce(t("Allenamento salvato sul dispositivo.")); navigate('workouts'); }
+  } catch (e) { announce(e.message); }
 });
 main.addEventListener('change', async event => {
   const input = event.target;
@@ -232,18 +286,19 @@ main.addEventListener('change', async event => {
   if (input.id === 'filter-days') { filterDays = Number(input.value); render(); }
   if (input.id === 'filter-workout') { filterWorkout = input.value; render(); }
 });
-document.querySelector('#save-form').addEventListener('submit', event => {
+document.querySelector('#save-form').addEventListener('submit', async event => {
   event.preventDefault();
   if (!pendingSave) return;
   const error = document.querySelector('#save-error');
   try {
     pendingSave.title = document.querySelector('#save-name').value.trim();
-    compileTimeline(pendingSave);
-    if (!repo.saveWorkoutLocally(clone(pendingSave))) {
+    compileEditedTimeline(pendingSave);
+    const candidate = clone(pendingSave);
+    if (!await writeArchive(() => repo.saveWorkoutLocally(candidate))) {
       error.textContent = t("Salvataggio non riuscito. L’allenamento resta disponibile per questa visita. Puoi riprovare oppure chiudere e creare una copia JSON dalle impostazioni.");
       error.hidden = false; return;
     }
-    quick.title = pendingSave.title; pendingSave = null;
+    quick.title = candidate.title; pendingSave = null;
     document.querySelector('#save-dialog').close();
     navigate('workouts'); announce(t("Salvato sul dispositivo. Lo trovi in {0}.", t(labels().collection)));
   } catch (e) { error.textContent = t(e.message); error.hidden = false; }
@@ -265,10 +320,11 @@ document.querySelector('#import-file').addEventListener('change', async event =>
     document.querySelector('#import-dialog').showModal();
   } catch (e) { announce(t("Importazione rifiutata: {0}", t(e.message))); }
 });
-document.querySelector('#confirm-import').addEventListener('click', () => {
+document.querySelector('#confirm-import').addEventListener('click', async () => {
   if (!pendingImport || active()) return;
-  const saved = repo.replace({ workouts: pendingImport.workouts, sessions: pendingImport.sessions });
+  const backup = { workouts: pendingImport.workouts, sessions: pendingImport.sessions };
   pendingImport = null;
+  const saved = await writeArchive(() => repo.replace(backup));
   document.querySelector('#import-dialog').close();
   if (!saved) { announce(t("Importazione non salvata. L’archivio precedente è rimasto invariato.")); return; }
   dirty = false; draft = null; timer = null;
@@ -278,6 +334,16 @@ document.querySelector('#confirm-import').addEventListener('click', () => {
 document.querySelector('#cancel-import').addEventListener('click', () => { pendingImport = null; document.querySelector('#import-dialog').close(); });
 document.querySelector('#import-dialog').addEventListener('cancel', () => { pendingImport = null; });
 document.querySelector('.brand').addEventListener('click', event => { event.preventDefault(); navigate('home'); });
+window.addEventListener('storage', event => {
+  if (event.key !== STORAGE_KEY) return;
+  repo.load(parseBackup);
+  if (['workouts', 'history', 'stats', 'settings'].includes(route)) render();
+});
+window.addEventListener('pagehide', event => {
+  if (event.persisted && active()) timer.stop();
+  signals.stop();
+  releaseTimer();
+});
 document.addEventListener('visibilitychange', () => { timer?.tick(); soundCountdown(); settle(); if (document.visibilityState === 'visible') { paintTimer(); if (active()) signals.wake().catch(e => announce(e.message)); } });
 window.addEventListener('beforeunload', event => { if (active() || dirty) { event.preventDefault(); event.returnValue = ''; } });
 setInterval(() => { timer?.tick(); soundCountdown(); settle(); if (route === 'timer') paintTimer(); }, 100);

@@ -1,8 +1,8 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {compileTimeline,plannedMs} from '../js/timeline.js';
-import {newWorkout,newExercise,clone,normalizeWorkout,normalizationNotice} from '../js/model.js';
+import {compileTimeline,compileEditedTimeline,plannedMs} from '../js/timeline.js';
+import {newWorkout,newBlock,newExercise,clone,normalizeWorkout,normalizationNotice,prepareWorkoutEdit} from '../js/model.js';
 import {TimerEngine} from '../js/timer.js';
 import {TransitionCues,TRANSITION_SOUNDS,cueVolume} from '../js/transitions.js';
 import {CountdownCues} from '../js/countdown.js';
@@ -24,6 +24,53 @@ test('input nuovi rigorosi, minimi non multipli e dati legacy conservati',()=>{
     assert.equal(normalizeWorkout(w).timingVersion,2);
   }
   const w=newWorkout();w.blocks[0].exercises[0].workSec=6;w.blocks[0].exercises[0].restBetweenRepsSec=7;assert.doesNotThrow(()=>compileTimeline(w));
+});
+test('i tempi Workout in modifica richiedono 5 secondi e il defaticamento attivo ne richiede 10', () => {
+  const workout = newWorkout();
+  const block = workout.blocks[0], exercise = block.exercises[0];
+  workout.blocks.push(newBlock());
+  exercise.repetitions = 1;
+  for (const [owner, field] of [[exercise, 'workSec'], [exercise, 'restBetweenRepsSec'], [block, 'restAfterBlockSec']]) {
+    for (const value of [0, 1, 4, 5.5]) {
+      owner[field] = value;
+      assert.throws(() => compileEditedTimeline(workout), /intero tra 5 e 3600/);
+    }
+    owner[field] = 5;
+  }
+  for (const value of [1, 9, 10.5, NaN]) {
+    workout.cooldownSec = value;
+    assert.throws(() => compileEditedTimeline(workout), /intero tra 10 e 3600/);
+  }
+  workout.cooldownSec = 10;
+  assert.equal(compileEditedTimeline(workout).at(-1).durationMs, 10000);
+  workout.cooldownSec = 0;
+  assert.equal(compileEditedTimeline(workout).some(phase => phase.type === 'COOLDOWN'), false);
+});
+test('Studio richiede minuti interi positivi e le copie da modificare conservano gli originali', () => {
+  const studio = newWorkout('STUDIO'), activity = studio.activities[0];
+  activity.sessions = 1;
+  for (const [owner, field] of [[activity, 'concentrationSec'], [activity, 'pauseSec'], [studio, 'restBetweenActivitiesSec']]) {
+    for (const value of [0, 1, 59, 90]) {
+      owner[field] = value;
+      assert.throws(() => compileEditedTimeline(studio), /intero tra 1 e 60/);
+    }
+    owner[field] = 60;
+  }
+  assert.deepEqual(compileEditedTimeline(studio).map(phase => phase.durationMs), [60000]);
+  studio.restBetweenActivitiesSec = activity.pauseSec = 0;
+  const before = clone(studio);
+  const { draft, notice } = prepareWorkoutEdit(studio);
+  assert.match(notice, /pause a zero/);
+  assert.equal(draft.restBetweenActivitiesSec, 60);
+  assert.equal(draft.activities[0].pauseSec, 60);
+  assert.deepEqual(studio, before);
+  assert.doesNotThrow(() => compileTimeline(before));
+
+  const workout = newWorkout();
+  workout.blocks[0].exercises[0].restBetweenRepsSec = 0;
+  const editable = prepareWorkoutEdit(workout).draft;
+  assert.equal(editable.blocks[0].exercises[0].restBetweenRepsSec, 5);
+  assert.equal(workout.blocks[0].exercises[0].restBetweenRepsSec, 0);
 });
 test('anteprima raggruppata, confini e nomi utente, campi visibili solo dove necessari',()=>{
   const w=clone(cases.find(c=>c.name==='demo-completa').workout);

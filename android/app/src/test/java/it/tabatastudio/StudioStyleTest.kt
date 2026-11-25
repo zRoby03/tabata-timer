@@ -3,6 +3,7 @@ package it.tabatastudio
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 import it.tabatastudio.ui.StudioStyle
+import it.tabatastudio.ui.retroPanelColors
 import it.tabatastudio.ui.studioColors
 import it.tabatastudio.ui.studioPalettes
 import org.junit.Assert.assertEquals
@@ -30,7 +31,10 @@ class StudioStyleTest {
             assertTrue(description, contrast(colors.tertiary, colors.onTertiary) >= 4.5)
             assertTrue(description, contrast(colors.background, colors.onBackground) >= 4.5)
             assertTrue(description, contrast(colors.surface, colors.onSurfaceVariant) >= 4.5)
-            assertTrue(description, contrast(style.readoutBackground(colors), colors.onSurface) >= 4.5)
+            assertTrue(description, contrast(style.readoutBackground(colors), style.readoutInk(colors)) >= 4.5)
+            val panel = if (style == StudioStyle.RETRO) retroPanelColors(colors) else colors
+            assertTrue(description, contrast(panel.surface, panel.onSurfaceVariant) >= 4.5)
+            assertTrue(description, contrast(style.quickFieldBackground(panel), panel.onSurface) >= 4.5)
             assertTrue(description, contrast(colors.primaryContainer, colors.onPrimaryContainer) >= 4.5)
         }
     }
