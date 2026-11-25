@@ -76,14 +76,19 @@ function render() {
 }
 function timerView() {
   if (!timer) return quickView(quick, repo.persistent);
-  return `<section class="card timer-panel"><p class="timer-workout-name">${h(timer.workout.title)}</p><h1 id="timer-status">${t("Pronto")}</h1><div class="timer-digits" id="timer-digits" role="timer" aria-label="${t("Tempo rimanente")}" aria-live="off">0:00</div><div class="timer-phase" id="timer-phase" aria-live="polite"></div><progress id="timer-progress" class="timer-progress" max="${timer.phases.length}" value="0" aria-label="${t("Avanzamento fasi")}"></progress><p id="timer-position" class="muted"></p><div class="row timer-main-controls"><button class="primary" data-action="pause" id="pause-button">${t("Pausa (timer)")}</button><button data-action="skip">${t("Salta →")}</button></div><div class="timer-next" id="timer-next"></div><details class="timer-options"><summary>${t("Altri controlli")}</summary><div class="row"><button data-action="previous">${t("← Precedente")}</button><button data-action="fullscreen">${t("Schermo intero")}</button></div><div class="timer-settings"><label class="check"><input type="checkbox" id="sound" ${signals.sound ? 'checked' : ''}>${t("Suoni")}</label><label class="check"><input type="checkbox" id="vibration" ${signals.vibration ? 'checked' : ''}>${t("Vibrazione")}</label><label class="check"><input type="checkbox" id="awake" ${signals.keepAwake ? 'checked' : ''}>${t("Schermo acceso")}</label></div><p class="timer-warning">${t(isStudio(timer.workout) ? "Bip brevi sul 3, 2, 1. Fischietto all’inizio del lavoro, sospiro all’inizio del recupero e tre ding alla fine dell’allenamento, prima dell’eventuale defaticamento." : "Un ding avvia il lavoro; due ding un nuovo ciclo o blocco. Due sospiri annunciano il recupero tra blocchi. Tre ding concludono lavoro e defaticamento; durante il defaticamento il timer resta silenzioso.")}</p><p class="timer-warning">${t("Il timer recupera il tempo trascorso quando torni alla pagina. Audio e vibrazione possono non funzionare in background, a schermo bloccato o con browser sospeso.")}</p></details><button data-action="stop" class="text-button danger">${t("Termina")}</button><p class="timer-warning">${t("Mantieni la pagina visibile: gli avvisi in background non sono garantiti.")}</p><div id="timer-result" aria-live="polite"></div></section>`;
+  return `<section class="card timer-panel"><p class="timer-workout-name">${h(timer.workout.title)}</p><h1 id="timer-status">${t("Pronto")}</h1><div class="timer-display"><div class="timer-digits" id="timer-digits" role="timer" aria-label="${t("Tempo rimanente")}" aria-live="off">0:00</div></div><div class="timer-phase" id="timer-phase" aria-live="polite"></div><progress id="timer-progress" class="timer-progress" max="${timer.phases.length}" value="0" aria-label="${t("Avanzamento fasi")}"></progress><p id="timer-position" class="muted"></p><div class="row timer-main-controls"><button class="primary" data-action="pause" id="pause-button">${t("Pausa (timer)")}</button><button data-action="skip">${t("Salta →")}</button></div><div class="timer-next" id="timer-next"></div><details class="timer-options"><summary>${t("Altri controlli")}</summary><div class="row"><button data-action="previous">${t("← Precedente")}</button><button data-action="fullscreen">${t("Schermo intero")}</button></div><div class="timer-settings"><label class="check"><input type="checkbox" id="sound" ${signals.sound ? 'checked' : ''}>${t("Suoni")}</label><label class="check"><input type="checkbox" id="vibration" ${signals.vibration ? 'checked' : ''}>${t("Vibrazione")}</label><label class="check"><input type="checkbox" id="awake" ${signals.keepAwake ? 'checked' : ''}>${t("Schermo acceso")}</label></div><p class="timer-warning">${t(isStudio(timer.workout) ? "Bip brevi sul 3, 2, 1. Fischietto all’inizio del lavoro, sospiro all’inizio del recupero e tre ding alla fine dell’allenamento, prima dell’eventuale defaticamento." : "Un ding avvia il lavoro; due ding un nuovo ciclo o blocco. Due sospiri annunciano il recupero tra blocchi. Tre ding concludono lavoro e defaticamento; durante il defaticamento il timer resta silenzioso.")}</p><p class="timer-warning">${t("Il timer recupera il tempo trascorso quando torni alla pagina. Audio e vibrazione possono non funzionare in background, a schermo bloccato o con browser sospeso.")}</p></details><button data-action="stop" class="text-button danger">${t("Termina")}</button><p class="timer-warning">${t("Mantieni la pagina visibile: gli avvisi in background non sono garantiti.")}</p><div id="timer-result" aria-live="polite"></div></section>`;
 }
 function paintTimer() {
   if (!timer || route !== 'timer') return;
   document.querySelector('#mode-switch').disabled = active();
   const done = timer.state === 'finished', p = timer.currentPhase;
   document.querySelector('#timer-status').textContent = done ? (timer.result.status === 'COMPLETED' ? (isStudio(timer.workout) ? t("Studio completato.") : t("Allenamento completato.")) : t("Sessione interrotta.")) : timer.state === 'paused' ? t("In pausa") : p.type === 'PREPARE' ? t("Preparazione") : p.type === 'WORK' ? t(labels().focus) : p.type === 'WARMUP' ? t("Riscaldamento") : p.type === 'COOLDOWN' ? t(labels().final) : p.type === 'REST_LONG' ? t("Pausa lunga") : t(labels().rest);
-  document.querySelector('#timer-digits').textContent = formatTime(timer.remainingMs);
+  const digits = document.querySelector('#timer-digits');
+  const remaining = formatTime(timer.remainingMs);
+  if (digits.textContent !== remaining) {
+    digits.textContent = remaining;
+    digits.dataset.long = String(remaining.length > 5);
+  }
   const phaseText = done ? t("Sessione registrata") : timer.index < 0 ? t("Mettiti in posizione. Si parte tra poco.") : phaseLabel(p);
   const phaseNode = document.querySelector('#timer-phase'); if (phaseNode.textContent !== phaseText) phaseNode.textContent = phaseText;
   document.querySelector('#timer-position').textContent = done ? t("{0}/{1} intervalli completati", timer.result.completedWorkIntervals, timer.result.plannedWorkIntervals) : timer.index < 0 ? t("20 secondi per prepararti") : t("Fase {0} di {1} · Tempo attivo {2}", timer.index + 1, timer.phases.length, formatTime(timer.elapsedMs));
@@ -146,6 +151,7 @@ document.addEventListener('click', async event => {
         mode = mode === 'WORKOUT' ? 'STUDIO' : 'WORKOUT'; quick = quickByMode[mode]; saveMode(browserStorage, mode);
         timer = null; draft = null; dirty = false; filterWorkout = ''; route = 'home'; render(); break;
       }
+      case 'style':
       case 'theme':
       case 'palette': {
         appearance = { ...appearance, [action]: button.dataset.value };
@@ -199,7 +205,10 @@ main.addEventListener('input', event => {
     target[key] = input.type === 'number' ? (input.value === '' ? NaN : Number(input.value) * Number(input.dataset.unitFactor || 1)) : input.value;
     const error = document.querySelector('#quick-error');
     try {
-      document.querySelector('#quick-total').textContent = formatTime(plannedMs(compileTimeline(quick)));
+      const total = document.querySelector('#quick-total');
+      const duration = formatTime(plannedMs(compileTimeline(quick)));
+      total.textContent = duration;
+      total.dataset.long = String(duration.length > 5);
       document.querySelector('#quick-start-button').disabled = false; document.querySelector('[data-action=quick-save]').disabled = false; error.hidden = true;
     } catch (e) { error.textContent = t(e.message); error.hidden = false; document.querySelector('#quick-start-button').disabled = true; document.querySelector('[data-action=quick-save]').disabled = true; }
     document.querySelectorAll('[data-preset]').forEach(b => { const p = quickPresets(mode)[Number(b.dataset.preset)], e = mode === 'STUDIO' ? { workSec: quick.activities[0].concentrationSec, restBetweenRepsSec: quick.activities[0].pauseSec } : quick.blocks[0].exercises[0]; b.setAttribute('aria-pressed', String(e.workSec === p.workSec && e.restBetweenRepsSec === p.restSec)); });

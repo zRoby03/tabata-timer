@@ -556,4 +556,11 @@
     <string name="msg_1b3a7e274975" formatted="false">Il file non è un JSON UTF-8 valido.</string>
     <string name="msg_e22de24f160e" formatted="false">Importazione non salvata. L’archivio precedente è rimasto invariato.</string>
     <string name="msg_883abb676756" formatted="false">La cancellazione elimina programmi e attività di entrambe le modalità. Le preferenze e le copie esportate restano disponibili.</string>
+    <string name="msg_713eb6108d5d" formatted="false">Stile</string>
+    <string name="msg_e351d5ffde15" formatted="false">Classico</string>
+    <string name="msg_130e8762be5b" formatted="false">Editoriale sportivo</string>
+    <string name="msg_c25c28074e5a" formatted="false">Neo-brutalismo soft</string>
+    <string name="msg_22d9f2d4cea6" formatted="false">Retro digitale</string>
+    <string name="msg_cb32c72e7372" formatted="false">Bauhaus contemporaneo</string>
+    <string name="msg_16a888f5da6c" formatted="false">Scegli lo stile, il tema e il colore dell’app. Le modifiche si applicano subito e restano su questo dispositivo.</string>
 </resources>

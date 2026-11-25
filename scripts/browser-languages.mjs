@@ -30,6 +30,11 @@ try {
   assert.equal(await page.locator('html').getAttribute('lang'),'en');
   assert.deepEqual((await page.evaluate(()=>JSON.parse(localStorage.getItem('tabata:v1:data')))).workouts,saved.workouts);
   await page.locator('[data-action=settings]').first().click();await page.locator(`[data-action=language][data-value=${lang}]`).click();
+  assert.deepEqual(await page.locator('[data-action=style]').allTextContents(), {
+   it: ['Classico', 'Editoriale sportivo', 'Neo-brutalismo soft', 'Retro digitale', 'Bauhaus contemporaneo'],
+   en: ['Classic', 'Sport editorial', 'Soft neo-brutalism', 'Digital retro', 'Contemporary Bauhaus'],
+   es: ['Clásico', 'Editorial deportivo', 'Neobrutalismo suave', 'Retro digital', 'Bauhaus contemporánea']
+  }[lang]);
   assert.deepEqual(await page.locator('[data-action=palette]').allTextContents(), ['Viola','Blu','Verde chiaro','Verde scuro','Azzurro','Arancione','Giallo','Rosso','Rosa'].map(x=>tr(x)));
   await page.locator('[data-action=help]').first().click();
   assert.deepEqual(await page.locator('main h2').allTextContents(),['Workout e Studio','Per conservare un allenamento','Tema e Colori'].map(x=>tr(x)));
@@ -68,6 +73,6 @@ try {
   checks.push({language:lang,deviceDetection:true,preferencePersisted:true,savedNamesPreserved:true,editorTimerStatistics:true,responsive:[320,390,768,1440],offline:true,demosFooterAndStorageLineRemoved:true});
   await context.close();
  }
- assert.deepEqual(errors,[]);await writeFile('output/browser-languages.json',JSON.stringify({version:'1.9.1',checks,errors},null,2));
+ assert.deepEqual(errors,[]);await writeFile('output/browser-languages.json',JSON.stringify({version:'1.10.0',checks,errors},null,2));
  console.log('Italiano, English, Español: flussi completi, nomi intatti, tre guide, nove palette, quattro larghezze e offline verificati.');
 } finally {await browser.close();}

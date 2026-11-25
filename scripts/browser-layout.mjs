@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
+import { APPEARANCE_KEY, STYLES } from '../web/js/appearance.js';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ? pathToFileURL(process.env.PLAYWRIGHT_MODULE).href : 'playwright');
 const browser = await chromium.launch({
   channel: process.env.TABATA_BROWSER || 'msedge', headless: true,
@@ -10,8 +11,9 @@ const base = process.env.TABATA_URL || 'http://127.0.0.1:5500';
 const fixture = JSON.parse(await readFile('fixtures/backup-simple-v1.json', 'utf8'));
 const results = [];
 try {
-  for (const populated of [false, true]) {
+  for (const style of STYLES) for (const populated of [false, true]) {
     const context = await browser.newContext({ locale: 'en-US', viewport: { width: 1280, height: 820 } });
+    await context.addInitScript(({key, id}) => localStorage.setItem(key, JSON.stringify({style: id})), {key: APPEARANCE_KEY, id: style.id});
     if (populated) {
       const repeat = items => Array.from({ length: 24 }, (_, i) => items.map(item => ({ ...item, id: item.id + '-' + i }))).flat();
       await context.addInitScript(data => localStorage.setItem('tabata:v1:data', JSON.stringify(data)),
@@ -41,22 +43,22 @@ try {
           });
           dimensions.push(size);
           assert.ok(size.scrollWidth <= width, [mode, route, width].join(' '));
-          if (!populated && width === 1280 && mode === 'studio') {
+          if (style.id === 'classic' && !populated && width === 1280 && mode === 'studio') {
             await page.screenshot({ path: 'output/screenshots/after-' + route + '.png' });
           }
         }
         for (const current of dimensions.slice(1)) {
           for (const key of ['logo', 'header', 'nav', 'main']) {
-            assert.equal(current[key], dimensions[0][key], [mode, width, key].join(' '));
+            assert.equal(current[key], dimensions[0][key], [style.id, mode, width, key].join(' '));
           }
         }
-        results.push({ populated, width, mode, dimensions });
+        results.push({ style: style.id, populated, width, mode, dimensions });
       }
     }
     await context.close();
   }
   await writeFile('output/layout-after.json', JSON.stringify(results, null, 2));
-  console.log('Layout stable: 48 screens, both modes, empty and populated archives, 320–1280 px.');
+  console.log('Layout stable: 240 screens across five styles, both modes, empty and populated archives, 320–1280 px.');
 } finally {
   await browser.close();
 }

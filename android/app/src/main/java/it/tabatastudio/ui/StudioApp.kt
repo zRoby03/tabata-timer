@@ -22,7 +22,8 @@ import java.time.format.DateTimeFormatter
 internal fun date(value: String): String = DateTimeFormatter.ofLocalizedDateTime(java.time.format.FormatStyle.SHORT).withLocale(it.tabatastudio.i18n.AppText.locale).withZone(ZoneId.systemDefault()).format(Instant.parse(value))
 
 @Composable fun StudioApp(vm: StudioViewModel) {
-    MaterialTheme(colorScheme = studioColors(vm.darkTheme, vm.palette)) {
+    val style = vm.style
+    StudioAppearance(style, vm.darkTheme, vm.palette) {
         BackHandler(vm.route != "Home" || vm.fullscreen) { if (vm.fullscreen) vm.fullscreen = false else vm.navigate("Home") }
         Scaffold(containerColor = MaterialTheme.colorScheme.background, bottomBar = {
             if (!vm.fullscreen) Surface(tonalElevation = 2.dp) {
@@ -90,8 +91,24 @@ internal fun date(value: String): String = DateTimeFormatter.ofLocalizedDateTime
         vm.importPreview?.let { backup -> AlertDialog(onDismissRequest = { vm.importPreview = null }, title = { Text(tr("Anteprima importazione")) }, text = { Text(tr("{0} programmi (Workout e Studio) · {1} sessioni. La conferma sostituisce tutti i dati. Esporta prima una copia JSON per conservarli.", backup.workouts.size, backup.sessions.size)) }, confirmButton = { TextButton(onClick = vm::applyImport) { Text(tr("Sostituisci dati")) } }, dismissButton = { TextButton(onClick = { vm.importPreview = null }) { Text(tr("Annulla")) } }) }
     }
 }
+@Composable private fun StudioAppearance(style: StudioStyle, dark: Boolean, palette: String, content: @Composable () -> Unit) {
+    val colors = remember(dark, palette, style) { studioColors(dark, palette, style) }
+    val baseShapes = MaterialTheme.shapes
+    val shapes = remember(style, baseShapes) { style.shapes(baseShapes) }
+    CompositionLocalProvider(LocalStudioStyle provides style) {
+        MaterialTheme(colorScheme = colors, shapes = shapes, content = content)
+    }
+}
 @Composable internal fun Page(content: @Composable ColumnScope.() -> Unit) { Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp), verticalArrangement = Arrangement.spacedBy(18.dp), content = content) }
-@Composable internal fun Panel(content: @Composable ColumnScope.() -> Unit) { Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface), border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)) { Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp), content = content) } }
+@Composable internal fun Panel(content: @Composable ColumnScope.() -> Unit) {
+    val borderWidth = if (LocalStudioStyle.current == StudioStyle.NEO_BRUTALISM) 2.dp else 1.dp
+    Card(
+        Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(borderWidth, MaterialTheme.colorScheme.outlineVariant)
+    ) {
+        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp), content = content)
+    }
+}
 @Composable internal fun Heading(kicker: String, title: String) { Text(kicker.uppercase(), color = MaterialTheme.colorScheme.primary, fontSize = 11.sp, letterSpacing = 1.5.sp); Text(tr(title), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.SemiBold) }
 @Composable internal fun Buttons(content: @Composable FlowRowScope.() -> Unit) { FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(4.dp), content = content) }
 @Composable private fun Workouts(vm: StudioViewModel) = Page {
@@ -133,9 +150,7 @@ internal fun date(value: String): String = DateTimeFormatter.ofLocalizedDateTime
     Page {
         Text(timer.workout.title, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 13.sp)
         Text(if (done) { if (timer.result!!.status == "COMPLETED") (if (timer.workout.studio) tr("Studio completato.") else tr("Allenamento completato.")) else tr("Sessione interrotta.") } else if (timer.state == "paused") tr("In pausa") else when (p?.type) { "PREPARE" -> tr("Preparazione"); "WORK" -> tr(vm.labels.focus); "WARMUP" -> tr("Riscaldamento"); "COOLDOWN" -> tr(vm.labels.final); "REST_LONG" -> tr("Pausa lunga"); else -> tr(vm.labels.rest) }, style = MaterialTheme.typography.headlineMedium)
-        BoxWithConstraints(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            Text(formatTime(timer.remainingMs), fontSize = if (maxWidth < 350.dp) 88.sp else 108.sp, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.SemiBold, modifier = Modifier.semantics { contentDescription = tr("Tempo rimanente ${formatTime(timer.remainingMs)}") })
-        }
+        TimerReadout(formatTime(timer.remainingMs), running = true)
         Text(if (done) tr("Sessione registrata") else if (timer.index < 0) tr("Mettiti in posizione. Si parte tra poco.") else p?.let(::phaseLabel).orEmpty(), fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
         LinearProgressIndicator(progress = { timer.index.coerceAtLeast(0).toFloat() / timer.phases.size }, modifier = Modifier.fillMaxWidth())
         Text(if (done) tr("{0}/{1} intervalli completati", timer.result!!.completedWorkIntervals, timer.result!!.plannedWorkIntervals) else if (timer.index < 0) tr("20 secondi per prepararti") else tr("Fase {0}/{1} · Tempo attivo {2}", (timer.index + 1).coerceAtMost(timer.phases.size), timer.phases.size, formatTime(timer.elapsedMs)), fontSize = 13.sp)

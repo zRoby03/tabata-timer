@@ -1,10 +1,19 @@
 package it.tabatastudio
 
 import android.content.pm.ActivityInfo
+import android.graphics.Bitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.Lifecycle
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import it.tabatastudio.ui.StudioStyle
+import it.tabatastudio.ui.StudioViewModel
+import it.tabatastudio.ui.studioPalettes
+import java.io.File
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.After
 import androidx.test.platform.app.InstrumentationRegistry
@@ -62,6 +71,72 @@ class UiTest {
         compose.onNodeWithText("Chiaro").performScrollTo().performClick()
         compose.onNodeWithText("Viola").performScrollTo().performClick()
     }
+    @Test fun stylePersistsWithoutResettingAnActiveTimer() {
+        homeReady()
+        lateinit var vm: StudioViewModel
+        compose.activityRule.scenario.onActivity { vm = androidx.lifecycle.ViewModelProvider(it)[StudioViewModel::class.java] }
+        try {
+            compose.onNodeWithText("Avvia").performScrollTo().performClick()
+            compose.onNodeWithText("Preparazione").assertExists()
+            compose.onNodeWithText("Pausa").performScrollTo().performClick()
+            val before = vm.timer!!
+            val remaining = before.remainingMs
+            compose.onNodeWithContentDescription("Impostazioni").performClick()
+            compose.onNodeWithText("Scuro").performScrollTo().performClick()
+            compose.onNodeWithText("Giallo").performScrollTo().performClick()
+            compose.onNodeWithText("Bauhaus contemporaneo").performScrollTo().performClick().assertIsSelected()
+            val prefs = compose.activity.getSharedPreferences("tabata-appearance", android.content.Context.MODE_PRIVATE)
+            assertEquals("bauhaus", prefs.getString("style", null))
+            assertEquals("yellow", prefs.getString("palette", null))
+            assertTrue(prefs.getBoolean("dark", false))
+            compose.activityRule.scenario.recreate()
+            compose.onNodeWithText("Bauhaus contemporaneo").performScrollTo().assertIsSelected()
+            compose.onNodeWithText("Timer").performClick()
+            compose.onNodeWithText("Riprendi").assertExists()
+            assertSame(before, vm.timer)
+            assertEquals(remaining, vm.timer!!.remainingMs)
+            assertEquals("paused", vm.timer!!.state)
+        } finally {
+            compose.activityRule.scenario.onActivity {
+                vm.chooseStyle(StudioStyle.CLASSIC)
+                vm.chooseDarkTheme(false)
+                vm.choosePalette("purple")
+            }
+        }
+    }
+
+    @Test fun allStyleCombinationsRenderLongStudioDuration() {
+        homeReady()
+        compose.onNodeWithContentDescription("Modalità Studio").performClick().assertIsOn()
+        val captures = File(compose.activity.filesDir, "style-verification").apply { mkdirs() }
+        try {
+            for (style in StudioStyle.entries) for (dark in listOf(false, true)) for (palette in studioPalettes) {
+                compose.activityRule.scenario.onActivity { activity ->
+                    val vm = androidx.lifecycle.ViewModelProvider(activity)[StudioViewModel::class.java]
+                    vm.chooseStyle(style)
+                    vm.chooseDarkTheme(dark)
+                    vm.choosePalette(palette.id)
+                }
+                val layouts = mutableListOf<TextLayoutResult>()
+                compose.onNodeWithText("1:55:00").assertIsDisplayed()
+                    .performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
+                assertTrue(layouts.isNotEmpty() && layouts.all { !it.hasVisualOverflow && it.lineCount == 1 })
+                if (!dark && palette.id in listOf("purple", "lime", "yellow")) {
+                    val name = style.id + "-" + palette.id + ".png"
+                    val bitmap = compose.onRoot().captureToImage().asAndroidBitmap()
+                    File(captures, name).outputStream().use { assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)) }
+                }
+            }
+        } finally {
+            compose.activityRule.scenario.onActivity { activity ->
+                val vm = androidx.lifecycle.ViewModelProvider(activity)[StudioViewModel::class.java]
+                vm.chooseStyle(StudioStyle.CLASSIC)
+                vm.chooseDarkTheme(false)
+                vm.choosePalette("purple")
+                vm.chooseMode(false)
+            }
+        }
+    }
     @Test fun saveNamedWorkoutAndOpenGuide() {
         homeReady()
         compose.onNodeWithText("Salva allenamento").performScrollTo().performClick()
@@ -109,7 +184,14 @@ class UiTest {
         compose.onNodeWithContentDescription("Giri").assertExists()
         compose.onNodeWithText("Serie").assertDoesNotExist()
         compose.onNodeWithText("Allenamenti").performClick()
-        compose.onNodeWithContentDescription("Opzioni per Tabata classico").performClick()
+        val presetOptions = "Opzioni per Tabata classico"
+        if (compose.onAllNodesWithContentDescription(presetOptions).fetchSemanticsNodes().isEmpty()) {
+            compose.onNodeWithText("+ Aggiungi allenamenti pronti").performScrollTo().performClick()
+            compose.waitUntil(10000) {
+                compose.onAllNodesWithContentDescription(presetOptions).fetchSemanticsNodes().isNotEmpty()
+            }
+        }
+        compose.onNodeWithContentDescription(presetOptions).performScrollTo().performClick()
         compose.onNodeWithText("Modifica").performClick()
         compose.onNodeWithText("Modifica allenamento").assertExists()
     }

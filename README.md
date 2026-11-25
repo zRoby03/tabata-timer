@@ -127,3 +127,5 @@ Nuovi minimi Workout 5 per lavoro/recuperi attivi e 10 per defaticamento; zero p
 La successiva autorizzazione comprende commit e push del branch `codex/workout-recuperi-audio` e il nuovo APK locale. Il report del 24 novembre sopra fotografa la fase locale precedente al commit. `documentazione` e il sito attivo restano invariati. Il file da installare è `output/Tabata Timer.apk`, con copia versione `output/Tabata-Timer-1.9.0.apk`; il precedente rimane nella copia 1.8.1. [Firma conservata e ricostruzione](docs/consegna-1.9.0.md).
 
 [Consegna 1.9.1: modifiche, verifiche e installazione](docs/consegna-1.9.1.md).
+
+[Consegna 1.10.0: stili, verifiche e aggiornamento](docs/consegna-1.10.0.md).

@@ -1,6 +1,13 @@
 // Appearance is a device preference, separate from the workout archive.
 export const APPEARANCE_KEY = 'tabata:v1:appearance';
-export const DEFAULT_APPEARANCE = { theme: 'light', palette: 'purple' };
+export const DEFAULT_APPEARANCE = { theme: 'light', palette: 'purple', style: 'classic' };
+export const STYLES = [
+  { id: 'classic', name: 'Classico' },
+  { id: 'editorial', name: 'Editoriale sportivo' },
+  { id: 'neo-brutalism', name: 'Neo-brutalismo soft' },
+  { id: 'retro', name: 'Retro digitale' },
+  { id: 'bauhaus', name: 'Bauhaus contemporaneo' }
+];
 export const PALETTES = [
   { id: 'purple', name: 'Viola', swatch: '#8650a7', light: ['#713b91', '#8650a7', '#ffffff'], dark: ['#d5adf2', '#bf8ce0', '#23122b'] },
   { id: 'blue', name: 'Blu', swatch: '#275fc0', light: ['#2456a4', '#275fc0', '#ffffff'], dark: ['#a5c8ff', '#8cb5ff', '#102344'] },
@@ -15,7 +22,8 @@ export const PALETTES = [
 export function normalizeAppearance(value) {
   return {
     theme: value?.theme === 'dark' ? 'dark' : 'light',
-    palette: PALETTES.some(p => p.id === value?.palette) ? value.palette : 'purple'
+    palette: PALETTES.some(p => p.id === value?.palette) ? value.palette : DEFAULT_APPEARANCE.palette,
+    style: STYLES.some(style => style.id === value?.style) ? value.style : DEFAULT_APPEARANCE.style
   };
 }
 export function loadAppearance(storage, warn = () => {}) {
@@ -29,6 +37,6 @@ export function saveAppearance(storage, value, warn = () => {}) {
 export function applyAppearance(value, root = document.documentElement) {
   const prefs = normalizeAppearance(value), palette = PALETTES.find(p => p.id === prefs.palette);
   const [accent, fill, onAccent] = palette[prefs.theme];
-  root.dataset.theme = prefs.theme; root.dataset.palette = prefs.palette;
+  root.dataset.theme = prefs.theme; root.dataset.palette = prefs.palette; root.dataset.style = prefs.style;
   for (const [key, color] of Object.entries({ accent, 'accent-dark': accent, 'accent-fill': fill, 'on-accent': onAccent, soft: accent + (prefs.theme === 'dark' ? '22' : '0e') })) root.style.setProperty('--' + key, color);
 }

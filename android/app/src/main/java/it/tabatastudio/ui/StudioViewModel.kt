@@ -16,6 +16,12 @@ class StudioViewModel(application: Application) : AndroidViewModel(application) 
     private val appearance = application.getSharedPreferences("tabata-appearance", android.content.Context.MODE_PRIVATE)
     var darkTheme by mutableStateOf(runCatching { appearance.getBoolean("dark", false) }.getOrDefault(false)); private set
     var palette by mutableStateOf(runCatching { appearance.getString("palette", "purple") }.getOrNull()?.takeIf { value -> studioPalettes.any { it.id == value } } ?: "purple"); private set
+    internal var style by mutableStateOf(StudioStyle.fromId(runCatching { appearance.getString("style", null) }.getOrNull()))
+        private set
+    internal fun chooseStyle(value: StudioStyle) {
+        style = value
+        appearance.edit().putString("style", value.id).apply()
+    }
     fun chooseDarkTheme(value: Boolean) { darkTheme = value; appearance.edit().putBoolean("dark", value).apply() }
     fun choosePalette(value: String) { if (studioPalettes.none { it.id == value }) return; palette = value; appearance.edit().putString("palette", value).apply() }
     var mode by mutableStateOf(runCatching { appearance.getString("mode", "WORKOUT") }.getOrNull()?.takeIf { it in listOf("WORKOUT", "STUDIO") } ?: "WORKOUT"); private set

@@ -556,4 +556,11 @@
     <string name="msg_1b3a7e274975" formatted="false">El archivo no es un JSON UTF-8 válido.</string>
     <string name="msg_e22de24f160e" formatted="false">No se pudo guardar la importación. Los datos anteriores se conservaron.</string>
     <string name="msg_883abb676756" formatted="false">Al borrar se eliminan los programas y la actividad de ambos modos. Se conservan las preferencias y los archivos exportados.</string>
+    <string name="msg_713eb6108d5d" formatted="false">Estilo</string>
+    <string name="msg_e351d5ffde15" formatted="false">Clásico</string>
+    <string name="msg_130e8762be5b" formatted="false">Editorial deportivo</string>
+    <string name="msg_c25c28074e5a" formatted="false">Neobrutalismo suave</string>
+    <string name="msg_22d9f2d4cea6" formatted="false">Retro digital</string>
+    <string name="msg_cb32c72e7372" formatted="false">Bauhaus contemporánea</string>
+    <string name="msg_16a888f5da6c" formatted="false">Elige el estilo, el tema y el color de la app. Los cambios se aplican de inmediato y se guardan en este dispositivo.</string>
 </resources>

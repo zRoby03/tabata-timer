@@ -556,5 +556,12 @@ internal val messageIds = mapOf(
     "JSON troppo annidato (massimo 64 livelli)" to R.string.msg_42659673abd4,
     "Il file non è un JSON UTF-8 valido." to R.string.msg_1b3a7e274975,
     "Importazione non salvata. L’archivio precedente è rimasto invariato." to R.string.msg_e22de24f160e,
-    "La cancellazione elimina programmi e attività di entrambe le modalità. Le preferenze e le copie esportate restano disponibili." to R.string.msg_883abb676756
+    "La cancellazione elimina programmi e attività di entrambe le modalità. Le preferenze e le copie esportate restano disponibili." to R.string.msg_883abb676756,
+    "Stile" to R.string.msg_713eb6108d5d,
+    "Classico" to R.string.msg_e351d5ffde15,
+    "Editoriale sportivo" to R.string.msg_130e8762be5b,
+    "Neo-brutalismo soft" to R.string.msg_c25c28074e5a,
+    "Retro digitale" to R.string.msg_22d9f2d4cea6,
+    "Bauhaus contemporaneo" to R.string.msg_cb32c72e7372,
+    "Scegli lo stile, il tema e il colore dell’app. Le modifiche si applicano subito e restano su questo dispositivo." to R.string.msg_16a888f5da6c
 )

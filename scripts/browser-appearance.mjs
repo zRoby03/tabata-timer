@@ -1,12 +1,13 @@
 import { pathToFileURL } from 'node:url';
 import { mkdir, writeFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
-import { PALETTES, APPEARANCE_KEY } from '../web/js/appearance.js';
+import { PALETTES, STYLES, APPEARANCE_KEY } from '../web/js/appearance.js';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ? pathToFileURL(process.env.PLAYWRIGHT_MODULE).href : 'playwright');
 const browser = await chromium.launch({ channel: process.env.TABATA_BROWSER || 'msedge', headless: true });
 const checks = [], errors = [];
 const base = process.env.TABATA_URL || 'http://127.0.0.1:5500';
-await mkdir('output/screenshots', { recursive: true });
+const screenshots = 'output/screenshots/stili-1.10.0/web';
+await mkdir(screenshots, { recursive: true });
 try {
   const context = await browser.newContext({ locale: 'it-IT', viewport: { width: 390, height: 900 } });
   const page = await context.newPage(); page.on('pageerror', e => errors.push(e.message));
@@ -17,26 +18,97 @@ try {
     assert.equal(await page.locator('[data-quick-path="blocks.0.exercises.0.workSec"]').inputValue(), String(seconds));
   }
   checks.push('Tabata 1, 2 e 3 mantengono i tempi 20/10, 30/15 e 40/20');
-  for (const theme of ['light', 'dark']) for (const p of PALETTES) {
-    await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
-    await page.getByRole('button', { name: theme === 'dark' ? 'Scuro' : 'Chiaro', exact: true }).click();
-    await page.getByRole('button', { name: p.name, exact: true }).click();
-    assert.equal(await page.getByRole('button', { name: p.name, exact: true }).getAttribute('aria-pressed'), 'true');
-    assert.deepEqual(await page.evaluate(key => JSON.parse(localStorage.getItem(key)), APPEARANCE_KEY), { theme, palette: p.id });
-    assert.equal(await page.evaluate(() => localStorage.getItem('tabata:v1:data')), null);
-    await page.getByRole('button', { name: 'Timer', exact: true }).click();
-    assert.deepEqual(await page.evaluate(() => ({ ...document.documentElement.dataset })), { theme, palette: p.id });
-    const colors = await page.locator('#quick-start-button').evaluate(b => { const c = getComputedStyle(b); return { fill: c.backgroundColor, text: c.color }; });
-    const rgb = hex => `rgb(${hex.slice(1).match(/../g).map(x => parseInt(x, 16)).join(', ')})`;
-    assert.equal(colors.fill, rgb(p[theme][1])); assert.equal(colors.text, rgb(p[theme][2]));
-    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
-    if (['yellow', 'blue'].includes(p.id)) await page.screenshot({ path: `output/screenshots/web-${theme}-${p.id}.png`, fullPage: true });
+  for (const style of STYLES) {
+    for (const theme of ['light', 'dark']) for (const p of PALETTES) {
+      await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
+      assert.deepEqual(await page.locator('[data-action=style]').allTextContents(), STYLES.map(s => s.name));
+      await page.getByRole('button', { name: style.name, exact: true }).press('Enter');
+      assert.equal(await page.locator(':focus-visible').getAttribute('data-value'), style.id);
+      await page.getByRole('button', { name: theme === 'dark' ? 'Scuro' : 'Chiaro', exact: true }).click();
+      await page.getByRole('button', { name: p.name, exact: true }).click();
+      const preferences = { theme, palette: p.id, style: style.id };
+      assert.deepEqual(await page.evaluate(key => JSON.parse(localStorage.getItem(key)), APPEARANCE_KEY), preferences);
+      assert.equal(await page.evaluate(() => localStorage.getItem('tabata:v1:data')), null);
+      await page.locator('nav [data-route=home]').click();
+      assert.deepEqual(await page.evaluate(() => ({ ...document.documentElement.dataset })), preferences);
+      const appearance = await page.evaluate(() => {
+        const ctx = document.createElement('canvas').getContext('2d', {willReadFrequently: true});
+        function pixel(cssColor) {
+          ctx.clearRect(0, 0, 1, 1);
+          ctx.fillStyle = cssColor;
+          ctx.fillRect(0, 0, 1, 1);
+          return ctx.getImageData(0, 0, 1, 1).data;
+        }
+        function luminance(rgb) {
+          const [red, green, blue] = rgb;
+          const levels = [red, green, blue].map(channel => {
+            const value = channel / 255;
+            return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+          });
+          return levels[0] * 0.2126 + levels[1] * 0.7152 + levels[2] * 0.0722;
+        }
+        function contrast(selector, surface = selector) {
+          const fg = pixel(getComputedStyle(document.querySelector(selector)).color);
+          const bg = pixel(getComputedStyle(document.querySelector(surface)).backgroundColor);
+          const [low, high] = [luminance(fg), luminance(bg)].sort((a, b) => a - b);
+          return (high + .05) / (low + .05);
+        }
+        const stage = document.querySelector('.quick-total');
+        const stageBackground = pixel(getComputedStyle(stage).backgroundColor)[3] ? '.quick-total' : '.quick-card';
+        const start = getComputedStyle(document.querySelector('#quick-start-button'));
+        return {
+          fill: start.backgroundColor, text: start.color,
+          action: contrast('#quick-start-button'),
+          timer: contrast('#quick-total', stageBackground),
+          stageLabel: contrast('.quick-total > span:first-child', stageBackground),
+          input: contrast('.quick-value input')
+        };
+      });
+      const rgb = hex => 'rgb(' + hex.slice(1).match(/../g).map(x => parseInt(x, 16)).join(', ') + ')';
+      assert.equal(appearance.fill, rgb(p[theme][1]));
+      assert.equal(appearance.text, rgb(p[theme][2]));
+      for (const key of ['action', 'timer', 'stageLabel', 'input']) {
+        assert.ok(appearance[key] >= 4.5, [style.id, p.id, theme, key, appearance[key]].join(' '));
+      }
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
+      if (theme === 'light' && ['purple', 'lime', 'yellow'].includes(p.id)) {
+        await page.screenshot({ path: screenshots + '/' + style.id + '-' + p.id + '.png', fullPage: true });
+      }
+    }
   }
-  checks.push('Tutti i 18 abbinamenti tema/palette: colori effettivi, testo leggibile e archivio allenamenti invariato');
+  checks.push('90 combinazioni: stile, tema e palette effettivi, focus da tastiera, contrasti e archivio separato');
   await page.reload();
   await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
   assert.equal(await page.getByRole('button', { name: 'Scuro', exact: true }).getAttribute('aria-pressed'), 'true');
   assert.equal(await page.getByRole('button', { name: 'Rosa', exact: true }).getAttribute('aria-pressed'), 'true');
+  assert.equal(await page.getByRole('button', { name: 'Bauhaus contemporaneo', exact: true }).getAttribute('aria-pressed'), 'true');
+  await page.getByRole('button', { name: 'Retro digitale', exact: true }).click();
+  await page.locator('#mode-switch').click();
+  assert.equal(await page.locator('#quick-total').innerText(), '1:55:00');
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.evaluate(() => document.fonts.ready);
+  assert.ok(await page.locator('#quick-total').evaluate(node => {
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    return range.getBoundingClientRect().width <= node.parentElement.clientWidth;
+  }));
+  await page.locator('[data-quick-path="activities.0.concentrationSec"]').fill('60');
+  await page.getByRole('button', { name: 'Avvia', exact: true }).click();
+  await page.getByRole('button', { name: 'Salta →', exact: true }).click();
+  assert.match(await page.locator('#timer-digits').innerText(), /^1:00:00$|^59:5[0-9]$/);
+  await page.getByRole('button', { name: 'Pausa', exact: true }).click();
+  const remaining = await page.locator('#timer-digits').innerText();
+  await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
+  await page.getByRole('button', { name: 'Neo-brutalismo soft', exact: true }).click();
+  await page.locator('nav [data-route=home]').click();
+  assert.equal(await page.locator('#timer-digits').innerText(), remaining);
+  await page.getByRole('button', { name: 'Riprendi', exact: true }).waitFor();
+  page.once('dialog', dialog => dialog.accept());
+  await page.getByRole('button', { name: 'Termina', exact: true }).click();
+  await page.locator('#mode-switch').click();
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.style), 'neo-brutalism');
+  checks.push('Timer Studio lungo a 320 px, pausa conservata dopo cambio stile, aspetto comune alle modalità');
+  await page.getByRole('button', { name: 'Impostazioni', exact: true }).click();
   await page.setViewportSize({ width: 320, height: 800 });
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   await page.screenshot({ path: 'output/screenshots/web-dark-settings-320.png', fullPage: true });

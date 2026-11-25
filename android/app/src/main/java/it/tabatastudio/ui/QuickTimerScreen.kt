@@ -2,6 +2,7 @@ package it.tabatastudio.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -28,6 +29,9 @@ import it.tabatastudio.domain.*
     val rest = if (w.studio) w.activities!![0].pauseSec else e!!.restBetweenRepsSec
     var options by rememberSaveable { mutableStateOf(false) }
     val timeline = runCatching { compileTimeline(w) }
+    val style = LocalStudioStyle.current
+    val colors = MaterialTheme.colorScheme
+    val buttonShape = if (style == StudioStyle.CLASSIC) ButtonDefaults.outlinedShape else RoundedCornerShape(style.controlCorner)
     fun exercise(transform: (Exercise) -> Exercise) { vm.updateQuick(w.copy(blocks = listOf(b!!.copy(exercises = listOf(transform(e!!)))))) }
     fun block(transform: (Block) -> Block) { vm.updateQuick(w.copy(blocks = listOf(transform(b!!)))) }
 
@@ -39,26 +43,31 @@ import it.tabatastudio.domain.*
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             quickPresets(vm.mode).forEach { preset ->
                 val selected = focus == preset.workSec && rest == preset.restSec
+                val solid = selected && style != StudioStyle.CLASSIC
                 OutlinedButton(
                     onClick = { vm.quickPreset(preset) }, modifier = Modifier.weight(1f),
                     contentPadding = PaddingValues(horizontal = 4.dp, vertical = 10.dp),
-                    border = BorderStroke(1.dp, if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant),
-                    colors = ButtonDefaults.outlinedButtonColors(containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
+                    shape = buttonShape,
+                    border = BorderStroke(1.dp, if (selected) colors.primary else colors.outlineVariant),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = if (solid) colors.tertiary else if (selected) colors.primaryContainer else Color.Transparent,
+                        contentColor = if (solid) colors.onTertiary else colors.primary
+                    )
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(preset.name, fontSize = 13.sp)
-                        Text(tr("{0} / {1}", preset.workSec / factor, preset.restSec / factor), fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(tr("{0} / {1}", preset.workSec / factor, preset.restSec / factor), fontSize = 11.sp, color = if (solid) colors.onTertiary else colors.onSurfaceVariant)
                     }
                 }
             }
         }
         if (w.studio) Text(tr("Le scelte rapide impostano i tempi della prima attività."), fontSize = 12.sp)
         Panel {
-            Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(if (w.studio) tr("Durata programma") else tr("Durata allenamento"), color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
-                Text(timeline.getOrNull()?.let { formatTime(plannedMs(it)) } ?: "—", fontSize = 48.sp, fontWeight = FontWeight.SemiBold)
-                Text(tr("+ 0:20 per prepararti"), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
+            TimerReadout(
+                value = timeline.getOrNull()?.let { formatTime(plannedMs(it)) } ?: "—",
+                heading = if (w.studio) tr("Durata programma") else tr("Durata allenamento"),
+                hint = tr("+ 0:20 per prepararti")
+            )
             if (w.studio) StudyFields(w, vm::updateQuick) else {
                 QuickNumber(labels.focus, e!!.workSec, unit, 5) { value -> exercise { it.copy(workSec = value) } }
                 QuickNumber(labels.rest, e.restBetweenRepsSec, unit, activeMin = 5) { value -> exercise { it.copy(restBetweenRepsSec = value) } }
@@ -66,7 +75,7 @@ import it.tabatastudio.domain.*
             }
             if (timeline.isFailure) Text(tr(timeline.exceptionOrNull()?.message ?: tr("Controlla i campi")), color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
             AccentButton(enabled = timeline.isSuccess, onClick = { vm.start(w) }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) { Text(tr("Avvia"), fontSize = 18.sp) }
-            OutlinedButton(enabled = timeline.isSuccess, onClick = vm::openQuickSave, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) { Text(tr("Salva {0}", tr(labels.noun))) }
+            OutlinedButton(enabled = timeline.isSuccess, onClick = vm::openQuickSave, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp), shape = buttonShape) { Text(tr("Salva {0}", tr(labels.noun))) }
             if (!w.studio) {
                 TextButton(onClick = { options = !options }, modifier = Modifier.fillMaxWidth()) { Text(if (options) tr("Meno opzioni −") else tr("Altre opzioni +"), color = MaterialTheme.colorScheme.onSurfaceVariant) }
                 if (options) {

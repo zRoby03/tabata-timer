@@ -2219,5 +2219,33 @@
   "La cancellazione elimina programmi e attività di entrambe le modalità. Le preferenze e le copie esportate restano disponibili.": [
     "Deleting removes programs and activity from both modes. Preferences and exported files are kept.",
     "Al borrar se eliminan los programas y la actividad de ambos modos. Se conservan las preferencias y los archivos exportados."
+  ],
+  "Stile": [
+    "Style",
+    "Estilo"
+  ],
+  "Classico": [
+    "Classic",
+    "Clásico"
+  ],
+  "Editoriale sportivo": [
+    "Sport editorial",
+    "Editorial deportivo"
+  ],
+  "Neo-brutalismo soft": [
+    "Soft neo-brutalism",
+    "Neobrutalismo suave"
+  ],
+  "Retro digitale": [
+    "Digital retro",
+    "Retro digital"
+  ],
+  "Bauhaus contemporaneo": [
+    "Contemporary Bauhaus",
+    "Bauhaus contemporánea"
+  ],
+  "Scegli lo stile, il tema e il colore dell’app. Le modifiche si applicano subito e restano su questo dispositivo.": [
+    "Choose the app style, theme and color. Changes apply immediately and stay on this device.",
+    "Elige el estilo, el tema y el color de la app. Los cambios se aplican de inmediato y se guardan en este dispositivo."
   ]
 }

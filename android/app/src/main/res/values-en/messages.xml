@@ -556,4 +556,11 @@
     <string name="msg_1b3a7e274975" formatted="false">The file is not valid UTF-8 JSON.</string>
     <string name="msg_e22de24f160e" formatted="false">Import could not be saved. Your previous data is unchanged.</string>
     <string name="msg_883abb676756" formatted="false">Deleting removes programs and activity from both modes. Preferences and exported files are kept.</string>
+    <string name="msg_713eb6108d5d" formatted="false">Style</string>
+    <string name="msg_e351d5ffde15" formatted="false">Classic</string>
+    <string name="msg_130e8762be5b" formatted="false">Sport editorial</string>
+    <string name="msg_c25c28074e5a" formatted="false">Soft neo-brutalism</string>
+    <string name="msg_22d9f2d4cea6" formatted="false">Digital retro</string>
+    <string name="msg_cb32c72e7372" formatted="false">Contemporary Bauhaus</string>
+    <string name="msg_16a888f5da6c" formatted="false">Choose the app style, theme and color. Changes apply immediately and stay on this device.</string>
 </resources>

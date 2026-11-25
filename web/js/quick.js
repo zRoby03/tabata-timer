@@ -31,12 +31,13 @@ export function quickView(w, persistent) {
   const e = studio ? { workSec: w.activities[0].concentrationSec, restBetweenRepsSec: w.activities[0].pauseSec } : w.blocks[0].exercises[0];
   let total = 0, error = '';
   try { total = plannedMs(compileTimeline(w)); } catch (e) { error = e.message; }
+  const duration = formatTime(total);
   return `<section class="quick-start">
     <div class="quick-heading"><p class="eyebrow">${t("IL TUO TEMPO, IL TUO RITMO")}</p><h1>Tabata Timer</h1><p class="muted">${studio ? t(labels.subtitle) : t("{0}. Scegli i tempi e premi Avvia.", t(labels.subtitle))}</p></div>
     <div class="quick-presets" aria-label="${t("Impostazioni rapide")}">${quickPresets(mode).map((p, i) => `<button data-action="quick-preset" data-preset="${i}" aria-pressed="${e.workSec === p.workSec && e.restBetweenRepsSec === p.restSec}"><strong>${p.name}</strong><span>${p.workSec / factor} / ${p.restSec / factor}</span></button>`).join('')}</div>
     ${studio ? `<p class="muted small">${t("Le scelte rapide impostano i tempi della prima attività.")}</p>` : ''}
     <form id="quick-form" class="card quick-card">
-      <div class="quick-total"><span>${studio ? t("Durata programma") : t("Durata allenamento")}</span><strong id="quick-total">${formatTime(total)}</strong><span class="prepare-badge">${t("+ 0:20 per prepararti")}</span></div>
+      <div class="quick-total"><span>${studio ? t("Durata programma") : t("Durata allenamento")}</span><strong id="quick-total" data-long="${duration.length > 5}">${duration}</strong><span class="prepare-badge">${t("+ 0:20 per prepararti")}</span></div>
       ${studio ? studyFields(w, true) : numberField(t(labels.focus), 'blocks.0.exercises.0.workSec', e.workSec, unit, 5) + numberField(t(labels.rest), 'blocks.0.exercises.0.restBetweenRepsSec', e.restBetweenRepsSec, unit) + numberField(t(labels.rounds), 'blocks.0.exercises.0.repetitions', e.repetitions, '', 1, 100)}
       <p id="quick-error" class="field-error" role="status" ${error ? '' : 'hidden'}>${h(t(error))}</p>
       <div class="quick-actions"><button type="submit" class="primary quick-start-button" id="quick-start-button" ${error ? 'disabled' : ''}>${t("Avvia")}</button><button type="button" data-action="quick-save" ${error ? 'disabled' : ''}>${t("Salva {0}", t(labels.noun))}</button></div>

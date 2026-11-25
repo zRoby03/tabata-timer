@@ -11,7 +11,13 @@ import androidx.compose.ui.unit.sp
 
 @Composable internal fun AppearanceSettings(vm: StudioViewModel) = Panel {
     Text(tr("Aspetto"), style = MaterialTheme.typography.titleLarge)
-    Text(tr("Scegli il tema e il colore dell’app. La modifica è immediata e resta su questo dispositivo."), fontSize = 13.sp)
+    Text(tr("Scegli lo stile, il tema e il colore dell’app. Le modifiche si applicano subito e restano su questo dispositivo."), fontSize = 13.sp)
+    Text(tr("Stile"), style = MaterialTheme.typography.labelLarge)
+    Buttons {
+        StudioStyle.entries.forEach { style ->
+            FilterChip(selected = vm.style == style, onClick = { vm.chooseStyle(style) }, label = { Text(tr(style.label)) })
+        }
+    }
     Text(tr("Tema"), style = MaterialTheme.typography.labelLarge)
     Buttons {
         FilterChip(selected = !vm.darkTheme, onClick = { vm.chooseDarkTheme(false) }, label = { Text(tr("Chiaro")) })

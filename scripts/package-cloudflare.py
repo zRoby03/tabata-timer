@@ -29,7 +29,7 @@ for name in sorted(asset_names):
     path = WEB / name
     assert path.is_file() and path.resolve().is_relative_to(WEB), name
     assert not any(part.startswith('.') for part in Path(name).parts), name
-    assert path.suffix in {'.html', '.css', '.js', '.wav', '.png', '.svg', '.webmanifest', '.txt'}, name
+    assert path.suffix in {'.html', '.css', '.js', '.wav', '.woff2', '.png', '.svg', '.webmanifest', '.txt'}, name
     files[name] = path
 files['_headers'] = HEADERS
 assert 'index.html' in files
